@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url('../../assets/fontes/Archivo-normal-100_900.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'B612 Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../assets/fontes/B612Mono-normal-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'B612 Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../assets/fontes/B612Mono-normal-700.woff2') format('woff2');
+}

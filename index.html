@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#060b1a" />
+    <title>Torre de Controle — Centro de Inteligência Operacional · Clube Horizonte (dados fictícios)</title>
+    <meta name="description" content="Demonstração com dados fictícios: painel operacional de um programa de indicação de um clube de viagens inventado." />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23060b1a'/%3E%3Cellipse cx='16' cy='24' rx='11' ry='3.2' fill='none' stroke='%233f88ff' stroke-width='1.6'/%3E%3Cellipse cx='16' cy='16.5' rx='6.5' ry='2' fill='none' stroke='%233f88ff' stroke-width='1.4'/%3E%3Cpath d='M16 6v18' stroke='%2335d0ee' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='5.5' r='2.2' fill='%2335d0ee'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="src/estilo/fontes.css" />
+    <link rel="stylesheet" href="src/estilo/tokens.css" />
+    <link rel="stylesheet" href="src/estilo/base.css" />
+    <link rel="stylesheet" href="src/estilo/moldura.css" />
+    <link rel="stylesheet" href="src/estilo/componentes.css" />
+    <link rel="stylesheet" href="src/estilo/graficos.css" />
+    <link rel="stylesheet" href="src/estilo/torre.css" />
+    <link rel="stylesheet" href="src/estilo/modulos.css" />
+    <link rel="stylesheet" href="src/estilo/capitulos.css" />
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern id="graf-hachura" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#7f8eb0" stroke-opacity="0.5" stroke-width="1" />
+        </pattern>
+      </defs>
+    </svg>
+    <div id="app" class="app">
+      <noscript>
+        <p style="padding: 24px; max-width: 60ch">
+          A Torre de Controle precisa de JavaScript para desenhar a torre e os gráficos. Abra este arquivo num navegador atual. Demonstração com dados fictícios do Clube Horizonte.
+        </p>
+      </noscript>
+    </div>
+
+    <script src="src/dados/livro.js"></script>
+    <script src="src/dados/series.js"></script>
+    <script src="src/dados/vivo.js"></script>
+    <script src="src/nucleo/base.js"></script>
+    <script src="src/nucleo/estado.js"></script>
+    <script src="src/nucleo/movimento.js"></script>
+    <script src="src/nucleo/icones.js"></script>
+    <script src="src/nucleo/dica.js"></script>
+    <script src="src/dados/adaptador.js"></script>
+    <script src="src/dados/relacoes.js"></script>
+    <script src="src/graficos/escala.js"></script>
+    <script src="src/graficos/barras.js"></script>
+    <script src="src/graficos/linhas.js"></script>
+    <script src="src/graficos/horizontais.js"></script>
+    <script src="src/componentes/componentes.js"></script>
+    <script src="src/cena/torre.js"></script>
+    <script src="src/cena/pista.js"></script>
+    <script src="src/cena/particulas.js"></script>
+    <script src="src/modulos/comum.js"></script>
+    <script src="src/modulos/visao-geral.js"></script>
+    <script src="src/modulos/pilotos.js"></script>
+    <script src="src/modulos/passageiros.js"></script>
+    <script src="src/modulos/controladores.js"></script>
+    <script src="src/modulos/central.js"></script>
+    <script src="src/modulos/operacao.js"></script>
+    <script src="src/modulos/atendimento.js"></script>
+    <script src="src/modulos/alcance.js"></script>
+    <script src="src/modulos/plano.js"></script>
+    <script src="src/modulos/decisao.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>

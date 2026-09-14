@@ -1,0 +1,93 @@
+:root {
+  color-scheme: dark;
+
+  --noite-0: #03060f;
+  --noite-1: #060b1a;
+  --noite-2: #0b1328;
+  --noite-3: #101b38;
+  --noite-4: #16244a;
+  --fio: rgba(79, 145, 255, 0.24);
+  --fio-medio: rgba(90, 152, 255, 0.36);
+  --fio-forte: rgba(110, 168, 255, 0.58);
+  --grade: rgba(96, 140, 255, 0.05);
+
+  --tinta-1: #eef3ff;
+  --tinta-2: #aebbd8;
+  --tinta-3: #7f8eb0;
+  --tinta-4: #5e6d90;
+
+  --eletrico: #3f88ff;
+  --eletrico-claro: #7db0ff;
+  --eletrico-fundo: rgba(63, 136, 255, 0.12);
+  --ciano: #35d0ee;
+  --ciano-fundo: rgba(53, 208, 238, 0.1);
+  --violeta: #9170f7;
+  --violeta-fundo: rgba(145, 112, 247, 0.14);
+  --rosa: #d35c9e;
+  --parcial: #a8c6f0;
+  --referencia: #7c89a6;
+
+  --firme: #23b35a;
+  --atencao: #fab219;
+  --agir: #ff5a64;
+  --nao-medido: #7f8eb0;
+  --agir-fundo: rgba(255, 90, 100, 0.1);
+  --atencao-fundo: rgba(250, 178, 25, 0.09);
+  --firme-fundo: rgba(35, 179, 90, 0.1);
+
+  --cen-1: #0e7c96;
+  --cen-2: #17afcf;
+  --cen-3: #6fd8ec;
+
+  --f-texto: 'Archivo', 'Segoe UI', system-ui, sans-serif;
+  --f-leitura: 'B612 Mono', 'Cascadia Mono', Consolas, ui-monospace, monospace;
+
+  --t-11: clamp(10.5px, 0.18vw + 8.4px, 12px);
+  --t-12: clamp(11.5px, 0.2vw + 9.2px, 13px);
+  --t-13: clamp(12.5px, 0.22vw + 10px, 14px);
+  --t-15: clamp(14px, 0.26vw + 11.2px, 17px);
+  --t-17: clamp(15.5px, 0.3vw + 12.2px, 19px);
+  --t-20: clamp(18px, 0.4vw + 13.4px, 23px);
+  --t-26: clamp(21px, 0.62vw + 13.4px, 30px);
+  --t-34: clamp(26px, 0.95vw + 13px, 42px);
+  --t-48: clamp(34px, 1.5vw + 14px, 60px);
+  --t-72: clamp(46px, 2.6vw + 12px, 92px);
+
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 24px;
+  --e-6: 32px;
+  --e-7: 48px;
+  --e-8: 72px;
+
+  --raio-1: 3px;
+  --raio-2: 6px;
+  --raio-3: 10px;
+
+  --w-trilho: clamp(212px, 15vw, 270px);
+  --h-topo: 76px;
+
+  --ease-saida: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 160ms;
+  --dur-2: 320ms;
+  --dur-3: 620ms;
+  --dur-4: 1100ms;
+
+  --horizonte-1: #0f2a66;
+  --horizonte-2: rgba(63, 136, 255, 0.16);
+  --horizonte-3: rgba(145, 112, 247, 0.1);
+}
+
+[data-fase='B'] {
+  --horizonte-1: #1a3f9e;
+  --horizonte-2: rgba(63, 136, 255, 0.24);
+  --horizonte-3: rgba(145, 112, 247, 0.2);
+}
+
+[data-fase='C'] {
+  --horizonte-1: #2a55c4;
+  --horizonte-2: rgba(53, 208, 238, 0.22);
+  --horizonte-3: rgba(145, 112, 247, 0.3);
+}
