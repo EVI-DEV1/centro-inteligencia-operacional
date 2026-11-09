@@ -114,11 +114,11 @@
   pointer-events: none;
 }
 .chao-linha {
-  stroke: rgba(110, 168, 255, 0.55);
+  stroke: rgba(169, 159, 255, 0.55);
   stroke-width: 1.2;
 }
 .chao-marca {
-  stroke: rgba(125, 176, 255, 0.45);
+  stroke: rgba(169, 159, 255, 0.45);
   stroke-width: 1;
 }
 .chao-rotulo {
@@ -130,12 +130,12 @@
 
 .registro-cruz {
   fill: none;
-  stroke: rgba(255, 90, 100, 0.45);
+  stroke: rgba(251, 113, 133, 0.45);
   stroke-width: 0.9;
 }
 .registro-regua {
   fill: none;
-  stroke: rgba(125, 176, 255, 0.32);
+  stroke: rgba(169, 159, 255, 0.32);
   stroke-width: 1;
 }
 .registro-regua.alvo {
@@ -145,7 +145,7 @@
 .fio {
   fill: none;
   stroke-linejoin: miter;
-  stroke: rgba(125, 176, 255, 0.34);
+  stroke: rgba(169, 159, 255, 0.34);
   stroke-width: 1.2;
   transition: stroke var(--dur-2), stroke-width var(--dur-2), opacity var(--dur-2);
 }
@@ -155,7 +155,7 @@
 }
 .terminal {
   fill: var(--noite-1);
-  stroke: rgba(125, 176, 255, 0.6);
+  stroke: rgba(169, 159, 255, 0.6);
   stroke-width: 1;
 }
 .terminal.aceso {
@@ -178,7 +178,7 @@
 }
 .andar-contorno {
   fill: none;
-  stroke: rgba(125, 176, 255, 0.62);
+  stroke: rgba(169, 159, 255, 0.62);
   stroke-width: 1.1;
   transition: stroke var(--dur-2), stroke-width var(--dur-2);
 }
@@ -192,15 +192,15 @@
   stroke-width: 1;
 }
 .janela {
-  fill: rgba(125, 176, 255, 0.1);
+  fill: rgba(169, 159, 255, 0.1);
   transition: fill 1.4s ease;
 }
 .janela.fundo-letreiro {
-  fill: rgba(125, 176, 255, 0.05);
+  fill: rgba(169, 159, 255, 0.05);
 }
 .janela.letreiro {
   fill: #ffd98a;
-  filter: drop-shadow(0 0 3px rgba(255, 196, 92, 0.75));
+  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.75));
 }
 .meta-faixa {
   fill: var(--ciano);
@@ -211,10 +211,10 @@
 }
 .anel-alvo:hover .meta-faixa,
 .anel-alvo:focus-visible .meta-faixa {
-  fill: #7fe6f7;
+  fill: #7ee8f5;
 }
 .janela.acesa {
-  fill: rgba(214, 228, 255, 0.6);
+  fill: rgba(228, 228, 236, 0.6);
 }
 .conves.operacional .andar-contorno {
   stroke: var(--ciano);
@@ -237,20 +237,20 @@
 }
 .contorno-trilho {
   fill: none;
-  stroke: rgba(69, 224, 168, 0.18);
+  stroke: rgba(52, 211, 153, 0.18);
   stroke-width: 1.2;
   stroke-linejoin: miter;
   pointer-events: none;
 }
 .contorno-luz {
   fill: none;
-  stroke: #45e0a8;
+  stroke: #34d399;
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 0.07 0.93;
   stroke-dashoffset: 0;
-  filter: drop-shadow(0 0 3px rgba(69, 224, 168, 0.9)) drop-shadow(0 0 8px rgba(69, 224, 168, 0.45));
+  filter: drop-shadow(0 0 3px rgba(52, 211, 153, 0.9)) drop-shadow(0 0 8px rgba(52, 211, 153, 0.45));
   pointer-events: none;
   animation: contorno-corre 7s linear infinite;
 }
@@ -307,7 +307,7 @@
   outline: none;
 }
 .anel-alvo-faixa {
-  fill: rgba(53, 208, 238, 0.07);
+  fill: rgba(34, 211, 238, 0.07);
 }
 .anel-alvo-borda {
   fill: none;
@@ -318,7 +318,7 @@
 }
 .anel-alvo:hover .anel-alvo-faixa,
 .anel-alvo:focus-visible .anel-alvo-faixa {
-  fill: rgba(53, 208, 238, 0.16);
+  fill: rgba(34, 211, 238, 0.16);
 }
 .anel-alvo-num {
   fill: var(--ciano);
@@ -352,7 +352,7 @@
   text-transform: uppercase;
 }
 .guia {
-  stroke: rgba(125, 176, 255, 0.3);
+  stroke: rgba(169, 159, 255, 0.3);
   stroke-width: 1;
   stroke-dasharray: 1 3;
   fill: none;
@@ -395,14 +395,14 @@
   fill: var(--eletrico);
 }
 .pilar-contabilizados .pilar-cheio {
-  fill: #eef3ff;
+  fill: #f5f5f7;
 }
 .pilar-sinal {
-  fill: rgba(125, 176, 255, 0.55);
+  fill: rgba(169, 159, 255, 0.55);
 }
 .pilar-ficha-borda {
   fill: none;
-  stroke: rgba(127, 142, 176, 0.7);
+  stroke: rgba(132, 132, 143, 0.7);
   stroke-width: 1;
 }
 .pilar-marca {
@@ -427,7 +427,7 @@
   text-transform: uppercase;
 }
 .pilar-base {
-  stroke: rgba(125, 176, 255, 0.35);
+  stroke: rgba(169, 159, 255, 0.35);
 }
 .pilar:hover .pilar-corpo,
 .pilar:focus-visible .pilar-corpo {
@@ -452,13 +452,13 @@
   stroke-width: 1.4;
 }
 .barra-fio.medido {
-  stroke: rgba(125, 176, 255, 0.55);
+  stroke: rgba(169, 159, 255, 0.55);
 }
 .barra-fio.conceitual {
-  stroke: rgba(125, 176, 255, 0.18);
+  stroke: rgba(169, 159, 255, 0.18);
 }
 .barra-fio.quebrado {
-  stroke: rgba(255, 90, 100, 0.45);
+  stroke: rgba(251, 113, 133, 0.45);
   stroke-dasharray: 3 4;
 }
 .barra-quebra {
@@ -491,7 +491,7 @@
 }
 .no-disco {
   fill: var(--noite-2);
-  stroke: rgba(125, 176, 255, 0.45);
+  stroke: rgba(169, 159, 255, 0.45);
   stroke-width: 1.2;
   transition: stroke var(--dur-2), fill var(--dur-2);
 }
@@ -500,7 +500,7 @@
 }
 .no-anel {
   fill: none;
-  stroke: rgba(125, 176, 255, 0.28);
+  stroke: rgba(169, 159, 255, 0.28);
   stroke-width: 1;
   stroke-dasharray: 2 3;
 }
@@ -651,7 +651,7 @@
   padding: var(--e-4) var(--e-5) var(--e-3);
   border-top: 1.5px solid var(--fio-forte);
   border-bottom: 1px solid var(--fio);
-  background: rgba(6, 11, 26, 0.45);
+  background: rgba(10, 10, 13, 0.45);
   scroll-margin-top: calc(var(--h-topo) + 24px);
 }
 .vg-pista-cab {
@@ -679,20 +679,20 @@
   font-family: var(--f-texto);
 }
 .pista-eixo {
-  stroke: rgba(125, 176, 255, 0.25);
+  stroke: rgba(169, 159, 255, 0.25);
   stroke-dasharray: 10 8;
 }
 .pista-fase {
-  fill: rgba(63, 136, 255, 0.05);
-  stroke: rgba(125, 176, 255, 0.12);
+  fill: rgba(124, 108, 255, 0.05);
+  stroke: rgba(169, 159, 255, 0.12);
 }
 .pista-fase.fB {
-  fill: rgba(145, 112, 247, 0.12);
-  stroke: rgba(145, 112, 247, 0.3);
+  fill: rgba(192, 132, 252, 0.12);
+  stroke: rgba(192, 132, 252, 0.3);
 }
 .pista-fase.fC {
-  fill: rgba(53, 208, 238, 0.12);
-  stroke: rgba(53, 208, 238, 0.4);
+  fill: rgba(34, 211, 238, 0.12);
+  stroke: rgba(34, 211, 238, 0.4);
 }
 .pista-fase-rotulo {
   fill: var(--tinta-3);
@@ -727,7 +727,7 @@
 }
 .pista-congelamento {
   fill: url(#graf-hachura);
-  stroke: rgba(127, 142, 176, 0.4);
+  stroke: rgba(132, 132, 143, 0.4);
 }
 .pista-congelamento-rotulo {
   fill: var(--tinta-3);
@@ -735,7 +735,7 @@
   font-size: 10px;
 }
 .pista-haste {
-  stroke: rgba(125, 176, 255, 0.35);
+  stroke: rgba(169, 159, 255, 0.35);
 }
 .pista-marco {
   cursor: pointer;
@@ -763,7 +763,7 @@
 }
 .pista-janela {
   fill: none;
-  stroke: rgba(250, 178, 25, 0.55);
+  stroke: rgba(251, 191, 36, 0.55);
   stroke-dasharray: 3 3;
 }
 .pista-hoje {
@@ -847,7 +847,7 @@
     padding: 8px 12px;
     border: 1px solid var(--fio);
     border-radius: var(--raio-2);
-    background: rgba(11, 19, 40, 0.6);
+    background: rgba(17, 17, 22, 0.6);
     color: var(--tinta-2);
     text-decoration: none;
     font-size: var(--t-13);
@@ -857,7 +857,7 @@
     color: var(--tinta-1);
   }
   .vg-funil-movel .operacional a {
-    border-color: rgba(53, 208, 238, 0.5);
+    border-color: rgba(34, 211, 238, 0.5);
   }
   .vg-funil-movel .operacional b {
     color: var(--ciano);

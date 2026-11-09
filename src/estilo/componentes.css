@@ -155,7 +155,7 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   border-top: 1.5px solid var(--fio-forte);
   border-bottom: 1px solid var(--fio-medio);
-  background: repeating-linear-gradient(0deg, transparent 0 23px, rgba(125, 176, 255, 0.05) 23px 24px);
+  background: repeating-linear-gradient(0deg, transparent 0 23px, rgba(169, 159, 255, 0.05) 23px 24px);
 }
 .canal {
   position: relative;
@@ -313,7 +313,7 @@ button.canal:hover::after {
   padding: var(--e-4);
   border: 1px solid var(--fio);
   border-radius: var(--raio-3);
-  background: rgba(11, 19, 40, 0.6);
+  background: rgba(17, 17, 22, 0.6);
 }
 .tally-titulo {
   font-size: var(--t-15);
@@ -388,13 +388,13 @@ button.canal:hover::after {
 }
 @keyframes alvo {
   0% {
-    box-shadow: 0 0 0 0 rgba(53, 208, 238, 0);
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0);
   }
   12% {
-    box-shadow: 0 0 0 3px rgba(53, 208, 238, 0.85);
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.85);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(53, 208, 238, 0);
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0);
   }
 }
 
@@ -402,7 +402,7 @@ button.canal:hover::after {
   margin-top: var(--e-5);
   border: 1px solid var(--fio);
   border-radius: var(--raio-3);
-  background: rgba(11, 19, 40, 0.55);
+  background: rgba(17, 17, 22, 0.55);
   overflow: hidden;
 }
 .tabela-rolagem {
@@ -426,7 +426,7 @@ button.canal:hover::after {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--tinta-3);
-  background: rgba(16, 27, 56, 0.7);
+  background: rgba(23, 23, 30, 0.7);
   white-space: nowrap;
 }
 .regua tbody th {
@@ -439,7 +439,7 @@ button.canal:hover::after {
   border-bottom: 0;
 }
 .regua tbody tr:hover {
-  background: rgba(63, 136, 255, 0.06);
+  background: rgba(124, 108, 255, 0.06);
 }
 .regua-faixa {
   color: var(--tinta-2);
@@ -508,7 +508,7 @@ button.canal:hover::after {
   --cor: var(--atencao);
 }
 .decisao:hover {
-  background: rgba(63, 136, 255, 0.04);
+  background: rgba(124, 108, 255, 0.04);
 }
 .decisao-topo {
   display: flex;
@@ -621,7 +621,7 @@ button.canal:hover::after {
   gap: 4px 12px;
   align-items: center;
   padding: 11px 14px;
-  background: rgba(11, 19, 40, 0.94);
+  background: rgba(17, 17, 22, 0.94);
 }
 .sensor-luz {
   grid-area: luz;
@@ -678,7 +678,7 @@ button.canal:hover::after {
   padding: var(--e-5);
   border: 1px solid var(--fio);
   border-radius: var(--raio-3);
-  background: rgba(11, 19, 40, 0.55);
+  background: rgba(17, 17, 22, 0.55);
 }
 .muda-lista {
   margin: 0;
@@ -719,7 +719,7 @@ button.canal:hover::after {
   line-height: 1.55;
 }
 .nao-mede {
-  background: linear-gradient(rgba(11, 19, 40, 0.8), rgba(11, 19, 40, 0.8)), repeating-linear-gradient(135deg, rgba(127, 142, 176, 0.14) 0 1px, transparent 1px 7px);
+  background: linear-gradient(rgba(17, 17, 22, 0.8), rgba(17, 17, 22, 0.8)), repeating-linear-gradient(135deg, rgba(132, 132, 143, 0.14) 0 1px, transparent 1px 7px);
 }
 .nao-mede ul,
 .perguntas ol {
@@ -790,7 +790,7 @@ button.canal:hover::after {
   align-items: flex-start;
   margin-top: var(--e-4);
   padding: 12px 14px;
-  border: 1px dashed rgba(250, 178, 25, 0.45);
+  border: 1px dashed rgba(251, 191, 36, 0.45);
   border-radius: var(--raio-2);
   background: var(--atencao-fundo);
   font-size: var(--t-13);
@@ -820,7 +820,7 @@ button.canal:hover::after {
   padding: 10px 12px;
   border: 1px solid var(--fio-forte);
   border-radius: var(--raio-2);
-  background: rgba(6, 11, 26, 0.96);
+  background: rgba(10, 10, 13, 0.96);
   box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(0, 0, 0, 0.4);
   pointer-events: none;
   opacity: 0;
@@ -885,7 +885,7 @@ button.canal:hover::after {
   width: min(440px, 100vw);
   padding: var(--e-5) var(--e-5) var(--e-6);
   overflow-y: auto;
-  background: linear-gradient(180deg, rgba(16, 27, 56, 0.98), rgba(6, 11, 26, 0.98));
+  background: linear-gradient(180deg, rgba(23, 23, 30, 0.98), rgba(10, 10, 13, 0.98));
   border-left: 1px solid var(--fio-forte);
   box-shadow: -30px 0 60px -30px rgba(0, 0, 0, 0.8);
   transform: translateX(104%);
@@ -957,7 +957,7 @@ button.canal:hover::after {
   padding: var(--e-4);
   border: 1px solid var(--fio-forte);
   border-radius: var(--raio-3);
-  background: rgba(6, 11, 26, 0.98);
+  background: rgba(10, 10, 13, 0.98);
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
 }
 .painel-integridade h2 {
@@ -1026,7 +1026,7 @@ button.canal:hover::after {
   z-index: 70;
   pointer-events: none;
   border-radius: 14px;
-  box-shadow: 0 0 0 200vmax rgba(3, 6, 15, 0.72), 0 0 0 1px rgba(53, 208, 238, 0.55);
+  box-shadow: 0 0 0 200vmax rgba(6, 6, 8, 0.72), 0 0 0 1px rgba(34, 211, 238, 0.55);
   opacity: 0;
   transition: top var(--dur-3) var(--ease-saida), left var(--dur-3) var(--ease-saida), width var(--dur-3) var(--ease-saida), height var(--dur-3) var(--ease-saida), opacity var(--dur-2);
 }
@@ -1042,7 +1042,7 @@ button.canal:hover::after {
   padding: 16px 18px 14px;
   border: 1px solid var(--fio-forte);
   border-radius: var(--raio-3);
-  background: rgba(6, 11, 26, 0.96);
+  background: rgba(10, 10, 13, 0.96);
   box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.95);
   transform: translate(-50%, calc(100% + 48px));
   visibility: hidden;

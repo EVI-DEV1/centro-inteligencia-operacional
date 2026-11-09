@@ -108,7 +108,7 @@
   font-size: var(--t-11);
 }
 .tabela-dados tbody tr:hover {
-  background: rgba(63, 136, 255, 0.06);
+  background: rgba(124, 108, 255, 0.06);
 }
 .tabela-dados tr.limite {
   color: var(--tinta-3);
@@ -168,7 +168,7 @@
   margin-right: 8px;
   vertical-align: middle;
   border-radius: 3px;
-  background: linear-gradient(var(--ciano), var(--ciano)) left / var(--p) 100% no-repeat, rgba(53, 208, 238, 0.12);
+  background: linear-gradient(var(--ciano), var(--ciano)) left / var(--p) 100% no-repeat, rgba(34, 211, 238, 0.12);
 }
 
 .funil-painel {
@@ -192,7 +192,7 @@
 }
 .funil-degrau:hover,
 .funil-degrau:focus-visible {
-  background: rgba(63, 136, 255, 0.08);
+  background: rgba(124, 108, 255, 0.08);
 }
 .funil-rotulo {
   display: grid;
@@ -216,11 +216,11 @@
   width: max(3px, var(--p));
   border-radius: 0 5px 5px 0;
   transform-origin: left;
-  background: linear-gradient(90deg, rgba(63, 136, 255, 0.35), var(--eletrico));
+  background: linear-gradient(90deg, rgba(124, 108, 255, 0.35), var(--eletrico));
   animation: graf-cresce-x 1200ms var(--ease-saida) 200ms both;
 }
 .funil-degrau.operacional .funil-barra {
-  background: linear-gradient(90deg, rgba(53, 208, 238, 0.35), var(--ciano));
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.35), var(--ciano));
 }
 .funil-alvo {
   position: absolute;
@@ -230,7 +230,7 @@
   width: calc(var(--a1) - var(--a0));
   border: 1.5px dashed var(--ciano);
   border-radius: 5px;
-  background: rgba(53, 208, 238, 0.06);
+  background: rgba(34, 211, 238, 0.06);
 }
 .funil-alvo span {
   position: absolute;
@@ -287,7 +287,7 @@
   gap: 12px;
   align-items: flex-start;
   padding: 14px 16px;
-  border: 1px solid rgba(255, 90, 100, 0.45);
+  border: 1px solid rgba(251, 113, 133, 0.45);
   border-radius: var(--raio-2);
   background: var(--agir-fundo);
   font-size: var(--t-15);
@@ -318,10 +318,10 @@
   padding: 10px 12px;
   border: 1px solid var(--fio);
   border-radius: var(--raio-2);
-  background: rgba(145, 112, 247, 0.07);
+  background: rgba(192, 132, 252, 0.07);
 }
 .cargas-lista li.outra {
-  background: rgba(11, 19, 40, 0.6);
+  background: rgba(17, 17, 22, 0.6);
 }
 .cargas-dia,
 .cargas-num {
@@ -371,11 +371,11 @@
   padding: 10px;
   border-radius: var(--raio-2);
   border: 1px solid var(--fio);
-  background: rgba(11, 19, 40, 0.55);
+  background: rgba(17, 17, 22, 0.55);
 }
 .coorte.carga {
-  background: rgba(145, 112, 247, 0.08);
-  border-color: rgba(145, 112, 247, 0.3);
+  background: rgba(192, 132, 252, 0.08);
+  border-color: rgba(192, 132, 252, 0.3);
 }
 .coorte:hover,
 .coorte:focus-visible {
@@ -395,7 +395,7 @@
   position: relative;
   height: 22px;
   border-radius: 3px;
-  background: repeating-linear-gradient(90deg, rgba(126, 170, 255, 0.1) 0 1px, transparent 1px 25%);
+  background: repeating-linear-gradient(90deg, rgba(169, 159, 255, 0.1) 0 1px, transparent 1px 25%);
 }
 .coorte-faixa {
   position: absolute;
@@ -462,7 +462,7 @@
   padding: var(--e-4);
   border: 1px solid var(--fio);
   border-radius: var(--raio-2);
-  background: rgba(3, 6, 15, 0.35);
+  background: rgba(6, 6, 8, 0.35);
 }
 .conta-formula {
   margin: 6px 0 10px;
@@ -500,11 +500,11 @@
   font-weight: 400;
 }
 .tabela-faixas td[style] {
-  background: rgba(63, 136, 255, calc(var(--k) * 0.55));
+  background: rgba(124, 108, 255, calc(var(--k) * 0.55));
   color: var(--tinta-1);
 }
 .tabela-faixas td.noturna[style] {
-  background: rgba(145, 112, 247, calc(var(--k) * 0.6));
+  background: rgba(192, 132, 252, calc(var(--k) * 0.6));
 }
 .tabela-faixas tr.parcial th,
 .tabela-faixas tr.parcial td {
@@ -517,7 +517,7 @@
   margin-right: 6px;
   vertical-align: middle;
   border-radius: 3px;
-  background: linear-gradient(var(--eletrico), var(--eletrico)) left / var(--p) 100% no-repeat, rgba(63, 136, 255, 0.12);
+  background: linear-gradient(var(--eletrico), var(--eletrico)) left / var(--p) 100% no-repeat, rgba(124, 108, 255, 0.12);
 }
 .confirmacao {
   display: grid;
@@ -552,24 +552,24 @@
 }
 .rede-anel {
   fill: none;
-  stroke: rgba(126, 170, 255, 0.08);
+  stroke: rgba(169, 159, 255, 0.08);
   stroke-dasharray: 3 6;
 }
 .rede-fio {
-  stroke: rgba(125, 176, 255, 0.28);
+  stroke: rgba(169, 159, 255, 0.28);
   transition: stroke var(--dur-2), opacity var(--dur-2);
 }
 .rede-fio.parado {
-  stroke: rgba(125, 176, 255, 0.12);
+  stroke: rgba(169, 159, 255, 0.12);
   stroke-dasharray: 2 4;
 }
 .rede-fio.triagem {
-  stroke: rgba(255, 90, 100, 0.4);
+  stroke: rgba(251, 113, 133, 0.4);
   stroke-dasharray: 2 5;
   stroke-width: 1;
 }
 .rede-fio.agregado {
-  stroke: rgba(125, 176, 255, 0.14);
+  stroke: rgba(169, 159, 255, 0.14);
   stroke-width: 1;
 }
 .rede.focando .rede-fio:not(.realce),
@@ -588,7 +588,7 @@
   transition: opacity var(--dur-2);
 }
 .rede-disco {
-  fill: rgba(63, 136, 255, var(--k));
+  fill: rgba(124, 108, 255, var(--k));
 }
 .rede-anel-tendencia {
   fill: none;
@@ -611,16 +611,16 @@
   stroke-width: 3;
 }
 .sat {
-  fill: rgba(126, 142, 176, 0.45);
+  fill: rgba(132, 132, 143, 0.45);
 }
 .sat.aceso {
   fill: var(--ciano);
 }
 .sat.fila {
-  fill: rgba(126, 142, 176, 0.35);
+  fill: rgba(132, 132, 143, 0.35);
 }
 .sat.solto {
-  fill: rgba(255, 90, 100, 0.55);
+  fill: rgba(251, 113, 133, 0.55);
 }
 .rede-nome {
   fill: var(--tinta-1);
@@ -641,7 +641,7 @@
 }
 .rede-risco {
   fill: none;
-  stroke: rgba(255, 90, 100, 0.55);
+  stroke: rgba(251, 113, 133, 0.55);
   stroke-dasharray: 4 4;
 }
 .rede-deposito,
@@ -650,7 +650,7 @@
 }
 .rede-demais-no {
   fill: none;
-  stroke: rgba(125, 176, 255, 0.35);
+  stroke: rgba(169, 159, 255, 0.35);
 }
 .rede-hub-disco {
   fill: var(--noite-3);
@@ -694,11 +694,11 @@
 }
 .fluxo-faixa {
   fill: none;
-  stroke: rgba(63, 136, 255, 0.32);
+  stroke: rgba(124, 108, 255, 0.32);
   stroke-linecap: round;
 }
 .fluxo-faixa.risco {
-  stroke: rgba(255, 90, 100, 0.4);
+  stroke: rgba(251, 113, 133, 0.4);
 }
 .fluxo-oculto {
   fill: none;
@@ -720,7 +720,7 @@
   stroke: var(--ciano);
 }
 .fluxo-numero.risco .fluxo-caixa {
-  stroke: rgba(255, 90, 100, 0.6);
+  stroke: rgba(251, 113, 133, 0.6);
 }
 .fluxo-nome {
   fill: var(--tinta-1);
@@ -737,11 +737,11 @@
   color: var(--agir);
 }
 .fluxo-estagio-caixa {
-  fill: rgba(16, 27, 56, 0.85);
+  fill: rgba(23, 23, 30, 0.85);
   stroke: var(--fio-medio);
 }
 .fluxo-estagio.humano .fluxo-estagio-caixa {
-  stroke: rgba(255, 90, 100, 0.5);
+  stroke: rgba(251, 113, 133, 0.5);
 }
 .fluxo-estagio-titulo {
   fill: var(--tinta-2);
@@ -763,7 +763,7 @@
   stroke-width: 1.5;
 }
 .fluxo-seta.alerta {
-  stroke: rgba(255, 90, 100, 0.6);
+  stroke: rgba(251, 113, 133, 0.6);
 }
 .fluxo-seg.descanso {
   fill: var(--referencia);
@@ -829,7 +829,7 @@
 }
 .ensaio-memoria {
   padding: 2px 0 2px 14px;
-  border-left: 1.5px dashed rgba(250, 178, 25, 0.6);
+  border-left: 1.5px dashed rgba(251, 191, 36, 0.6);
   font-size: var(--t-13);
   color: var(--tinta-2);
   line-height: 1.55;
@@ -876,7 +876,7 @@
 }
 .esteira-etapa[data-s='vermelho'] .esteira-icone {
   border-color: var(--agir);
-  outline: 1px solid rgba(255, 90, 100, 0.55);
+  outline: 1px solid rgba(251, 113, 133, 0.55);
   outline-offset: 3px;
 }
 .esteira-etapa[data-s='amarelo'] .esteira-icone {
@@ -944,7 +944,7 @@
   padding: 12px 16px;
   border: 1px solid var(--fio);
   border-radius: var(--raio-2);
-  background: rgba(11, 19, 40, 0.6);
+  background: rgba(17, 17, 22, 0.6);
   font-size: var(--t-13);
   color: var(--tinta-2);
   max-width: 110ch;
@@ -970,10 +970,10 @@
   padding: 12px 14px;
   border: 1px solid var(--fio);
   border-radius: var(--raio-2);
-  background: rgba(3, 6, 15, 0.35);
+  background: rgba(6, 6, 8, 0.35);
 }
 .fila-faixa.critica {
-  border-color: rgba(255, 90, 100, 0.55);
+  border-color: rgba(251, 113, 133, 0.55);
   background: var(--agir-fundo);
 }
 .fila-cab {
@@ -1018,7 +1018,7 @@
   position: relative;
   height: 10px;
   border-radius: 5px;
-  background: rgba(126, 170, 255, 0.08);
+  background: rgba(169, 159, 255, 0.08);
 }
 .fila-espera-media {
   position: absolute;
@@ -1085,7 +1085,7 @@
 }
 .sensor-estado.ativo {
   opacity: 1;
-  border-color: rgba(255, 90, 100, 0.6);
+  border-color: rgba(251, 113, 133, 0.6);
   background: var(--agir-fundo);
 }
 .sensor-estado i {
@@ -1127,9 +1127,9 @@
 }
 .sensor-rotina {
   padding: 14px 16px;
-  border: 1px solid rgba(255, 90, 100, 0.4);
+  border: 1px solid rgba(251, 113, 133, 0.4);
   border-radius: var(--raio-2);
-  background: rgba(3, 6, 15, 0.35);
+  background: rgba(6, 6, 8, 0.35);
 }
 .sensor-rotina-cab {
   display: flex;
@@ -1220,7 +1220,7 @@
   padding: var(--e-5) 0 var(--e-5) var(--e-4);
   border-top: 1.5px solid var(--fio-forte);
   border-bottom: 1px solid var(--fio);
-  background: rgba(6, 11, 26, 0.45);
+  background: rgba(10, 10, 13, 0.45);
 }
 .marco::before {
   content: '';
@@ -1234,7 +1234,7 @@
   border: 2px solid var(--eletrico);
 }
 .marco.simulado {
-  border-color: rgba(250, 178, 25, 0.45);
+  border-color: rgba(251, 191, 36, 0.45);
 }
 .marco.simulado::before {
   border-color: var(--atencao);
@@ -1355,12 +1355,12 @@
   color: var(--tinta-2);
 }
 .aviso-simulado {
-  border-left: 1.5px dashed rgba(250, 178, 25, 0.6);
+  border-left: 1.5px dashed rgba(251, 191, 36, 0.6);
   background: var(--atencao-fundo);
 }
 .aviso-congelamento {
   border-left: 1.5px solid var(--fio-forte);
-  background: rgba(11, 19, 40, 0.6);
+  background: rgba(17, 17, 22, 0.6);
 }
 .aviso-simulado svg,
 .aviso-congelamento svg {
@@ -1408,11 +1408,11 @@
   font-size: 22px;
 }
 .fase-B .fase-letra {
-  border-color: rgba(145, 112, 247, 0.6);
+  border-color: rgba(192, 132, 252, 0.6);
   color: var(--violeta);
 }
 .fase-C .fase-letra {
-  border-color: rgba(53, 208, 238, 0.6);
+  border-color: rgba(34, 211, 238, 0.6);
   color: var(--ciano);
 }
 .fase-cartao h3 {
@@ -1480,7 +1480,7 @@
   padding: 10px 12px;
   border: 1px solid var(--fio);
   border-radius: var(--raio-3);
-  background: rgba(6, 11, 26, 0.94);
+  background: rgba(10, 10, 13, 0.94);
   backdrop-filter: blur(8px);
 }
 .filtros {
@@ -1517,7 +1517,7 @@
   color: var(--tinta-1);
 }
 .filtro[aria-pressed='true'] {
-  border-color: rgba(53, 208, 238, 0.6);
+  border-color: rgba(34, 211, 238, 0.6);
   background: var(--ciano-fundo);
   color: var(--tinta-1);
 }
@@ -1550,7 +1550,7 @@
 }
 .decisao-lista .decisao:hover {
   transform: none;
-  background: rgba(63, 136, 255, 0.04);
+  background: rgba(124, 108, 255, 0.04);
 }
 .decisao-lista .decisao-topo {
   grid-area: topo;
@@ -1611,7 +1611,7 @@
 }
 .conferencia-cartao {
   padding: var(--e-4);
-  border: 1px dashed rgba(250, 178, 25, 0.45);
+  border: 1px dashed rgba(251, 191, 36, 0.45);
   border-radius: var(--raio-3);
   background: var(--atencao-fundo);
 }
