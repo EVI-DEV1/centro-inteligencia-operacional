@@ -62,8 +62,8 @@
     const defs = s('defs');
     defs.innerHTML = `
       <linearGradient id="tg-vidro" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#17305e"/>
-        <stop offset="1" stop-color="#0b1733"/>
+        <stop offset="0" stop-color="#221d3d"/>
+        <stop offset="1" stop-color="#14121f"/>
       </linearGradient>
       <linearGradient id="tg-vidro-lado" x1="0" y1="0" x2="1" y2="0">
         <stop offset="0" stop-color="#ffffff" stop-opacity=".07"/>
@@ -71,12 +71,12 @@
         <stop offset="1" stop-color="#000000" stop-opacity=".18"/>
       </linearGradient>
       <linearGradient id="tg-reflexo" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#cfe0ff" stop-opacity="0"/>
-        <stop offset=".5" stop-color="#cfe0ff" stop-opacity=".16"/>
-        <stop offset="1" stop-color="#cfe0ff" stop-opacity="0"/>
+        <stop offset="0" stop-color="#e4e1ff" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#e4e1ff" stop-opacity=".16"/>
+        <stop offset="1" stop-color="#e4e1ff" stop-opacity="0"/>
       </linearGradient>
       <pattern id="tg-hachura" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-        <line x1="0" y1="0" x2="0" y2="6" stroke="#7f8eb0" stroke-opacity=".45" stroke-width="1"/>
+        <line x1="0" y1="0" x2="0" y2="6" stroke="#84848f" stroke-opacity=".45" stroke-width="1"/>
       </pattern>`;
     svg.appendChild(defs);
 

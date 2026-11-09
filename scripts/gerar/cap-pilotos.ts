@@ -1,3 +1,4 @@
+import type { Contexto, SaidaCapitulo } from './tipos.ts';
 const EXTENSO = ['zero', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez'];
 const EXTENSO_F = ['zero', 'uma', 'duas', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez'];
 const DIA_LONGO = { seg: 'segunda', ter: 'terça', qua: 'quarta', qui: 'quinta', sex: 'sexta', 'sáb': 'sábado', dom: 'domingo' };
@@ -82,7 +83,7 @@ function repartirComTeto(total, tetos) {
   return out;
 }
 
-export function gerar({ rng, A, U }) {
+export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const P = A.PILOTOS;
   const D = A.DATAS;
   const f = U.fmt;
@@ -313,7 +314,7 @@ export function gerar({ rng, A, U }) {
   };
 }
 
-export function verificar(saida, { A, U }) {
+export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const erros = [];
   const L = saida.livro.pilotos;
   const S = saida.series;

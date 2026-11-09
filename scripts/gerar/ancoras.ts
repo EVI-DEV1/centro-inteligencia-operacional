@@ -1,6 +1,6 @@
 // Números-âncora do livro fictício: tudo o que aparece em mais de um capítulo mora aqui, uma vez só.
-// Cada capítulo (cap-*.mjs) lê daqui e inventa o resto em volta, sem contradizer estes valores.
-import { arred, pct, somarDias } from './util.mjs';
+// Cada capítulo (cap-*.ts) lê daqui e inventa o resto em volta, sem contradizer estes valores.
+import { arred, pct, somarDias } from './util.ts';
 
 export const ORG = {
   nome: 'Clube Horizonte',
@@ -90,7 +90,7 @@ export const TRES = {
 
 // ---------------------------------------------------------------- passageiros (cap. B) — usados por A, C, D, fechamento
 const RITMO = 290.57; // média dos 7 dias completos (07/11 a 13/11), mostrada como 291
-const cenario = (id, nome, ritmo, captura, extra = {}) => {
+const cenario = (id: string, nome: string, ritmo: number, captura: number, extra: { limite?: boolean } = {}) => {
   const base = TRES.contabilizados + ritmo * 15;
   const regDiaSurto = (base * 4 * (captura / 100)) / 7;
   const final = base + base * 4 * (captura / 100);
@@ -207,4 +207,4 @@ export const VOCAB = {
 };
 
 export const fimDaBase = DATAS.d7;
-export const diaAntes = (iso) => somarDias(iso, -1);
+export const diaAntes = (iso: string): string => somarDias(iso, -1);

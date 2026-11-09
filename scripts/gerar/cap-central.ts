@@ -1,3 +1,4 @@
+import type { Contexto, SaidaCapitulo, Serie } from './tipos.ts';
 const EXTENSO = ['nenhum', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez'];
 
 const LONGO = {
@@ -18,7 +19,7 @@ function tentar(rng, vezes, gerar, aceitar) {
   return ultimo;
 }
 
-export function gerar({ rng, A, U, capitulos = {} }) {
+export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
   const { DATAS, CENTRAL, PILOTOS } = A;
   const { fmt, pct, soma, arred, intervalo, somarDias, distribuir, serieDiaria, diaSemana, diasEntre } = U;
   const extenso = (n) => EXTENSO[n] ?? fmt.n(n);
@@ -164,7 +165,7 @@ export function gerar({ rng, A, U, capitulos = {} }) {
 
   // chat dentro dos chamados, por autor
   const chatPiloto = diasCh.map((d) => ({ d, v: abertoEm[d] + Math.round(abertoEm[d] * rng.entre(0.05, 0.55)) + (rng.float() < 0.22 ? rng.int(1, 3) : 0) }));
-  const faixaControlador = { '2026-10-21': [1, 2], '2026-10-25': [5, 9], [DIA_DISPARO]: [5, 8], [DIA_ECO]: [15, 19], '2026-10-28': [2, 4], '2026-10-29': [1, 3] };
+  const faixaControlador: Record<string, [number, number]> = { '2026-10-21': [1, 2], '2026-10-25': [5, 9], [DIA_DISPARO]: [5, 8], [DIA_ECO]: [15, 19], '2026-10-28': [2, 4], '2026-10-29': [1, 3] };
   const chatControlador = diasCh.map((d) => ({ d, v: faixaControlador[d] ? rng.int(...faixaControlador[d]) : 0 }));
   const chatAdministrador = diasCh.map((d) => ({
     d,
@@ -408,7 +409,7 @@ export function gerar({ rng, A, U, capitulos = {} }) {
   };
 }
 
-export function verificar(saida, { A, U, capitulos = {} }) {
+export function verificar(saida: SaidaCapitulo, { A, U, capitulos = {} }: Contexto): string[] {
   const erros = [];
   const { soma, pct, fmt, somarDias, intervalo } = U;
   const { CENTRAL, DATAS, PILOTOS } = A;
@@ -432,7 +433,7 @@ export function verificar(saida, { A, U, capitulos = {} }) {
   checar(S.falas_dia[0].d === '2026-11-07', 'falas_dia deveria começar em 07/11');
   checar(S.conversas_novas_dia[0].d === DATAS.inicio && S.chamados_abertos_dia[0].d === DATAS.inicio, 'conversas e chamados deveriam começar em 12/10');
   for (const [nome, s] of Object.entries(S)) {
-    const lista = Array.isArray(s) ? [s] : Object.values(s);
+    const lista: Serie[] = Array.isArray(s) ? [s] : (Object.values(s) as Serie[]);
     for (const serie of lista) {
       if (nome === 'chamados_mediana_h_dia') continue;
       checar(serie[serie.length - 1].d === DATAS.fim, `${nome}: deveria terminar em ${DATAS.fim}`);
@@ -511,7 +512,7 @@ export function verificar(saida, { A, U, capitulos = {} }) {
   checar(med && Math.round(med.h) === ch.limpezaFila.medianaH, 'mediana da limpeza ≠ série');
   checar(S.chamados_mediana_h_dia.every((m) => S.chamados_fechados_dia.find((p) => p.d === m.d).v > 0), 'mediana em dia sem fechamento');
   const autores = S.chat_chamado_autor_dia;
-  checar(soma(Object.values(autores).flat(), (p) => p.v) === ch.chatMensagens, 'chatMensagens ≠ soma do chat');
+  checar(soma((Object.values(autores) as Serie[]).flat(), (p) => p.v) === ch.chatMensagens, 'chatMensagens ≠ soma do chat');
   const maxBot = Math.max(...autores.bot.map((p) => p.v));
   checar(autores.bot.find((p) => p.v === maxBot).d === diaLimpeza && maxBot === maxFe, 'pico do bot no chat deveria cair no dia da limpeza, com o mesmo valor');
 

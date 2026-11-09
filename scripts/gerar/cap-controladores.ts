@@ -1,6 +1,30 @@
 // Capítulo C · Controladores e expectativa.
 // Monta a rede inteira (53 carteiras com piloto) e deriva dela tudo o que a tela mostra:
 // top 20, semana, metades, faixas de carteira, rodada de expectativa, cobertura e régua.
+import type { Contexto, SaidaCapitulo } from './tipos.ts';
+
+/** Carteira de um controlador: os campos vão sendo preenchidos ao longo do capítulo. */
+interface Carteira {
+  nome?: string;
+  tipo?: string;
+  top?: number;
+  triagem?: boolean;
+  pilotos: number;
+  passageiros?: number;
+  produzem?: number;
+  ult7d?: number;
+  linhas?: number;
+  resp?: number;
+  peso?: number;
+  drift?: number;
+  falta?: [number, number];
+}
+
+interface FaixaCarteira {
+  item: { faixa: string; carteiras: number; passageiros: number; triagem?: boolean };
+  pilotos: number;
+}
+
 
 const DATA_RODADA = '2026-11-10';
 
@@ -29,7 +53,7 @@ function repartir(U, total, pesos, tetos) {
 
 const tendenciaDe = (a, b) => (b > a * 1.2 ? 'subiu' : b < a * 0.8 ? 'caiu' : 'estavel');
 
-export function gerar({ rng, A, U }) {
+export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const { fmt, pct, soma, arred, somarDias, intervalo } = U;
   const D = A.DATAS;
   const TR = A.TRES;
@@ -54,7 +78,7 @@ export function gerar({ rng, A, U }) {
   const driftTop = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, -3, 0, -2, 0];
   const razaoMetades = [2.1, 8.0, 0.97, 1.36, 0.14, 0.58, 1.08, 0.91, 0.62, 0.49];
 
-  const carteiras = PES.controladores.map((nome, i) => ({
+  const carteiras: Carteira[] = PES.controladores.map((nome, i) => ({
     nome,
     top: i,
     pilotos: pilTop[i],
@@ -68,26 +92,26 @@ export function gerar({ rng, A, U }) {
 
   // ------------------------------------------------------------ carteiras fora do top 20
   const [rogerio, zelia, wagner, ivone, priscila, osmar, gilberto, heloisa] = PES.outrosControladores;
-  const nomeados = [
+  const nomeados: Carteira[] = [
     { nome: rogerio, pilotos: 96, peso: 1.3 },
-    { nome: zelia, pilotos: 58, peso: 1.5, falta: [9, 14] },
+    { nome: zelia, pilotos: 58, peso: 1.5, falta: [9, 14] as [number, number] },
     { nome: wagner, pilotos: 48, peso: 1.2, drift: 1 },
     { nome: ivone, pilotos: 41, peso: 1.0 },
     { nome: priscila, pilotos: 40, peso: 0.9 },
     { nome: osmar, pilotos: 35, peso: 1.1 },
     { nome: gilberto, pilotos: 34, peso: 0.8 },
-  ].map((c) => ({ ...c, tipo: 'normal' }));
-  const semNome = [
-    ...[
+  ].map((c): Carteira => ({ ...c, tipo: 'normal' }));
+  const semNome: Carteira[] = [
+    ...([
       ['semPassTudo', 33], ['naoLancou', 33], ['parcial', 33, [7, 11]], ['semPassTudo', 32],
       ['parcial', 32, [10, 14]], ['semPassTudo', 32], ['parcial', 31, [4, 8]], ['naoLancou', 31],
-    ].map(([tipo, pilotos, falta]) => ({ tipo, pilotos, falta, peso: 0.9, drift: rng.int(-1, 1) })),
-    ...[['semPassTudo', 27], ['naoLancou', 23], ['semPassTudo', 19]].map(([tipo, pilotos]) => ({ tipo, pilotos, peso: 0.8, drift: rng.int(-1, 1) })),
+    ] as [string, number, [number, number]?][]).map(([tipo, pilotos, falta]) => ({ tipo, pilotos, falta, peso: 0.9, drift: rng.int(-1, 1) })),
+    ...([['semPassTudo', 27], ['naoLancou', 23], ['semPassTudo', 19]] as [string, number][]).map(([tipo, pilotos]) => ({ tipo, pilotos, peso: 0.8, drift: rng.int(-1, 1) })),
     ...[6, 5, 5, 4, 4, 4, 3, 3, 3].map((pilotos) => ({ tipo: 'naoLancou', pilotos, peso: 0.7 })),
     ...[2, 2, 2, 2].map((pilotos) => ({ tipo: 'naoLancouSemPass', pilotos, peso: 0 })),
   ];
-  const helo = { nome: heloisa, tipo: 'normal', pilotos: 33, passageiros: menorTop - rng.int(8, 16), ult7d: rng.int(101, 117), produzem: 9 };
-  const triagem = { nome: PES.contaTriagem, tipo: 'triagem', triagem: true, pilotos: SD.triagem, passageiros: rng.int(22, 31), ult7d: rng.int(1, 3), produzem: decomp('deposito').comPassageiro };
+  const helo: Carteira = { nome: heloisa, tipo: 'normal', pilotos: 33, passageiros: menorTop - rng.int(8, 16), ult7d: rng.int(101, 117), produzem: 9 };
+  const triagem: Carteira = { nome: PES.contaTriagem, tipo: 'triagem', triagem: true, pilotos: SD.triagem, passageiros: rng.int(22, 31), ult7d: rng.int(1, 3), produzem: decomp('deposito').comPassageiro };
 
   const demais = [...nomeados, ...semNome];
   const orfaosPass = rng.int(146, 188);
@@ -175,7 +199,7 @@ export function gerar({ rng, A, U }) {
   const controladores_acumulado = {};
   carteiras.slice(0, 5).forEach((c, i) => {
     const m = metades[i];
-    const trechos = [
+    const trechos: [string[], number][] = [
       [dias.slice(0, iMeio), m.a],
       [dias.slice(iMeio, iSemana), m.b - c.ult7d],
       [dias.slice(iSemana), c.ult7d],
@@ -191,7 +215,7 @@ export function gerar({ rng, A, U }) {
     { faixa: '30 a 39 pilotos', de: 30, ate: 39 },
     { faixa: '40 a 99 pilotos', de: 40, ate: 99 },
   ];
-  const faixasCart = FAIXAS.map((f) => {
+  const faixasCart = FAIXAS.map((f): FaixaCarteira => {
     const cs = regulares.filter((c) => c.pilotos >= f.de && c.pilotos <= f.ate);
     return { item: { faixa: f.faixa, carteiras: cs.length, passageiros: soma(cs, (c) => c.passageiros) }, pilotos: soma(cs, (c) => c.pilotos) };
   });
@@ -315,7 +339,7 @@ export function gerar({ rng, A, U }) {
   };
 }
 
-export function verificar(saida, { A, U }) {
+export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const { soma, pct, arred, fmt } = U;
   const erros = [];
   const C = saida.livro.controladores;
@@ -392,7 +416,7 @@ export function verificar(saida, { A, U }) {
     eq(s.at(-1).v - s.at(-8).v, t.ult7d, `7 dias do acumulado ${nome}`);
     if (s.some((p, i) => i && p.v < s[i - 1].v)) erros.push(`acumulado desce: ${nome}`);
   }
-  if (!Object.values(C.metades).some((m) => m.tendencia === 'caiu' && m.nome === A.PESSOAS.controladores[4])) erros.push('a quinta carteira devia ter caído');
+  if (!(C.metades as { tendencia: string; nome: string }[]).some((m) => m.tendencia === 'caiu' && m.nome === A.PESSOAS.controladores[4])) erros.push('a quinta carteira devia ter caído');
 
   // rodada
   const R = C.rodada;

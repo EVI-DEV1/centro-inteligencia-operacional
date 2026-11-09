@@ -1,0 +1,26 @@
+name: Conferência
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Tipos (TypeScript)
+        run: npm run typecheck
+      - name: Os dados fecham (somas, percentuais, séries)
+        run: node scripts/gerar-dados.ts --conferir
+      - name: Os dados publicados são os que o gerador produz
+        run: |
+          node scripts/gerar-dados.ts
+          git diff --exit-code src/dados
+      - name: Arquivo único
+        run: node scripts/build.mjs

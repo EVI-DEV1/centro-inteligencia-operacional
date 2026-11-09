@@ -1,5 +1,6 @@
 // Capítulo F (parte 1) · Atendimento: baixas por pessoa, por dia, por hora; fila viva; assuntos e urgência.
 // As séries são geradas primeiro (baixa por pessoa e por dia) e os números do texto saem delas.
+import type { Contexto, SaidaCapitulo } from './tipos.ts';
 
 const PIOR_DIA = '2026-10-19';
 const PIOR_DIA_H = 30.8;
@@ -37,7 +38,7 @@ const mediana = (valores) => {
   return s.length % 2 ? s[m] : Math.round(((s[m - 1] + s[m]) / 2) * 10) / 10;
 };
 
-export function gerar({ rng, A, U }) {
+export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const { ATENDIMENTO: AT, DATAS, PESSOAS, VOCAB } = A;
   const { fmt } = U;
   const dias = U.intervalo(DATAS.inicio, DATAS.fim);
@@ -248,7 +249,7 @@ export function gerar({ rng, A, U }) {
   };
 }
 
-export function verificar(saida, { A, U }) {
+export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const erros = [];
   const { ATENDIMENTO: AT, DATAS, PESSOAS, VOCAB } = A;
   const F = saida.livro.atendimento;

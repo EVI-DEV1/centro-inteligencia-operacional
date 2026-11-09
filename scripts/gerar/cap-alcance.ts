@@ -1,5 +1,6 @@
 // Capítulo F (parte 2) · Alcance: redes do clube, comentários, acervo e a coleta que parou.
 // Séries geradas primeiro; todo número de texto sai delas ou das âncoras.
+import type { Contexto, SaidaCapitulo } from './tipos.ts';
 
 function forcarPico(valores, chave) {
   const chaves = Object.keys(valores);
@@ -11,7 +12,7 @@ function forcarPico(valores, chave) {
 const maxPor = (serie, pegar = (p) => p.v) => serie.reduce((a, p) => (pegar(p) > pegar(a) ? p : a), serie[0]);
 const minPor = (serie, pegar = (p) => p.v) => serie.reduce((a, p) => (pegar(p) < pegar(a) ? p : a), serie[0]);
 
-export function gerar({ rng, A, U }) {
+export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const { fmt, pct, arred, soma, somarDias, diasEntre, intervalo, distribuir, semanaDe } = U;
   const AL = A.ALCANCE;
   const FIM = AL.ultimaColeta;
@@ -71,8 +72,8 @@ export function gerar({ rng, A, U }) {
   const seguidoresFacebook = fbDias.map((d, i) => ({ d, v: i === 0 ? fbIni : (fbAtual += incFb[d]) }));
 
   // ---------------------------------------------------------------- alcance semanal (conta) e diário
-  const faixasConta = [[1318000, 1452000], [574000, 646000], [642000, 718000], [491000, 543000], [387000, 426000], [1583000, 1687000], [783000, 857000], [263000, 304000]];
-  const conta = {};
+  const faixasConta: [number, number][] = [[1318000, 1452000], [574000, 646000], [642000, 718000], [491000, 543000], [387000, 426000], [1583000, 1687000], [783000, 857000], [263000, 304000]];
+  const conta: Record<string, number> = {};
   semanas.slice(0, 8).forEach((s, i) => (conta[s] = rng.int(...faixasConta[i])));
   conta[ULTIMA_COMPLETA] = AL.alcanceSemanaInstagram;
 
@@ -367,7 +368,7 @@ export function gerar({ rng, A, U }) {
   };
 }
 
-export function verificar(saida, { A, U }) {
+export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const { soma, pct, arred, somarDias, semanaDe, intervalo, fmt } = U;
   const p = [];
   const AL = A.ALCANCE;

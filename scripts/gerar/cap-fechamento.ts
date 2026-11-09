@@ -1,6 +1,7 @@
 // Fechamento do livro fictício: síntese, métricas das três fases, plano até o D-7, perguntas, dados a guardar,
 // errata e as conferências (divergências que a Torre mostra em vez de corrigir). Roda por último e lê os
 // capítulos anteriores quando eles existem; sem eles, usa as âncoras e cala o que só o capítulo sabe.
+import type { Contexto, SaidaCapitulo } from './tipos.ts';
 
 const obj = (x) => (x && typeof x === 'object' && !Array.isArray(x) ? x : {});
 const lista = (x) => (Array.isArray(x) ? x : []);
@@ -38,7 +39,7 @@ export function statusPelaRegua(regua, v) {
   return null;
 }
 
-export function gerar({ A, U, capitulos = {}, series = {} }) {
+export function gerar({ A, U, capitulos = {}, series = {} }: Contexto): SaidaCapitulo {
   const f = U.fmt;
   const { PILOTOS, TRES, PASSAGEIROS, CENTRAL, OPERACAO, ATENDIMENTO, ALCANCE, DATAS, VOCAB } = A;
   const cap = obj(capitulos);
@@ -286,7 +287,7 @@ export function gerar({ A, U, capitulos = {}, series = {} }) {
   };
 }
 
-export function verificar(saida, { A, U, capitulos = {}, series = {} }) {
+export function verificar(saida: SaidaCapitulo, { A, U, capitulos = {}, series = {} }: Contexto): string[] {
   const erros = [];
   const F = obj(obj(saida.livro).fechamento);
   const conf = lista(obj(saida.livro).conferencias);

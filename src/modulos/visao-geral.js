@@ -269,7 +269,7 @@
         { class: 'distancia-grade' },
         G.painel({
           titulo: 'Do primeiro dia da base até o Dia D',
-          comoLer: `Azul: registrado. Tracejado cinza: o ritmo atual até ${diaD}. Rampa de ciano: pessimista → médio → otimista, com o 20/80 e a captura de cada um.`,
+          comoLer: `Violeta: registrado. Tracejado cinza: o ritmo atual até ${diaD}. Rampa de violeta a ciano: pessimista → médio → otimista, com o 20/80 e a captura de cada um.`,
           grafico: (el) => el.appendChild(corpo),
           leitura: L.passageiros.cenarios.leitura,
           p: 15,

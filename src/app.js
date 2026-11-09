@@ -25,40 +25,6 @@
   let painelIntegridade = null;
   let integridadeBtn = null;
 
-  function selo() {
-    const s = T.s;
-    return s(
-      'svg',
-      { class: 'marca-selo', viewBox: '0 0 48 48', width: 46, height: 46, role: 'img', 'aria-label': 'Clube Horizonte' },
-      s('title', null, 'Clube Horizonte'),
-      s('circle', { cx: 24, cy: 24, r: 22.6, class: 'selo-fundo' }),
-      s('path', { d: 'M14.2 25.5a9.8 9.8 0 0 1 19.6 0', class: 'selo-sol' }),
-      s('path', { d: 'M18.6 19.4l-1.6-2.2M24 17.4v-2.8M29.4 19.4l1.6-2.2', class: 'selo-raio' }),
-      s('path', { d: 'M5.5 25.5h37', class: 'selo-horizonte' }),
-      s('path', { d: 'M13.5 44.2L22.4 25.5M34.5 44.2L25.6 25.5', class: 'selo-estrada' }),
-      s('path', { d: 'M24 43.4V27.4', class: 'selo-faixa' })
-    );
-  }
-
-  function chipFonte() {
-    return T.h(
-      'span',
-      { class: 'chip chip-fonte', 'data-s': 'retrato', title: 'Retrato fixo: os números não atualizam sozinhos' },
-      T.icone('relogio'),
-      T.h('span', { class: 'chip-rotulo' }, 'Retrato fixo '),
-      T.h('b', null, `${f.data(L.meta.medidoEm)} · ${janelaCurta()}`)
-    );
-  }
-
-  function chipDemo() {
-    return T.h(
-      'span',
-      { class: 'chip chip-demo', title: 'Demonstração: o Clube Horizonte não existe. Pessoas, equipes, lugares e números foram inventados.' },
-      T.icone('etiqueta'),
-      T.h('b', null, 'Dados fictícios')
-    );
-  }
-
   function conteudoIntegridade() {
     return [
       T.h('h2', null, 'Integridade dos dados'),
@@ -76,34 +42,104 @@
     if (painelIntegridade && !painelIntegridade.hidden && !painelIntegridade.contains(e.target)) abrirIntegridade(false);
   });
 
-  function marcosDoTopo() {
-    const M = L.meta.marcos || {};
-    const faseB = L.fases.find((x) => x.id === 'B');
-    const simulado = Array.isArray(M.simulado) && M.simulado.length ? M.simulado : null;
-    return [
-      M.redistribuir ? { d: M.redistribuir, t: f.data(M.redistribuir) } : null,
-      simulado ? { d: simulado[0], t: `simulado ${simulado.length > 1 ? `${simulado[0].slice(8, 10)}–${f.data(simulado[simulado.length - 1])}` : f.data(simulado[0])}` } : null,
-      M.kit ? { d: M.kit, t: f.data(M.kit) } : null,
-      { d: L.meta.d7, t: `D-7 · ${f.data(L.meta.d7)}` },
-      faseB ? { d: faseB.inicio, t: `surto · ${f.data(faseB.inicio)}` } : null,
-      { d: L.meta.diaD, t: `Dia D · ${f.data(L.meta.diaD)}` },
-    ]
-      .filter(Boolean)
-      .sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
+  const ICONE_PAGINA = { painel: 'painel', 'visao-geral': 'visao', dados: 'dados' };
+
+  function logo() {
+    const s = T.s;
+    const id = T.uid('lg');
+    return s(
+      'svg',
+      { class: 'logo', viewBox: '0 0 32 32', width: 32, height: 32, 'aria-hidden': 'true' },
+      s('defs', null, s('linearGradient', { id, x1: 0, y1: 0, x2: 1, y2: 1 }, s('stop', { offset: '0%', 'stop-color': '#7c6cff' }), s('stop', { offset: '100%', 'stop-color': '#22d3ee' }))),
+      s('rect', { width: 32, height: 32, rx: 9, fill: `url(#${id})` }),
+      s('path', { d: 'M16 6.5v19M11.5 25.5h9M12.5 12.5h7l-1 6h-5z', fill: 'none', stroke: '#0a0a0d', 'stroke-width': 2.1, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }),
+      s('circle', { cx: 16, cy: 6.5, r: 2.2, fill: '#0a0a0d' })
+    );
   }
 
+  function faixaNav(p, i) {
+    const leituras = leituraTrilho();
+    const leitura = leituras[p.id];
+    const regua = p.capitulo ? T.dados.regua(p.capitulo) : null;
+    const estado = regua && regua.length ? { c: T.dados.contagemRegua(regua), pior: T.dados.piorEstado(regua) } : null;
+    const agir = p.id === 'decisao' ? T.alertas.filter((a) => a.nivel === 'agir').length : null;
+    return T.h(
+      'a',
+      { class: 'faixa', href: `#/${p.id === 'painel' ? '' : p.id}`, 'data-rota': p.id, title: leitura ? `${p.nome} · ${leitura.join(' ')}${i < 10 ? ` (tecla ${i})` : ''}` : p.nome },
+      T.h('span', { class: 'faixa-icone' }, T.icone(ICONE_PAGINA[p.id] || p.icone)),
+      T.h('span', { class: 'faixa-nome' }, p.nome, p.parte ? T.h('small', { class: 'faixa-parte' }, ` ${p.parte}`) : null),
+      agir
+        ? T.h('span', { class: 'faixa-badge', 'data-s': 'vermelho' }, String(agir))
+        : estado && estado.c.vermelho
+          ? T.h('span', { class: 'faixa-badge', 'data-s': estado.pior, title: `Régua: ${estado.c.vermelho} agir hoje · ${estado.c.amarelo} atenção · ${estado.c.verde} firmes` }, String(estado.c[estado.pior] || 0))
+          : p.id === 'dados' && T.importacao && T.importacao.ativa()
+            ? T.h('span', { class: 'faixa-badge', 'data-s': 'verde' }, 'CSV')
+            : null
+    );
+  }
+
+  function lateral() {
+    const nav = T.h('nav', { class: 'trilho', 'aria-label': 'Navegação' });
+    const grupos = { painel: 'Geral', pilotos: 'Capítulos', plano: 'Missão', dados: 'Workspace' };
+    T.paginas.forEach((p, i) => {
+      if (grupos[p.id]) nav.appendChild(T.h('span', { class: 'trilho-separador' }, grupos[p.id]));
+      nav.appendChild(faixaNav(p, i));
+    });
+    return T.h(
+      'aside',
+      { class: 'lateral' },
+      T.h('a', { class: 'marca', href: '#/', 'aria-label': 'Torre — painel executivo' }, logo(), T.h('span', { class: 'marca-texto' }, T.h('span', { class: 'marca-nome' }, 'Torre'), T.h('span', { class: 'marca-sub' }, 'Ops Intelligence'))),
+      T.h(
+        'div',
+        { class: 'workspace', title: 'Demonstração: o Clube Horizonte não existe.' },
+        T.h('span', { class: 'workspace-avatar' }, 'CH'),
+        T.h('span', { class: 'workspace-texto' }, T.h('b', null, 'Clube Horizonte'), T.h('small', null, 'Workspace demo · dados fictícios'))
+      ),
+      nav,
+      T.h(
+        'div',
+        { class: 'lateral-rodape' },
+        T.h('a', { class: 'plano-card', href: 'produto.html' }, T.h('span', { class: 'plano-selo' }, 'PRO'), T.h('b', null, 'Conheça a Torre'), T.h('span', null, 'Planos, recursos e integrações'), T.icone('seta')),
+        T.h('div', { class: 'usuario' }, T.h('span', { class: 'usuario-avatar' }, 'EV'), T.h('span', { class: 'usuario-texto' }, T.h('b', null, 'Eliane Vitoriano'), T.h('small', null, 'Admin · Front-end')), T.h('a', { class: 'usuario-git', href: 'https://github.com/EVI-DEV1/centro-inteligencia-operacional', target: '_blank', rel: 'noopener', title: 'Código no GitHub', 'aria-label': 'Código no GitHub' }, T.icone('conector')))
+      )
+    );
+  }
+
+  // ---------- menu de exportação ----------
+  function menuExportar() {
+    const lista = T.h('div', { class: 'menu', role: 'menu', hidden: true });
+    const botao = T.h('button', { class: 'botao-secundario', type: 'button', 'aria-haspopup': 'menu', 'aria-expanded': 'false' }, T.icone('download'), T.h('span', { class: 'rotulo-opcional' }, 'Exportar'));
+    const item = (icone, texto, fn) =>
+      T.h('button', { type: 'button', role: 'menuitem', onclick: () => { fechar(); fn(); } }, T.icone(icone), texto);
+    lista.append(
+      item('pdf', 'Relatório em PDF', () => T.exportarRelatorio()),
+      item('planilha', 'Séries do período (CSV)', () => T.exportar.series()),
+      item('decisao', 'Decisões (CSV)', () => T.exportar.decisoes()),
+      item('dados', 'Livro de dados (JSON)', () => T.exportar.livro())
+    );
+    const fechar = () => {
+      lista.hidden = true;
+      botao.setAttribute('aria-expanded', 'false');
+    };
+    botao.addEventListener('click', (e) => {
+      e.stopPropagation();
+      lista.hidden = !lista.hidden;
+      botao.setAttribute('aria-expanded', String(!lista.hidden));
+    });
+    document.addEventListener('click', (e) => !lista.contains(e.target) && fechar());
+    return T.h('div', { class: 'menu-ancora' }, botao, lista);
+  }
+
+  let migalha = null;
   function topo() {
     const hoje = T.estado.hoje.iso;
     const faltam = T.diasEntre(hoje, L.meta.diaD);
-    const proximo = marcosDoTopo().find((m) => m.d >= hoje);
-
     const paradas = T.dados.fontesParadas();
     integridadeBtn = T.h(
       'button',
-      { class: 'chip chip-integridade', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'painel-integridade', title: 'Integridade dos dados', 'data-paradas': String(paradas) },
+      { class: 'botao-icone', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'painel-integridade', title: paradas ? `Integridade: ${paradas} fonte parada` : 'Integridade: fontes ok', 'data-paradas': String(paradas) },
       T.icone('sensor'),
-      T.h('span', { class: 'chip-rotulo' }, 'Integridade '),
-      T.h('b', null, paradas ? `${paradas} fonte${paradas > 1 ? 's' : ''} parada${paradas > 1 ? 's' : ''}` : 'fontes ok')
+      paradas ? T.h('i', { class: 'ponto-alerta' }) : null
     );
     painelIntegridade = T.h('div', { class: 'painel-integridade', id: 'painel-integridade', hidden: true }, conteudoIntegridade());
     integridadeBtn.addEventListener('click', (e) => {
@@ -111,22 +147,10 @@
       abrirIntegridade(painelIntegridade.hidden);
     });
 
-    const fases = T.h('div', { class: 'fases', role: 'group', 'aria-label': 'Fase do painel' }, T.h('span', { class: 'fases-rotulo' }, 'Fase'));
-    L.fases.forEach((fz) => {
-      const b = T.h(
-        'button',
-        { type: 'button', 'data-fase': fz.id, 'aria-pressed': String(fz.id === T.estado.fase), title: `${fz.nome} · ${f.data(fz.inicio)}${fz.inicio !== fz.fim ? `–${f.data(fz.fim)}` : ''}`, onclick: () => T.definir('fase', fz.id) },
-        fz.id,
-        T.h('span', { class: 'fase-nome' }, fz.nome),
-        fz.id === T.estado.faseDeHoje ? T.h('i', { class: 'fase-hoje', title: 'fase de hoje' }) : null
-      );
-      fases.appendChild(b);
-    });
-    T.on('fase', (v) => T.$$('button', fases).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.fase === v))));
-
     const nomesBtn = T.h('button', {
       class: 'botao-icone',
       type: 'button',
+      'data-ocultavel': '',
       'aria-pressed': String(T.estado.nomes === 'ocultos'),
       'aria-label': 'Ocultar nomes da equipe (N)',
       title: 'Ocultar nomes da equipe (N)',
@@ -145,82 +169,175 @@
       ['apresentar', 'apresentar', 'Apresentar'],
       ['telao', 'telao', 'Telão'],
     ].forEach(([id, icone, rotulo]) => {
-      modos.appendChild(T.h('button', { type: 'button', 'data-modo': id, 'aria-pressed': String(T.estado.modo === id), onclick: () => T.modo(id) }, T.icone(icone), T.h('span', null, rotulo)));
+      modos.appendChild(T.h('button', { type: 'button', 'data-modo': id, 'aria-pressed': String(T.estado.modo === id), title: `${rotulo}${id === 'apresentar' ? ' (P)' : id === 'telao' ? ' (T)' : ''}`, onclick: () => T.modo(id) }, T.icone(icone), T.h('span', null, rotulo)));
     });
     T.on('modo', (v) => T.$$('button', modos).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modo === v))));
+
+    const agir = T.alertas.filter((a) => a.nivel === 'agir').length;
+    migalha = T.h('span', { class: 'migalha-atual' }, 'Visão executiva');
 
     return T.h(
       'header',
       { class: 'topo' },
-      T.h(
-        'a',
-        { class: 'marca', href: '#/', 'aria-label': 'Torre de Controle — visão geral' },
-        selo(),
-        T.h('span', { class: 'marca-texto' }, T.h('span', { class: 'marca-nome' }, 'Torre de Controle'), T.h('span', { class: 'marca-sub' }, 'Centro de Inteligência Operacional'))
-      ),
+      T.h('nav', { class: 'migalha', 'aria-label': 'Você está em' }, T.h('span', null, 'Clube Horizonte'), T.h('i', null, '/'), migalha),
+      T.h('button', { class: 'busca', type: 'button', onclick: () => T.paleta.abrir() }, T.icone('busca'), T.h('span', null, 'Buscar páginas e ações…'), T.h('kbd', null, 'Ctrl K')),
       T.h(
         'div',
-        { class: 'telemetria' },
-        chipFonte(),
-        fases,
+        { class: 'comandos' },
+        T.h('span', { class: 'contagem-pilula', role: 'timer', title: `Faltam ${faltam} dias para o Dia D, ${f.data(L.meta.diaD)} · adesões fecham ${L.meta.encerramento}` }, T.h('b', null, `D-${Math.max(0, faltam)}`), T.h('span', null, `Dia D ${f.data(L.meta.diaD)}`)),
         T.h('span', { class: 'integridade-ancora' }, integridadeBtn, painelIntegridade),
-        T.h('span', { class: 'chip', 'data-opcional': '' }, T.icone('livro'), 'Período ', T.h('b', null, `${f.data(L.meta.periodo.inicio)}–${f.data(L.meta.periodo.fim)}`))
-      ),
-      T.h(
-        'div',
-        { class: 'contagem', role: 'timer', 'aria-label': `Faltam ${faltam} dias para o Dia D, ${f.data(L.meta.diaD)}` },
-        T.h('span', { class: 'contagem-d' }, T.h('small', null, 'D-'), String(Math.max(0, faltam))),
-        T.h('span', { class: 'contagem-alvo' }, `até ${f.data(L.meta.diaD)} · adesões fecham ${L.meta.encerramento}`),
-        T.h('span', { class: 'contagem-marco' }, proximo ? ['próximo marco ', T.h('b', null, proximo.t), ` · ${proximo.d === hoje ? 'hoje' : `em ${T.diasEntre(hoje, proximo.d)} d`}`] : 'temporada aberta')
-      ),
-      T.h('div', { class: 'comandos' }, chipDemo(), nomesBtn, modos)
-    );
-  }
-
-  function rodapeFonte() {
-    const m = L.meta;
-    return T.h('p', null, 'Fonte: ', T.h('i', null, m.titulo), ` (fictício), v${m.versao}, medido em ${f.data(m.medidoEm)}/${String(m.medidoEm).slice(0, 4)}. Toda cifra traz a página.`);
-  }
-
-  function trilho() {
-    const nav = T.h('nav', { class: 'trilho', 'aria-label': 'Capítulos da Torre' });
-    const leituras = leituraTrilho();
-    T.paginas.forEach((p, i) => {
-      if (p.id === 'plano') nav.appendChild(T.h('span', { class: 'trilho-separador' }, 'Missão'));
-      if (p.id === 'pilotos') nav.appendChild(T.h('span', { class: 'trilho-separador' }, 'Capítulos do livro'));
-      const leitura = leituras[p.id];
-      const regua = p.capitulo ? T.dados.regua(p.capitulo) : null;
-      const estado = regua && regua.length ? { c: T.dados.contagemRegua(regua), pior: T.dados.piorEstado(regua) } : null;
-      nav.appendChild(
-        T.h(
-          'a',
-          { class: 'faixa', href: `#/${p.id === 'visao-geral' ? '' : p.id}`, 'data-rota': p.id, title: `${p.nome} (tecla ${i})` },
-          T.h('span', { class: 'faixa-codigo', title: p.parte ? `Capítulo F do livro (Atendimento e alcance), parte ${p.parte}` : null }, p.codigoIcone ? T.icone(p.codigoIcone) : p.codigo, p.parte ? T.h('small', { class: 'faixa-parte' }, p.parte) : null),
-          T.h(
-            'span',
-            { class: 'faixa-corpo' },
-            T.h('span', { class: 'faixa-nome' }, p.nome),
-            T.h(
-              'span',
-              { class: 'faixa-leitura' },
-              T.h('b', null, leitura[0]),
-              T.h('span', { class: 'faixa-leitura-texto' }, leitura[1]),
-              estado ? T.h('span', { class: 'faixa-estado', 'data-s': estado.pior, title: `Régua: ${estado.c.vermelho} agir hoje · ${estado.c.amarelo} atenção · ${estado.c.verde} firmes` }, T.icone({ vermelho: 'agir', amarelo: 'atencao', verde: 'firme' }[estado.pior] || 'nao-medido'), T.h('b', { class: 'tab' }, String(estado.c[estado.pior] || 0))) : null
-            )
-          )
-        )
-      );
-    });
-    nav.appendChild(
-      T.h(
-        'div',
-        { class: 'trilho-rodape' },
-        rodapeFonte(),
-        T.h('p', null, T.h('kbd', null, '0'), '–', T.h('kbd', null, '9'), ' capítulos · ', T.h('kbd', null, 'N'), ' nomes · ', T.h('kbd', null, 'P'), ' apresentar · ', T.h('kbd', null, 'T'), ' telão')
+        nomesBtn,
+        T.h('a', { class: 'botao-icone sino', href: '#/decisao', title: `${agir} decisões para agir hoje`, 'aria-label': `${agir} decisões para agir hoje` }, T.icone('sino'), agir ? T.h('i', { class: 'sino-badge' }, String(agir)) : null),
+        modos,
+        T.h('a', { class: 'botao-secundario', href: '#/dados?alvo=importar' }, T.icone('upload'), T.h('span', { class: 'rotulo-opcional' }, 'Importar')),
+        menuExportar()
       )
     );
-    return nav;
   }
+
+  function barraFiltros() {
+    const periodo = T.h('div', { class: 'segmentado', role: 'group', 'aria-label': 'Período' });
+    T.filtro.PERIODOS.forEach((p) =>
+      periodo.appendChild(T.h('button', { type: 'button', 'data-periodo': p.id, 'aria-pressed': String(T.filtro.periodo === p.id), onclick: () => T.filtro.definir('periodo', p.id) }, p.rotulo))
+    );
+    const fases = T.h('div', { class: 'segmentado', role: 'group', 'aria-label': 'Fase do painel' });
+    L.fases.forEach((fz) =>
+      fases.appendChild(
+        T.h(
+          'button',
+          { type: 'button', 'data-fase': fz.id, 'aria-pressed': String(fz.id === T.estado.fase), title: `${fz.nome} · ${f.data(fz.inicio)}${fz.inicio !== fz.fim ? `–${f.data(fz.fim)}` : ''}`, onclick: () => T.definir('fase', fz.id) },
+          fz.nome.replace(/^Fase\s+\w\s*·?\s*/i, ''),
+          fz.id === T.estado.faseDeHoje ? T.h('i', { class: 'fase-hoje', title: 'fase de hoje' }) : null
+        )
+      )
+    );
+    T.on('fase', (v) => T.$$('button', fases).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.fase === v))));
+
+    const comparar = T.h('input', { type: 'checkbox', role: 'switch', checked: T.filtro.comparar, onchange: (e) => T.filtro.definir('comparar', e.target.checked) });
+    const resumo = T.h('span', { class: 'filtro-resumo' });
+    const pintar = () => {
+      T.$$('button', periodo).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.periodo === T.filtro.periodo)));
+      const imp = T.importacao && T.importacao.ativa();
+      T.limpar(resumo);
+      [
+        T.icone('filtro'),
+        T.h('span', null, T.filtro.ativo() ? `${T.filtro.rotulo()} · até ${f.data(T.filtro.ultimoDia())}` : `Todo o período · ${f.data(L.meta.periodo.inicio)} a ${f.data(L.meta.periodo.fim)}`),
+        imp ? T.h('span', { class: 'filtro-fonte' }, T.icone('planilha'), imp.arquivo) : null,
+        T.filtro.ativo() ? T.h('button', { class: 'filtro-limpar', type: 'button', onclick: () => T.filtro.definir('periodo', 'tudo') }, 'Limpar') : null,
+        T.h('span', { class: 'selo-demo', title: 'Demonstração: o Clube Horizonte não existe. Pessoas, equipes, lugares e números foram inventados.' }, T.icone('etiqueta'), 'Dados fictícios'),
+      ]
+        .filter(Boolean)
+        .forEach((el) => resumo.appendChild(el));
+    };
+    pintar();
+    T.on('filtro', pintar);
+    T.on('dados-importados', pintar);
+
+    return T.h(
+      'div',
+      { class: 'barra-filtros', role: 'region', 'aria-label': 'Filtros globais' },
+      T.h('label', { class: 'filtro-grupo' }, T.h('span', { class: 'filtro-rotulo' }, 'Período'), periodo),
+      T.h('label', { class: 'filtro-grupo' }, T.h('span', { class: 'filtro-rotulo' }, 'Fase'), fases),
+      T.h('label', { class: 'filtro-interruptor' }, comparar, T.h('span', { class: 'interruptor' }), 'Comparar com anterior'),
+      resumo
+    );
+  }
+
+  // ---------- avisos (toasts) ----------
+  const avisos = T.h('div', { class: 'avisos', role: 'status', 'aria-live': 'polite' });
+  T.aviso = (texto, icone = 'info') => {
+    const el = T.h('div', { class: 'aviso' }, T.icone(icone), T.h('span', null, texto));
+    avisos.appendChild(el);
+    setTimeout(() => el.classList.add('saindo'), 3200);
+    setTimeout(() => el.remove(), 3700);
+  };
+
+  T.exportarRelatorio = () => {
+    T.aviso('Abrindo a impressão: escolha "Salvar como PDF"', 'pdf');
+    document.documentElement.classList.add('imprimindo');
+    setTimeout(() => {
+      window.print();
+      document.documentElement.classList.remove('imprimindo');
+    }, 350);
+  };
+
+  // ---------- paleta de comandos (Ctrl K) ----------
+  T.paleta = (() => {
+    const campo = T.h('input', { type: 'search', class: 'paleta-campo', placeholder: 'Ir para uma página ou executar uma ação…', 'aria-label': 'Buscar', autocomplete: 'off' });
+    const lista = T.h('ul', { class: 'paleta-lista', role: 'listbox' });
+    const caixa = T.h('div', { class: 'paleta', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Paleta de comandos', hidden: true }, T.h('div', { class: 'paleta-caixa' }, T.h('div', { class: 'paleta-topo' }, T.icone('busca'), campo, T.h('kbd', null, 'Esc')), lista));
+    let itens = [];
+    let sel = 0;
+    const acoes = () => [
+      ...T.paginas.map((p) => ({ grupo: 'Páginas', icone: ICONE_PAGINA[p.id] || p.icone, texto: p.nome, fazer: () => T.irPara(p.id) })),
+      ...T.filtro.PERIODOS.map((p) => ({ grupo: 'Filtros', icone: 'filtro', texto: `Período: ${p.rotulo}`, fazer: () => T.filtro.definir('periodo', p.id) })),
+      { grupo: 'Ações', icone: 'upload', texto: 'Importar planilha CSV/Excel', fazer: () => T.irPara('dados', 'importar') },
+      { grupo: 'Ações', icone: 'pdf', texto: 'Exportar relatório em PDF', fazer: () => T.exportarRelatorio() },
+      { grupo: 'Ações', icone: 'planilha', texto: 'Exportar séries em CSV', fazer: () => T.exportar.series() },
+      { grupo: 'Ações', icone: 'decisao', texto: 'Exportar decisões em CSV', fazer: () => T.exportar.decisoes() },
+      { grupo: 'Ações', icone: 'apresentar', texto: 'Modo apresentação', fazer: () => T.modo('apresentar') },
+      { grupo: 'Ações', icone: 'telao', texto: 'Modo telão', fazer: () => T.modo('telao') },
+      { grupo: 'Ações', icone: 'olho-fechado', texto: 'Ocultar ou mostrar nomes', fazer: () => T.definir('nomes', T.estado.nomes === 'ocultos' ? 'visiveis' : 'ocultos') },
+      ...T.alertas.filter((a) => a.nivel === 'agir').map((a) => ({ grupo: 'Decisões', icone: 'agir', texto: a.titulo, fazer: () => T.irPara(a.rota, a.alvo) })),
+    ];
+    const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    function pintar() {
+      const q = norm(campo.value.trim());
+      itens = acoes().filter((a) => !q || norm(`${a.grupo} ${a.texto}`).includes(q)).slice(0, 14);
+      sel = Math.min(sel, Math.max(0, itens.length - 1));
+      T.limpar(lista);
+      let grupo = '';
+      itens.forEach((a, i) => {
+        if (a.grupo !== grupo) {
+          grupo = a.grupo;
+          lista.appendChild(T.h('li', { class: 'paleta-grupo', role: 'presentation' }, grupo));
+        }
+        lista.appendChild(T.h('li', { class: 'paleta-item', role: 'option', 'aria-selected': String(i === sel), onclick: () => executar(i), onpointermove: () => { if (sel !== i) { sel = i; pintar(); } } }, T.icone(a.icone), T.h('span', null, a.texto), T.icone('seta')));
+      });
+      if (!itens.length) lista.appendChild(T.h('li', { class: 'paleta-vazio' }, 'Nada encontrado'));
+    }
+    function executar(i) {
+      const a = itens[i];
+      if (!a) return;
+      fechar();
+      a.fazer();
+    }
+    function abrir() {
+      caixa.hidden = false;
+      campo.value = '';
+      sel = 0;
+      pintar();
+      requestAnimationFrame(() => campo.focus());
+    }
+    function fechar() {
+      caixa.hidden = true;
+    }
+    campo.addEventListener('input', () => {
+      sel = 0;
+      pintar();
+    });
+    campo.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        sel = Math.min(itens.length - 1, sel + 1);
+        pintar();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        sel = Math.max(0, sel - 1);
+        pintar();
+      } else if (e.key === 'Enter') executar(sel);
+      else if (e.key === 'Escape') fechar();
+    });
+    caixa.addEventListener('click', (e) => e.target === caixa && fechar());
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        caixa.hidden ? abrir() : fechar();
+      }
+    });
+    return { el: caixa, abrir, fechar };
+  })();
+
 
   const palco = T.h('main', { class: 'palco', id: 'conteudo', tabindex: '-1' });
   let rotaAtual = null;
@@ -229,7 +346,7 @@
     const h = location.hash.replace(/^#\/?/, '');
     const [rota, qs] = h.split('?');
     const params = new URLSearchParams(qs || '');
-    const id = rota && T.modulos[rota] ? rota : 'visao-geral';
+    const id = rota && T.modulos[rota] ? rota : 'painel';
     return { id, alvo: params.get('alvo'), params };
   }
   T.lerHash = lerHash;
@@ -270,7 +387,8 @@
     }
     T.$$('.faixa', document).forEach((a) => (a.dataset.rota === id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
     const p = T.paginas.find((x) => x.id === id);
-    document.title = `Torre de Controle · ${p ? p.nome : 'Visão geral'} · Clube Horizonte (dados fictícios)`;
+    document.title = `${p ? p.nome : 'Visão executiva'} · Torre Ops Intelligence · demo com dados fictícios`;
+    if (migalha) migalha.textContent = p ? p.nome : 'Visão executiva';
     T.mov.revelar(pagina);
     if (alvo) setTimeout(() => destacar(alvo), 120);
     else window.scrollTo({ top: 0, behavior: 'auto' });
@@ -282,7 +400,7 @@
   }
   T.irPara = (rota, alvo) => {
     const alvoQs = alvo ? `?alvo=${alvo}` : '';
-    const novo = `#/${rota === 'visao-geral' ? '' : rota}${alvoQs}`;
+    const novo = `#/${rota === 'painel' ? '' : rota}${alvoQs}`;
     if (location.hash === novo) render();
     else location.hash = novo;
   };
@@ -432,16 +550,30 @@
     if (T.estado.modo === 'telao') ociosidade = setTimeout(() => document.documentElement.classList.add('ponteiro-oculto'), 2500);
   });
 
+  function remontar() {
+    rotaAtual = null;
+    render();
+  }
+
   function iniciar() {
     const raiz = document.getElementById('app');
     T.limpar(raiz);
+    let lateralEl = lateral();
     const topoEl = topo();
-    const trilhoEl = trilho();
-    [topoEl, trilhoEl].forEach((el) => T.numerosNaLeitura(el));
-    raiz.append(T.h('a', { class: 'pular', href: '#conteudo' }, 'Pular para o conteúdo'), topoEl, trilhoEl, palco);
-    document.body.append(holofote, legenda);
+    const filtrosEl = barraFiltros();
+    [topoEl, lateralEl].forEach((el) => T.numerosNaLeitura(el));
+    raiz.append(T.h('a', { class: 'pular', href: '#conteudo' }, 'Pular para o conteúdo'), lateralEl, T.h('div', { class: 'principal' }, topoEl, filtrosEl, palco));
+    document.body.append(holofote, legenda, avisos, T.paleta.el);
     window.addEventListener('hashchange', render);
     window.addEventListener('resize', () => T.estado.modo !== 'explorar' && posicionarHolofote());
+    T.on('filtro', remontar);
+    T.on('dados-importados', () => {
+      const nova = lateral();
+      lateralEl.replaceWith(nova);
+      lateralEl = nova;
+      remontar();
+      T.$$('.faixa', document).forEach((a) => (a.dataset.rota === T.estado.rota ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
+    });
     render();
     document.documentElement.classList.add('pronto');
     if (lerHash().params.get('integridade') === '1') abrirIntegridade(true);

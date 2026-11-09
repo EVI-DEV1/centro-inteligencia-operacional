@@ -11,7 +11,7 @@
   text-align: left;
   border: 1px solid var(--fio);
   border-radius: var(--raio-2);
-  background: rgba(11, 19, 40, 0.6);
+  background: rgba(17, 17, 22, 0.6);
   transition: border-color var(--dur-1), background var(--dur-1);
 }
 .seletor-fase button b {
@@ -25,7 +25,7 @@
   border-color: var(--fio-forte);
 }
 .seletor-fase button[aria-pressed='true'] {
-  border-color: rgba(53, 208, 238, 0.6);
+  border-color: rgba(34, 211, 238, 0.6);
   background: var(--ciano-fundo);
 }
 .seletor-fase button[aria-pressed='true'] span {
@@ -44,7 +44,7 @@
   padding: var(--e-5);
   border: 1px solid var(--fio);
   border-radius: var(--raio-3);
-  background: rgba(11, 19, 40, 0.6);
+  background: rgba(17, 17, 22, 0.6);
   position: sticky;
   top: calc(var(--h-topo) + 20px);
 }
@@ -73,7 +73,7 @@
   background: var(--firme);
 }
 .placar-cel[data-s='nao-medido'] {
-  background: repeating-linear-gradient(135deg, rgba(127, 142, 176, 0.55) 0 1px, transparent 1px 5px);
+  background: repeating-linear-gradient(135deg, rgba(132, 132, 143, 0.55) 0 1px, transparent 1px 5px);
   outline: 1px dashed var(--tinta-3);
   outline-offset: -1px;
 }
@@ -96,7 +96,7 @@
   padding: 12px 14px;
   border: 1px solid var(--fio);
   border-radius: var(--raio-2);
-  background: rgba(11, 19, 40, 0.55);
+  background: rgba(17, 17, 22, 0.55);
 }
 .fase-futura .prontidao-item {
   grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) auto;
@@ -215,7 +215,7 @@
   padding: var(--e-5);
   border: 1px solid var(--fio);
   border-radius: var(--raio-3);
-  background: rgba(11, 19, 40, 0.5);
+  background: rgba(17, 17, 22, 0.5);
 }
 .decomposicao-marcos {
   display: grid;
@@ -260,7 +260,7 @@
   padding: 12px 14px;
   border: 1px solid var(--fio);
   border-radius: var(--raio-2);
-  background: rgba(11, 19, 40, 0.6);
+  background: rgba(17, 17, 22, 0.6);
   position: relative;
 }
 .cenario-linha::before {

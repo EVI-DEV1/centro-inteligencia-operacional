@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#060b1a" />
-    <title>Torre de Controle — Centro de Inteligência Operacional · Clube Horizonte (dados fictícios)</title>
+    <meta name="theme-color" content="#0a0a0d" />
+    <title>Torre Ops Intelligence — painel operacional (demo com dados fictícios)</title>
     <meta name="description" content="Demonstração com dados fictícios: painel operacional de um programa de indicação de um clube de viagens inventado." />
     <link
       rel="icon"
@@ -20,12 +20,13 @@
     <link rel="stylesheet" href="src/estilo/torre.css" />
     <link rel="stylesheet" href="src/estilo/modulos.css" />
     <link rel="stylesheet" href="src/estilo/capitulos.css" />
+    <link rel="stylesheet" href="src/estilo/produto.css" />
   </head>
   <body>
     <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
       <defs>
         <pattern id="graf-hachura" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="6" stroke="#7f8eb0" stroke-opacity="0.5" stroke-width="1" />
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#84848f" stroke-opacity="0.5" stroke-width="1" />
         </pattern>
       </defs>
     </svg>
@@ -51,11 +52,14 @@
     <script src="src/graficos/barras.js"></script>
     <script src="src/graficos/linhas.js"></script>
     <script src="src/graficos/horizontais.js"></script>
+    <script src="src/nucleo/planilha.js"></script>
+    <script src="src/nucleo/filtros.js"></script>
     <script src="src/componentes/componentes.js"></script>
     <script src="src/cena/torre.js"></script>
     <script src="src/cena/pista.js"></script>
     <script src="src/cena/particulas.js"></script>
     <script src="src/modulos/comum.js"></script>
+    <script src="src/modulos/painel.js"></script>
     <script src="src/modulos/visao-geral.js"></script>
     <script src="src/modulos/pilotos.js"></script>
     <script src="src/modulos/passageiros.js"></script>
@@ -66,6 +70,7 @@
     <script src="src/modulos/alcance.js"></script>
     <script src="src/modulos/plano.js"></script>
     <script src="src/modulos/decisao.js"></script>
+    <script src="src/modulos/dados.js"></script>
     <script src="src/app.js"></script>
   </body>
 </html>

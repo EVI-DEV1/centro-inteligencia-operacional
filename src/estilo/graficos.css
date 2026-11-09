@@ -14,7 +14,7 @@
   padding: 18px 18px 12px;
   border: 1px solid var(--fio);
   border-radius: 2px;
-  background: rgba(6, 11, 26, 0.55);
+  background: rgba(10, 10, 13, 0.55);
   scroll-margin-top: calc(var(--h-topo) + 24px);
 }
 .painel::before {
@@ -176,11 +176,11 @@
   max-width: none;
 }
 .graf-grade {
-  stroke: rgba(126, 170, 255, 0.09);
+  stroke: rgba(169, 159, 255, 0.09);
   stroke-width: 1;
 }
 .graf-base {
-  stroke: rgba(126, 170, 255, 0.28);
+  stroke: rgba(169, 159, 255, 0.28);
   stroke-width: 1;
 }
 .graf-tick {
@@ -202,7 +202,7 @@
   opacity: 0.72;
 }
 .graf-coluna-ativa {
-  fill: rgba(125, 176, 255, 0.07);
+  fill: rgba(169, 159, 255, 0.07);
   transition: x 80ms linear;
 }
 .graf-coluna.ativa .graf-barra {
@@ -263,16 +263,16 @@
   fill: var(--ciano);
 }
 .graf-faixa {
-  fill: rgba(126, 170, 255, 0.035);
+  fill: rgba(169, 159, 255, 0.035);
 }
 .graf-faixa.fase-a {
-  fill: rgba(63, 136, 255, 0.05);
+  fill: rgba(124, 108, 255, 0.05);
 }
 .graf-faixa.fase-b {
-  fill: rgba(145, 112, 247, 0.1);
+  fill: rgba(192, 132, 252, 0.1);
 }
 .graf-faixa.lote {
-  fill: rgba(145, 112, 247, 0.08);
+  fill: rgba(192, 132, 252, 0.08);
 }
 .graf-faixa-rotulo {
   fill: var(--tinta-3);
@@ -282,7 +282,7 @@
   text-transform: uppercase;
 }
 .graf-cursor {
-  stroke: rgba(238, 243, 255, 0.45);
+  stroke: rgba(245, 245, 247, 0.45);
   stroke-width: 1;
   pointer-events: none;
 }
@@ -374,7 +374,7 @@
 }
 .barrash-item:hover,
 .barrash-item:focus-visible {
-  background: rgba(63, 136, 255, 0.07);
+  background: rgba(124, 108, 255, 0.07);
 }
 .barrash-rotulo {
   font-size: var(--t-13);
@@ -513,11 +513,11 @@
 }
 
 .calor-cel {
-  fill: rgba(63, 136, 255, calc(0.08 + var(--k) * 0.92));
+  fill: rgba(124, 108, 255, calc(0.08 + var(--k) * 0.92));
   transition: stroke var(--dur-1);
 }
 .calor-cel.vazia {
-  fill: rgba(126, 170, 255, 0.04);
+  fill: rgba(169, 159, 255, 0.04);
 }
 .calor-cel:hover {
   stroke: var(--tinta-1);
@@ -542,7 +542,7 @@
 }
 .capacidade-elo:hover,
 .capacidade-elo:focus-visible {
-  background: rgba(63, 136, 255, 0.04);
+  background: rgba(124, 108, 255, 0.04);
 }
 .capacidade-cab {
   display: flex;
@@ -559,7 +559,7 @@
   position: relative;
   height: 14px;
   border-radius: 3px;
-  background: repeating-linear-gradient(90deg, rgba(126, 170, 255, 0.07) 0 1px, transparent 1px 10%);
+  background: repeating-linear-gradient(90deg, rgba(169, 159, 255, 0.07) 0 1px, transparent 1px 10%);
   border: 1px solid var(--fio);
 }
 .capacidade-teto {
@@ -714,7 +714,7 @@
   animation-delay: calc(150ms + var(--i, 0) * 55ms);
 }
 .barrash-barra.hachura {
-  background: transparent repeating-linear-gradient(135deg, rgba(127, 142, 176, 0.32) 0 1px, transparent 1px 6px);
+  background: transparent repeating-linear-gradient(135deg, rgba(132, 132, 143, 0.32) 0 1px, transparent 1px 6px);
 }
 .barrash-barra::after {
   content: '';

@@ -43,7 +43,8 @@
   dados.produtividadeDia = function () {
     const px = dados.serie('passageiros_dia');
     const pl = dados.serie('pilotos_distintos_dia');
-    return px.map((p, i) => ({ d: p.d, v: pl[i].v ? p.v / pl[i].v : null, parcial: p.parcial })).filter((p) => p.v !== null);
+    const porDia = new Map(pl.map((p) => [p.d, p.v]));
+    return px.map((p) => ({ d: p.d, v: porDia.get(p.d) ? p.v / porDia.get(p.d) : null, parcial: p.parcial })).filter((p) => p.v !== null);
   };
 
   dados.cenarios = function () {
@@ -142,7 +143,7 @@
         : { id: b.id, nome: `${b.nome} (${b.id})`, estado: 'atualizado', detalhe: lido }
     );
     if (opts.soFontes) return fontes;
-    return [...fontes, ...estruturais, { id: 'hoje', nome: `Dia ${f.data(L.meta.medidoEm)}`, estado: 'atencao', detalhe: 'incompleto em todas as séries diárias (azul claro)' }];
+    return [...fontes, ...estruturais, { id: 'hoje', nome: `Dia ${f.data(L.meta.medidoEm)}`, estado: 'atencao', detalhe: 'incompleto em todas as séries diárias (lilás claro)' }];
   };
   dados.fontesParadas = () => dados.sensores({ soFontes: true }).filter((s) => s.estado === 'atrasado').length;
 })();

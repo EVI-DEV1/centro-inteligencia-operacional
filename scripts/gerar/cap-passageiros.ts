@@ -1,6 +1,7 @@
 // Capítulo B · Passageiros: série diária, relógio de cadastros, times, faixas de produção e as medidas frágeis.
+import type { Contexto, SaidaCapitulo } from './tipos.ts';
 
-const FAIXAS_DO_DIA = [
+const FAIXAS_DO_DIA: [string, number, number][] = [
   ['0–7h', 0, 7],
   ['8–11h', 8, 11],
   ['12–14h', 12, 14],
@@ -18,7 +19,7 @@ const LIMIAR_CHEIA = 20;
 
 const noite = (h) => h >= 22 || h < 8;
 
-export function gerar({ rng, A, U }) {
+export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const { DATAS, PASSAGEIROS: PX, PILOTOS: PI, TRES, VOCAB, CENTRAL } = A;
   const { fmt, soma, pct, arred } = U;
   const dias = U.intervalo(DATAS.inicio, DATAS.fim);
@@ -249,7 +250,7 @@ export function gerar({ rng, A, U }) {
   ];
 
   // ---------------------------------------------------------------- faixas de produção
-  const bandas = [
+  const bandas: [string, number, number, number, [number, number] | null][] = [
     ['1–4', 1, 4, 38, [2.0, 2.6]],
     ['5–9', 5, 9, 35, [6.4, 7.2]],
     ['10–19', 10, 19, 43, [13.6, 15.0]],
@@ -289,7 +290,7 @@ export function gerar({ rng, A, U }) {
     { grupo: 'ficha nova · sem kit', media: arred(rng.entre(1.2, 1.4), 1), produzemPct: arred(rng.entre(2.8, 3.3), 1) },
   ];
 
-  const dddLista = [
+  const dddLista: [string, number][] = [
     [VOCAB.dddBase, 0.839],
     ['43', 0.0621],
     ['42', 0.0291],
@@ -480,7 +481,7 @@ export function gerar({ rng, A, U }) {
   };
 }
 
-export function verificar(saida, { A, U }) {
+export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const { PASSAGEIROS: PX, PILOTOS: PI, TRES, DATAS } = A;
   const { soma, pct, arred } = U;
   const B = saida.livro.passageiros;

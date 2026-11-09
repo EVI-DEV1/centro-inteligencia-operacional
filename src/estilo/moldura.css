@@ -15,7 +15,7 @@
   align-items: center;
   gap: var(--e-5);
   padding: 0 var(--e-5) 0 var(--e-4);
-  background: linear-gradient(180deg, rgba(6, 11, 26, 0.97), rgba(6, 11, 26, 0.86));
+  background: linear-gradient(180deg, rgba(10, 10, 13, 0.97), rgba(10, 10, 13, 0.86));
   border-bottom: 1px solid var(--fio);
   backdrop-filter: blur(10px) saturate(1.2);
 }
@@ -51,7 +51,7 @@
   stroke-linejoin: round;
 }
 .selo-fundo {
-  fill: #0b1733;
+  fill: #14121f;
   stroke: var(--eletrico);
   stroke-width: 1.4;
 }
@@ -115,7 +115,7 @@
   padding: 0 11px;
   border: 1px solid var(--fio);
   border-radius: 999px;
-  background: rgba(11, 19, 40, 0.7);
+  background: rgba(17, 17, 22, 0.7);
   font-family: var(--f-leitura);
   font-size: var(--t-11);
   letter-spacing: 0.06em;
@@ -145,7 +145,7 @@ button.chip:hover {
   border: 1px solid var(--fio);
   border-radius: 999px;
   padding: 2px;
-  background: rgba(11, 19, 40, 0.7);
+  background: rgba(17, 17, 22, 0.7);
   flex: none;
 }
 .fases-rotulo {
@@ -245,8 +245,8 @@ button.chip:hover {
 }
 
 .chip-demo {
-  border-color: rgba(53, 208, 238, 0.45);
-  background: rgba(53, 208, 238, 0.08);
+  border-color: rgba(34, 211, 238, 0.45);
+  background: rgba(34, 211, 238, 0.08);
   color: var(--ciano);
 }
 .chip-demo b {
@@ -311,7 +311,7 @@ button.chip:hover {
 }
 .botao-icone[aria-pressed='true'] {
   color: var(--atencao);
-  border-color: rgba(250, 178, 25, 0.45);
+  border-color: rgba(251, 191, 36, 0.45);
   background: var(--atencao-fundo);
 }
 
@@ -322,7 +322,7 @@ button.chip:hover {
   overflow-y: auto;
   padding: var(--e-4) var(--e-3) var(--e-5) var(--e-3);
   border-right: 1px solid var(--fio);
-  background: linear-gradient(180deg, rgba(6, 11, 26, 0.72), rgba(6, 11, 26, 0.35));
+  background: linear-gradient(180deg, rgba(10, 10, 13, 0.72), rgba(10, 10, 13, 0.35));
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -336,7 +336,7 @@ button.chip:hover {
   min-height: 56px;
   border: 1px solid var(--fio);
   border-radius: var(--raio-2);
-  background: rgba(11, 19, 40, 0.62);
+  background: rgba(17, 17, 22, 0.62);
   text-decoration: none;
   color: inherit;
   overflow: hidden;
@@ -345,12 +345,12 @@ button.chip:hover {
 }
 .faixa:hover {
   border-color: var(--fio-forte);
-  background: rgba(16, 27, 56, 0.85);
+  background: rgba(23, 23, 30, 0.85);
   transform: translateX(2px);
 }
 .faixa[aria-current='page'] {
-  border-color: rgba(53, 208, 238, 0.55);
-  background: rgba(16, 27, 56, 0.9);
+  border-color: rgba(34, 211, 238, 0.55);
+  background: rgba(23, 23, 30, 0.9);
   box-shadow: inset 2px 0 0 var(--ciano);
 }
 .faixa-codigo {
@@ -464,7 +464,7 @@ button.chip:hover {
 }
 .contagem-regua i[data-s='nao-medido'] {
   background: repeating-linear-gradient(135deg, var(--tinta-3) 0 1px, transparent 1px 3px);
-  outline: 1px solid rgba(127, 142, 176, 0.5);
+  outline: 1px solid rgba(132, 132, 143, 0.5);
   outline-offset: -1px;
 }
 
@@ -574,7 +574,7 @@ button.chip:hover {
     padding: 8px var(--e-3);
     border-right: 0;
     border-bottom: 1px solid var(--fio);
-    background: rgba(6, 11, 26, 0.94);
+    background: rgba(10, 10, 13, 0.94);
     scrollbar-width: none;
   }
   .trilho::-webkit-scrollbar {

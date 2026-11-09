@@ -1,8 +1,9 @@
 // Capítulo base do livro fictício: capa, vocabulário, método, os três números, a premissa 20/80 e as fases.
 // Não gera séries: tudo aqui sai das âncoras.
+import type { Contexto, SaidaCapitulo } from './tipos.ts';
 
 
-export function gerar({ A, U, capitulos = {} }) {
+export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
   const rc = (capitulos.controladores && capitulos.controladores.rodada) || {};
   const RODADA = { data: rc.data || '2026-11-10', linhas: rc.linhas, respondidas: rc.respondidas };
   const { fmt, arred, pct, somarDias, diasEntre } = U;
@@ -195,7 +196,7 @@ export function gerar({ A, U, capitulos = {} }) {
   return { livro: { meta, pares, coresDoLivro, glossario, metodo, tresNumeros, premissa2080, fases }, series: {} };
 }
 
-export function verificar(saida, { A, U }) {
+export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const erros = [];
   const { soma, pct, diasEntre, somarDias } = U;
   const L = saida.livro;

@@ -1,5 +1,6 @@
 // Capítulo E · Operação: material, campo, visitas e o uso da Torre no Clube Horizonte.
-export function gerar({ rng, A, U }) {
+import type { Contexto, SaidaCapitulo } from './tipos.ts';
+export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const { fmt, pct, soma, somarDias, intervalo, diasEntre } = U;
   const D = A.DATAS;
   const O = A.OPERACAO;
@@ -541,7 +542,7 @@ export function gerar({ rng, A, U }) {
   };
 }
 
-export function verificar(saida, { A, U }) {
+export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const erros = [];
   const { soma, pct, somarDias, intervalo, diasEntre } = U;
   const E = saida.livro.operacao;
