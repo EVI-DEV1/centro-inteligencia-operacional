@@ -22,5 +22,7 @@ jobs:
         run: |
           node scripts/gerar-dados.ts
           git diff --exit-code src/dados
+      - name: Testes do OPS (núcleo, demonstração, API e webhooks)
+        run: npm test
       - name: Arquivo único
         run: node scripts/build.mjs
