@@ -58,7 +58,7 @@
     return G.painel({
       id: 'cenarios',
       titulo: cabe ? `A meta de ${f.n(meta)} diante da conta da própria equipe` : `A meta de ${f.n(meta)} não cabe na conta da própria equipe`,
-      comoLer: `Azul: o registrado, somado dia a dia. Tracejado: o ritmo atual esticado até ${f.data(diaD)}. Tons de ciano: os três cenários da equipe com o 20/80; cinza tracejado: o teto da conta, com captura de 100%. As linhas horizontais são referências, não previsões.`,
+      comoLer: `Violeta: o registrado, somado dia a dia. Tracejado: o ritmo atual esticado até ${f.data(diaD)}. Tons de violeta a ciano: os três cenários da equipe com o 20/80; cinza tracejado: o teto da conta, com captura de 100%. As linhas horizontais são referências, não previsões.`,
       largura: 3,
       grafico: (el) => {
         el.appendChild(corpo);
@@ -112,7 +112,7 @@
     return G.painel({
       id: 'ritmo',
       titulo: `O ritmo não sobe: ~${f.n(B.cenarios.ritmoAtual)} por dia há um mês`,
-      comoLer: `Passageiros cadastrados por dia; a linha é a média dos 7 dias. Só os dias com ${f.n(limiar)} ou mais levam número.${parcial ? ` Azul claro: ${f.data(parcial.d)}, incompleto.` : ''}`,
+      comoLer: `Passageiros cadastrados por dia; a linha é a média dos 7 dias. Só os dias com ${f.n(limiar)} ou mais levam número.${parcial ? ` Lilás claro: ${f.data(parcial.d)}, incompleto.` : ''}`,
       largura: 3,
       grafico: (el) =>
         G.barrasDia(el, {

@@ -85,7 +85,7 @@
     return G.painel({
       id: 'cargas',
       titulo: `Como a base cresceu: ${cargas} degraus, ${cargas} cargas`,
-      comoLer: `Fichas de piloto criadas por dia. Roxo = dia de carga em lote (conversão de fila).${parcial ? ` Azul claro = ${f.data(parcial.d)}, incompleto.` : ''}`,
+      comoLer: `Fichas de piloto criadas por dia. Lilás = dia de carga em lote (conversão de fila).${parcial ? ` Lilás claro = ${f.data(parcial.d)}, incompleto.` : ''}`,
       largura: 2,
       grafico: (el) => {
         const topo = T.h('div');
@@ -169,7 +169,7 @@
   function coortes() {
     return G.painel({
       titulo: 'Coortes: a primeira hora diz o que a semana vai render',
-      comoLer: 'Cada linha é uma semana de entrada. Ponto claro = ativou em 1 dia; ponto cheio = em 7 dias. Roxo = semana com carga em lote.',
+      comoLer: 'Cada linha é uma semana de entrada. Ponto claro = ativou em 1 dia; ponto cheio = em 7 dias. Lilás = semana com carga em lote.',
       largura: 3,
       grafico: (el) => {
         const maxFicha = Math.max(1, ...P.coortes.map((c) => c.porFicha));
@@ -226,7 +226,7 @@
       .map((x) => x[1]);
     return G.painel({
       titulo: 'A hora da ficha é o expediente de quem roda a carga',
-      comoLer: `As ${f.n(T.soma(horas))} fichas pela hora de Brasília. Roxo = madrugada (0h às 5h).`,
+      comoLer: `As ${f.n(T.soma(horas))} fichas pela hora de Brasília. Lilás = madrugada (0h às 5h).`,
       largura: 2,
       grafico: (el) =>
         G.colunas(el, {
@@ -324,7 +324,7 @@
     return G.painel({
       id: 'fila',
       titulo: 'A fila de aspirantes não é base: é agenda de ligações',
-      comoLer: `Estado das ${f.n(pp.total)} fichas de aspirante e as ${f.n(pp.fontes.length)} maiores fontes. Cor da taxa de conversão: azul = 9 em 10; laranja = entre 3 e 9; vermelho = menos de 3 em 10.`,
+      comoLer: `Estado das ${f.n(pp.total)} fichas de aspirante e as ${f.n(pp.fontes.length)} maiores fontes. Cor da taxa de conversão: violeta = 9 em 10; laranja = entre 3 e 9; vermelho = menos de 3 em 10.`,
       largura: 3,
       grafico: (el) => {
         const grade = T.h('div', { class: 'fila-grade' });

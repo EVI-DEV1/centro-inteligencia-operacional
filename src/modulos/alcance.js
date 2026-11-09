@@ -133,7 +133,7 @@
     const aberta = diasSemana >= 1 && diasSemana < 7 ? ` A semana de ${f.data(semana)} tem só ${diasSemana} ${diasSemana === 1 ? 'dia' : 'dias'}.` : '';
     return G.painel({
       titulo: 'Alcance semanal: o patamar de hoje é outro',
-      comoLer: `Azul = contas alcançadas pelo perfil na semana; rosa = soma do alcance dos posts. Mesma unidade, mesma escala.${aberta}`,
+      comoLer: `Violeta = contas alcançadas pelo perfil na semana; rosa = soma do alcance dos posts. Mesma unidade, mesma escala.${aberta}`,
       largura: 1,
       grafico: (el) =>
         G.linhas(el, {
