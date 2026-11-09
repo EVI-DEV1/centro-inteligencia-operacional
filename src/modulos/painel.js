@@ -71,10 +71,7 @@
     const ent = medir('entregas_dia');
     const ab = medir('chamados_abertos_dia');
     const fe = medir('chamados_fechados_dia');
-    const resol = ab.atual ? (fe.atual / ab.atual) * 100 : null;
-    const resolAnt = ab.anterior ? (fe.anterior / ab.anterior) * 100 : null;
-    const abertosDia = new Map(ab.serie.map((p) => [p.d, p.v]));
-    const resolSerie = fe.serie.map((p) => ({ d: p.d, v: abertosDia.get(p.d) ? Math.min(150, (p.v / abertosDia.get(p.d)) * 100) : 0 }));
+    const saldo = ab.atual - fe.atual;
     return T.h(
       'div',
       { class: 'kpis', id: 'kpis' },
@@ -82,7 +79,7 @@
       kpi({ rotulo: 'Ritmo diário', icone: 'tendencia', valor: f.n(ritmo.atual), atual: ritmo.atual, anterior: ritmo.anterior, sub: 'média de cadastros por dia completo', serie: completos(ritmo.serie), cor: 'var(--ciano)', rota: 'passageiros' }),
       kpi({ rotulo: 'Pilotos produzindo', icone: 'pilotos', valor: f.n(pl.atual, 0), atual: pl.atual, anterior: pl.anterior, sub: 'pilotos distintos cadastrando por dia', serie: completos(pl.serie), cor: 'var(--violeta)', rota: 'pilotos' }),
       kpi({ rotulo: 'Conversas novas', icone: 'central', valor: f.n(conv.atual), atual: conv.atual, anterior: conv.anterior, sub: 'iniciadas com o bot no WhatsApp', serie: conv.serie, cor: 'var(--rosa)', rota: 'central' }),
-      kpi({ rotulo: 'Chamados resolvidos', icone: 'atendimento', valor: resol === null ? '—' : f.pct(resol, 0), atual: resol || 0, anterior: resolAnt, sub: `${f.n(fe.atual)} fechados de ${f.n(ab.atual)} abertos`, serie: resolSerie, cor: 'var(--firme)', rota: 'central' }),
+      kpi({ rotulo: 'Chamados fechados', icone: 'atendimento', valor: f.n(fe.atual), atual: fe.atual, anterior: fe.anterior, sub: `${f.n(ab.atual)} abertos no período · fila ${saldo > 0 ? `cresceu ${f.n(saldo)}` : saldo < 0 ? `diminuiu ${f.n(-saldo)}` : 'estável'}`, serie: fe.serie, cor: 'var(--firme)', rota: 'central' }),
       kpi({ rotulo: 'Entregas de kit', icone: 'operacao', valor: f.n(ent.atual), atual: ent.atual, anterior: ent.anterior, sub: 'kits entregues no período', serie: ent.serie, cor: 'var(--atencao)', rota: 'operacao' })
     );
   }
