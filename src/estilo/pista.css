@@ -1,0 +1,133 @@
+/* Pista até o marco: linha do tempo usada em Campanhas (extraída da antiga folha da torre). */
+.vg-pista {
+  margin-top: var(--e-4);
+  padding: var(--e-4) var(--e-5) var(--e-3);
+  border-top: 1.5px solid var(--fio-forte);
+  border-bottom: 1px solid var(--fio);
+  background: rgba(10, 10, 13, 0.45);
+  scroll-margin-top: calc(var(--h-topo) + 24px);
+}
+.vg-pista-cab {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+.vg-pista-cab h2 {
+  font-size: var(--t-20);
+  font-weight: 720;
+}
+.vg-pista-cab p {
+  font-size: var(--t-12);
+  color: var(--tinta-3);
+  max-width: 80ch;
+}
+.pista-host {
+  margin-top: 4px;
+}
+.pista {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  font-family: var(--f-texto);
+}
+.pista-eixo {
+  stroke: rgba(169, 159, 255, 0.25);
+  stroke-dasharray: 10 8;
+}
+.pista-fase {
+  fill: rgba(124, 108, 255, 0.05);
+  stroke: rgba(169, 159, 255, 0.12);
+}
+.pista-fase.fB {
+  fill: rgba(192, 132, 252, 0.12);
+  stroke: rgba(192, 132, 252, 0.3);
+}
+.pista-fase.fC {
+  fill: rgba(34, 211, 238, 0.12);
+  stroke: rgba(34, 211, 238, 0.4);
+}
+.pista-fase-rotulo {
+  fill: var(--tinta-3);
+  font-family: var(--f-leitura);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pista-luz {
+  fill: var(--eletrico-claro);
+  stroke: var(--noite-1);
+  stroke-width: 2;
+  cursor: default;
+}
+.pista-luz.fB,
+.pista-luz.fC {
+  fill: var(--violeta);
+}
+.pista-luz.fC {
+  fill: var(--ciano);
+}
+.pista-luz.retrato {
+  fill: none;
+  stroke: var(--parcial);
+  stroke-width: 1.5;
+}
+.pista-luz.passado {
+  opacity: 0.35;
+}
+.pista-luz.hoje {
+  fill: #fff;
+}
+.pista-congelamento {
+  fill: url(#graf-hachura);
+  stroke: rgba(132, 132, 143, 0.4);
+}
+.pista-congelamento-rotulo {
+  fill: var(--tinta-3);
+  font-family: var(--f-leitura);
+  font-size: 10px;
+}
+.pista-haste {
+  stroke: rgba(169, 159, 255, 0.35);
+}
+.pista-marco {
+  cursor: pointer;
+  outline: none;
+}
+.pista-marco-data {
+  fill: var(--tinta-1);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.pista-marco-nome {
+  fill: var(--tinta-3);
+  font-size: 11px;
+}
+.pista-marco.forte .pista-marco-data {
+  fill: var(--ciano);
+}
+.pista-marco.dia-d .pista-marco-data {
+  fill: var(--ciano);
+  font-size: 13.5px;
+}
+.pista-marco:hover .pista-marco-nome,
+.pista-marco:focus-visible .pista-marco-nome {
+  fill: var(--tinta-1);
+}
+.pista-janela {
+  fill: none;
+  stroke: rgba(251, 191, 36, 0.55);
+  stroke-dasharray: 3 3;
+}
+.pista-hoje {
+  stroke: var(--ciano);
+  stroke-width: 1.5;
+}
+.pista-hoje-rotulo {
+  fill: var(--ciano);
+  font-family: var(--f-leitura);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+

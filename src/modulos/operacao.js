@@ -29,7 +29,7 @@
     const S = E.estoque;
     const Et = E.etiquetas;
     const kraft = diasItem(/caixa\s+kraft/i);
-    const manual = diasItem(/^manual\s+(do\s+)?piloto/i);
+    const manual = diasItem(/^manual\s+(d[oa]\s+)?(piloto|pessoa)/i);
     const insumo = [kraft !== null ? `caixa kraft ${f.d(kraft)}` : null, manual !== null ? `Manual ${f.d(manual)}` : null].filter(Boolean).join(' · ');
     const lotes = (P.lotes || []).map((l) => l.dia);
     const saidas = P.saida || [];
@@ -62,7 +62,7 @@
     return G.painel({
       id: 'esteira',
       titulo: 'A operação corre mais rápido do que consegue provar',
-      comoLer: 'O caminho físico do material, da prateleira à mão do piloto. Em cada etapa: o número do livro, o que o registro prova e o que não prova. O trilho fica mais fino onde a prova se perde.',
+      comoLer: 'O caminho físico do material, da prateleira à mão da pessoa. Em cada etapa: o número do livro, o que o registro prova e o que não prova. O trilho fica mais fino onde a prova se perde.',
       largura: 3,
       grafico: (el) => {
         el.appendChild(trilho);
@@ -301,7 +301,7 @@
     return G.painel({
       id: 'agenda',
       titulo: `A agenda da semana do Dia D ${naSemana === 0 ? 'está vazia' : `tem ${f.n(naSemana)} ${naSemana === 1 ? 'evento' : 'eventos'}`} — e o território é lista, não mapa`,
-      comoLer: 'Eventos do calendário da Torre por semana (hachura = semanas futuras, com o que já está marcado). Ao lado, a base de endereços por região.',
+      comoLer: 'Eventos do calendário do OPS Intelligence por semana (hachura = semanas futuras, com o que já está marcado). Ao lado, a base de endereços por região.',
       largura: 3,
       grafico: (el) => {
         const grade = T.h('div', { class: 'grade-2' });
@@ -346,7 +346,7 @@
     const etiquetasPico = pico ? (T.dados.serie('etiquetas_dia').find((p) => p.d === pico.d) || {}).v : null;
     return G.painel({
       id: 'torre',
-      titulo: 'A Torre em uso: quem entra e o que faz',
+      titulo: 'O OPS Intelligence em uso: quem entra e o que faz',
       comoLer: 'Contas diferentes que agiram por dia e ações registradas por dia — grandezas diferentes, gráficos diferentes. Vermelho = tentativa de login que falhou.',
       largura: 3,
       grafico: (el) => {
@@ -372,7 +372,7 @@
         G.barrasH(c, { compacta: true, itens: Tr.chamadosInternos.map((x) => ({ rotulo: x.estado, v: x.v, texto: `${f.n(x.v)} · ${f.d(x.idadeD)}`, cor: x.estado === 'concluído' ? 'var(--firme)' : 'var(--eletrico)' })) });
         c.appendChild(T.h('div', { class: 'par-numeros' }, T.h('div', null, T.h('span', { class: 'leitura' }, 'logins que falham'), T.h('b', { class: 'num alerta-texto' }, f.pct(Tr.loginFalhaPct))), T.h('div', null, T.h('span', { class: 'leitura' }, 'chamados internos vivos'), T.h('b', { class: 'num' }, f.n(Tr.chamadosVivos)))));
       },
-      leitura: `Entre ${f.n(Tr.contasDiaFaixa[0])} e ${f.n(Tr.contasDiaFaixa[1])} contas por dia desde ${f.data(Tr.contasDiaDesde)} (média de ${f.nFlex(Tr.mediaContas7d, 1)} nos últimos 7): a Torre é usada por dezenas de pessoas, não por dois administradores.${pico ? ` O pico de ${f.n(pico.v)} ações em ${f.data(pico.d)} é o mesmo dia das ${f.n(entregasPico)} entregas e das ${f.n(etiquetasPico)} etiquetas — muita ação por pessoa, não mais gente.` : ''} ${f.pct(Tr.loginFalhaPct)} das tentativas de login falham: vale olhar antes do Dia D.`,
+      leitura: `Entre ${f.n(Tr.contasDiaFaixa[0])} e ${f.n(Tr.contasDiaFaixa[1])} contas por dia desde ${f.data(Tr.contasDiaDesde)} (média de ${f.nFlex(Tr.mediaContas7d, 1)} nos últimos 7): o OPS Intelligence é usado por dezenas de pessoas, não por dois administradores.${pico ? ` O pico de ${f.n(pico.v)} ações em ${f.data(pico.d)} é o mesmo dia das ${f.n(entregasPico)} entregas e das ${f.n(etiquetasPico)} etiquetas — muita ação por pessoa, não mais gente.` : ''} ${f.pct(Tr.loginFalhaPct)} das tentativas de login falham: vale olhar antes do Dia D.`,
       p: [41, 42],
     });
   }
@@ -382,7 +382,7 @@
     render(main) {
       main.append(
         T.pag.abertura(E, 'operacao', 'operacao', { regua: E.regua.linhas }),
-        T.comp.secao({ id: 'material', titulo: 'Material: da prateleira à mão do piloto', sub: `Onde a prova se perde e o que acaba antes de ${f.data(L.meta.d7)}.` }, T.comp.grade('', esteira(), estoque(), pedidosDia(), itensEntrega(), etiquetas())),
+        T.comp.secao({ id: 'material', titulo: 'Material: da prateleira à mão da pessoa', sub: `Onde a prova se perde e o que acaba antes de ${f.data(L.meta.d7)}.` }, T.comp.grade('', esteira(), estoque(), pedidosDia(), itensEntrega(), etiquetas())),
         T.comp.secao({ id: 'rua', titulo: 'Gente, rua e agenda', sub: 'Campo, visitas, calendário e território.' }, T.comp.grade('', campo(), visitas(), agendaTerritorio(), torreEmUso())),
         T.pag.fecho(E, E.regua)
       );

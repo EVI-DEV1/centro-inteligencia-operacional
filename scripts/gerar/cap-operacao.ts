@@ -85,7 +85,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     { item: 'Kit Parceiro Agência Aurora', un: 15840, pedidos: 29 },
     { item: 'Kit Feira de Turismo', un: 11760, pedidos: 11 },
     { item: 'Carta de boas-vindas aos parceiros', un: 2947, pedidos: 1 },
-    { item: 'Kit Piloto', un: 2896, pedidos: 702 },
+    { item: 'Kit Pessoa', un: 2896, pedidos: 702 },
     { item: 'Kit Evento Corporativo', un: 2436, pedidos: 8 },
     { item: 'Kit Embaixada', un: 562, pedidos: 7 },
     { item: 'Kit Viagem em Família', un: 418, pedidos: 21 },
@@ -93,13 +93,13 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     { item: 'Kit Amigo Viajante', un: 138, pedidos: 26 },
     { item: 'Kit Abertura da Temporada', un: 96, pedidos: 9 },
     { item: 'Kit Aspirante', un: 81, pedidos: 79 },
-    { item: 'Kit Treinamento Piloto', un: 46, pedidos: 13 },
+    { item: 'Kit Treinamento Pessoa', un: 46, pedidos: 13 },
     { item: 'Kit Adesivo Horizonte para carro', un: 36, pedidos: 5 },
     { item: 'Kit Mochila Horizonte', un: 29, pedidos: 3 },
     { item: 'Kit Guia de Bolso', un: 9, pedidos: 8 },
   ].map((it) => ({ ...it, ...(it.pedidos >= 200 ? { diario: true } : {}) }));
   const tres = itens.slice(0, 3);
-  const kitPiloto = itens.find((it) => it.item === 'Kit Piloto');
+  const kitPiloto = itens.find((it) => it.item === 'Kit Pessoa');
 
   const autores = [
     { autor: 'admin-token (script)', v: 583, script: true },
@@ -113,7 +113,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   // ---------------------------------------------------------------- estoque
   const S = O.estoque;
   const estoqueItens = [
-    { item: 'Guia do Controlador', dias: 0, saldo: 0 },
+    { item: 'Guia do Admin', dias: 0, saldo: 0 },
     { item: 'Convite de pré-estreia', dias: 0, saldo: 0 },
     { item: 'Termo de adesão', dias: 0, saldo: 0 },
     { item: 'Revista Destinos & Roteiros', dias: 0.2, saldo: 918 },
@@ -123,7 +123,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     { item: 'Caixa kraft grande', dias: S.caixaKraft.dias, saldo: S.caixaKraft.saldo, critico: true },
     { item: 'Adesivo Horizonte para carro', dias: 4.6, saldo: 1627 },
     { item: 'Convite impresso — lote B', dias: 6.1, saldo: 116930, lote: true },
-    { item: 'Manual Piloto', dias: S.manualPiloto.dias, saldo: S.manualPiloto.saldo, critico: true },
+    { item: 'Manual Pessoa', dias: S.manualPiloto.dias, saldo: S.manualPiloto.saldo, critico: true },
     { item: 'Guia de Bolso Horizonte', dias: 9.3, saldo: 1348 },
     { item: 'Folheto sanfona Roteiros do Sul', dias: 10.2, saldo: 4386 },
     { item: 'Convite impresso — Temporada', dias: 13.7, saldo: 318460, lote: true },
@@ -142,7 +142,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     abaixoDoD7: estoqueItens.filter((it) => it.dias < diasAteD7).length,
     zerados: S.zerados,
     itens: estoqueItens,
-    leitura: `Dois pesam na operação diária: Caixa kraft grande — ${fmt.n(S.caixaKraft.saldo)} peças, ${fmtDias(S.caixaKraft.dias)} dias — e Manual Piloto — ${fmt.n(S.manualPiloto.saldo)} peças, ${fmtDias(S.manualPiloto.dias)} dias. Os convites impressos aparecem curtos por outro motivo: o saldo é enorme e o "consumo de ${fmt.n(consumoLote)} por dia" vem de cargas em lote, não do balcão. Comprar caixa kraft e reimprimir o Manual Piloto esta semana; para os convites, medir consumo sem os lotes antes de comprar.`,
+    leitura: `Dois pesam na operação diária: Caixa kraft grande — ${fmt.n(S.caixaKraft.saldo)} peças, ${fmtDias(S.caixaKraft.dias)} dias — e Manual Pessoa — ${fmt.n(S.manualPiloto.saldo)} peças, ${fmtDias(S.manualPiloto.dias)} dias. Os convites impressos aparecem curtos por outro motivo: o saldo é enorme e o "consumo de ${fmt.n(consumoLote)} por dia" vem de cargas em lote, não do balcão. Comprar caixa kraft e reimprimir o Manual Pessoa esta semana; para os convites, medir consumo sem os lotes antes de comprar.`,
     movimento: { entradas: 4873216, saidas: 1764905, desde: '2026-10-23', maiorEntrada: { dia: '2026-11-10', v: 1792604 } },
   };
 
@@ -239,7 +239,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     { area: 'sem área preenchida', pessoas: 79, peso: 11.2, vazio: true },
     { area: 'Motorista', pessoas: 6, peso: 16.5 },
     { area: 'Equipe de rua', pessoas: 6, peso: 13.1 },
-    { area: 'Controlador', pessoas: 8, peso: 5.4 },
+    { area: 'Admin', pessoas: 8, peso: 5.4 },
     { area: 'Rota 40', pessoas: 9, peso: 3.6 },
     { area: 'Central', pessoas: 3, peso: 12.8 },
     { area: 'Auxiliar de limpeza', pessoas: 2, peso: 14.5 },
@@ -466,8 +466,8 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const operacao = {
     letra: 'E',
     titulo: 'Operação: material, campo, visitas e sistema',
-    pergunta: 'Estoque, entregas, gente em campo, visitas, uso da Torre.',
-    frase: `O balcão é rápido; o que trava é insumo e registro. Metade das entregas sai em menos de ${fmt.n(metadeHoras)} horas, mas 1 em cada ${fmt.n(umEmCada)} leva mais de três dias. O estoque de caixa kraft e de Manual Piloto ${acabamAntes ? 'acaba' : 'aperta'} antes de ${fmt.data(D.d7)}. E mais da metade dos pedidos foi arquivada sem nunca receber o carimbo de entrega — a operação anda mais rápido do que consegue provar.`,
+    pergunta: 'Estoque, entregas, gente em campo, visitas, uso do OPS Intelligence.',
+    frase: `O balcão é rápido; o que trava é insumo e registro. Metade das entregas sai em menos de ${fmt.n(metadeHoras)} horas, mas 1 em cada ${fmt.n(umEmCada)} leva mais de três dias. O estoque de caixa kraft e de Manual Pessoa ${acabamAntes ? 'acaba' : 'aperta'} antes de ${fmt.data(D.d7)}. E mais da metade dos pedidos foi arquivada sem nunca receber o carimbo de entrega — a operação anda mais rápido do que consegue provar.`,
     kpis: [
       { v: entregas7d, rotulo: `entregas de material em 7 dias (${fmt.data(ultimos7[0])}–${fmt.data(ultimos7.at(-1))})` },
       { v: P.abertos, rotulo: 'pedidos abertos hoje (nem entregues, nem arquivados)' },
@@ -499,7 +499,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
       ],
     },
     itens,
-    itensLeitura: `Os três primeiros lugares são kits de parceiros e de feira e uma carta — ${fmt.n(soma(tres, (t) => t.un))} peças em ${fmt.n(soma(tres, (t) => t.pedidos))} pedidos: encomendas grandes para eventos. O Kit Piloto é o oposto: ${fmt.n(kitPiloto.un)} peças espalhadas em ${fmt.n(kitPiloto.pedidos)} pedidos, a operação de todo dia.`,
+    itensLeitura: `Os três primeiros lugares são kits de parceiros e de feira e uma carta — ${fmt.n(soma(tres, (t) => t.un))} peças em ${fmt.n(soma(tres, (t) => t.pedidos))} pedidos: encomendas grandes para eventos. O Kit Pessoa é o oposto: ${fmt.n(kitPiloto.un)} peças espalhadas em ${fmt.n(kitPiloto.pedidos)} pedidos, a operação de todo dia.`,
     tempoEntrega: {
       faixas,
       medianaH: O.entrega.medianaH,
@@ -520,7 +520,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     territorio,
     muda: [
       { t: 'A operação anda mais rápido do que consegue provar.', d: `${fmt.n(P.arquivadosSemCarimbo)} pedidos arquivados sem carimbo de entrega (${fmt.pct(P.arquivadosSemCarimboPct)} de ${fmt.n(P.total)}), ${fmt.n(saidaVazia)} saíram sem dizer por onde e ${fmt.n(Et.conferidas)} kit foi conferido no recebimento em ${fmt.n(Et.total)} etiquetas. O número de entregas está entre ${fmt.n(entregasEntre[0])} e ${fmt.n(entregasEntre[1])}.` },
-      { t: `Caixa kraft e Manual Piloto acabam antes de ${fmt.data(D.d7)}.`, d: `Caixa kraft grande: ${fmt.n(S.caixaKraft.saldo)} peças e ${fmtDias(S.caixaKraft.dias)} dias; Manual Piloto: ${fmt.n(S.manualPiloto.saldo)} peças e ${fmtDias(S.manualPiloto.dias)} dias. ${fmt.n(S.zerados)} itens já estão zerados e ${fmt.n(S.abaixoDe5d)} dos ${fmt.n(S.itensMedidos)} não chegam a 5 dias.` },
+      { t: `Caixa kraft e Manual Pessoa acabam antes de ${fmt.data(D.d7)}.`, d: `Caixa kraft grande: ${fmt.n(S.caixaKraft.saldo)} peças e ${fmtDias(S.caixaKraft.dias)} dias; Manual Pessoa: ${fmt.n(S.manualPiloto.saldo)} peças e ${fmtDias(S.manualPiloto.dias)} dias. ${fmt.n(S.zerados)} itens já estão zerados e ${fmt.n(S.abaixoDe5d)} dos ${fmt.n(S.itensMedidos)} não chegam a 5 dias.` },
       { t: 'A agenda da semana do Dia D está vazia.', d: `Nenhum evento marcado entre ${fmt.data(semanaDoDiaD)} e ${fmt.data(D.diaD)}, nem na semana seguinte. Há ${fmt.n(futuros)} eventos futuros, todos até ${fmt.data(eventosAte)}. E os ${fmt.n(agendaPedidos[0].v)} pedidos de agenda aprovados não viraram evento nenhum.` },
       { t: 'O campo está estável; o que caiu foi a conversão da visita.', d: `De ${fmt.n(campo.faixa14d[0])} a ${fmt.n(campo.faixa14d[1])} pessoas por dia escaneiam refeição, mediana ${fmt.n(campo.mediana)} — ${statusCampo}. As visitas mantiveram o volume e perderam o engajamento: ${fmt.pct(semAntes.engajouPct)} na semana de ${fmt.data(semAntes.semana)}, ${fmt.pct(semDepois.engajouPct)} na de ${fmt.data(semDepois.semana)}, com ${fmt.n(branco)} das ${fmt.n(totalVisitas)} visitas em branco.` },
       { t: 'Quase metade dos pedidos é lote, não demanda.', d: `${fmt.pct(scriptPct)} dos pedidos dos últimos 30 dias foram criados pelo admin-token, isto é, por script.` },
@@ -608,9 +608,9 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   // estoque
   const Es = E.estoque;
   const kraft = Es.itens.filter((i) => /caixa\s+kraft/i.test(i.item));
-  const manual = Es.itens.filter((i) => /^manual\s+(do\s+)?piloto/i.test(i.item));
+  const manual = Es.itens.filter((i) => /^manual\s+(d[oa]\s+)?(piloto|pessoa)/i.test(i.item));
   if (kraft.length !== 1 || kraft[0].item !== 'Caixa kraft grande' || kraft[0].dias !== O.estoque.caixaKraft.dias || kraft[0].saldo !== O.estoque.caixaKraft.saldo) erros.push('estoque: Caixa kraft grande não bate com a âncora');
-  if (manual.length !== 1 || manual[0].item !== 'Manual Piloto' || manual[0].dias !== O.estoque.manualPiloto.dias || manual[0].saldo !== O.estoque.manualPiloto.saldo) erros.push('estoque: Manual Piloto não bate com a âncora');
+  if (manual.length !== 1 || manual[0].item !== 'Manual Pessoa' || manual[0].dias !== O.estoque.manualPiloto.dias || manual[0].saldo !== O.estoque.manualPiloto.saldo) erros.push('estoque: Manual Pessoa não bate com a âncora');
   igual('estoque: medidos', Es.itensMedidos, O.estoque.itensMedidos);
   igual('estoque: abaixo de 5 d (lista)', Es.itens.filter((i) => i.dias < 5).length, O.estoque.abaixoDe5d);
   igual('estoque: abaixo de 5 d', Es.abaixoDe5d, O.estoque.abaixoDe5d);
@@ -682,7 +682,7 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const sucesso = Tr.topAcoes.find((x) => x.acao === 'auth.login_success').v;
   igual('torre: login pct', Tr.loginFalhaPct, pct(falha, falha + sucesso));
   for (let i = 1; i < Tr.topAcoes.length; i++) if (Tr.topAcoes[i].v > Tr.topAcoes[i - 1].v) erros.push('torre: ações fora de ordem');
-  igual('torre: contas somam contas da Torre', soma(Tr.contas, (c) => c.v), A.ATENDIMENTO.contasTorre);
+  igual('torre: contas somam contas do OPS Intelligence', soma(Tr.contas, (c) => c.v), A.ATENDIMENTO.contasTorre);
   igual('torre: ações somam série', Tr.acoes, soma(S.torre_acoes_dia, (p) => p.v));
   const acoes30 = soma(S.torre_acoes_dia.slice(-30), (p) => p.v);
   if (acoes30 < soma(Tr.topAcoes, (x) => x.v)) erros.push('torre: top 15 maior que as ações de 30 dias');

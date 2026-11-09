@@ -87,7 +87,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   }
   let pilotosDia = null;
   for (let i = 0; i < 400 && !pilotosDia; i++) pilotosDia = tentarPilotos();
-  if (!pilotosDia) throw new Error('não achei série de pilotos que feche com o recorde');
+  if (!pilotosDia) throw new Error('não achei série de pessoas que feche com o recorde');
   const plDe = Object.fromEntries(pilotosDia.map((p) => [p.d, p.v]));
 
   // ---------------------------------------------------------------- hora a hora, todos os dias
@@ -338,8 +338,8 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const ritmoLeitura = `Desde ${fmt.data(melhor.dia)} a média de 7 dias oscila entre ${fmt.n(mmMin)} e ${fmt.n(mmMax)} por dia, sem tendência de alta. O topo de ${fmt.n(melhor.v)} em ${fmt.data(melhor.dia)} ficou isolado, puxado por um lote lançado à mão (a auditoria conta ${fmt.n(PX.melhorDiaAuditoria)} no mesmo dia, com outro horário de corte). Considere ~${fmt.n(ritmoMostrado)}/dia o que a operação entrega sem ajuda; qualquer número acima disso precisa de uma intervenção com dono e data, não de esperança na curva.`;
 
   const regras = [
-    { metrica: 'Passageiros por dia', significado: 'média dos últimos 7 dias fechados', limites: [420, 270], hoje: ritmoMostrado, sentido: 'alto' },
-    { metrica: 'Pilotos vivos em 7 dias', significado: 'pilotos distintos que cadastraram na semana', limites: [230, 140], hoje: vivos.ultimaSemanaCompleta, sentido: 'alto' },
+    { metrica: 'Leads por dia', significado: 'média dos últimos 7 dias fechados', limites: [420, 270], hoje: ritmoMostrado, sentido: 'alto' },
+    { metrica: 'Pessoas vivas em 7 dias', significado: 'pessoas distintas que cadastraram na semana', limites: [230, 140], hoje: vivos.ultimaSemanaCompleta, sentido: 'alto' },
     { metrica: 'Produtores parados 7+ dias', significado: 'já cadastraram alguém e pararam', limites: [45, 90], hoje: paradosSete.v, sentido: 'baixo' },
   ];
   const reguaLinhas = regras.map((r) => {
@@ -353,14 +353,14 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
 
   const livro = {
     letra: 'B',
-    titulo: 'Passageiros: cada indicação registrada, dia após dia',
+    titulo: 'Leads: cada indicação registrada, dia após dia',
     pergunta: 'Quanto entra por dia, em que horas as pessoas se cadastram e até onde a linha chega no Dia D.',
-    frase: `A entrada estacionou: há um mês chegam perto de ${fmt.n(ritmoMostrado)} indicações por dia, e cada piloto que cadastra no dia grava por volta de ${fmt.n(PX.produtividade7d)}. Quem mexe no total não é a produtividade de quem já trabalha, é o número de pilotos diferentes cadastrando no mesmo dia — e esse número nunca passou de ${fmt.n(recorde.v)}.`,
+    frase: `A entrada estacionou: há um mês chegam perto de ${fmt.n(ritmoMostrado)} indicações por dia, e cada pessoa que cadastra no dia grava por volta de ${fmt.n(PX.produtividade7d)}. Quem mexe no total não é a produtividade de quem já trabalha, é o número de pessoas diferentes cadastrando no mesmo dia — e esse número nunca passou de ${fmt.n(recorde.v)}.`,
     kpis: [
-      { v: PX.contabilizados, rotulo: `passageiros registrados até ${fmt.data(hoje)}` },
+      { v: PX.contabilizados, rotulo: `leads registrados até ${fmt.data(hoje)}` },
       { v: ritmoMostrado, rotulo: `por dia (média dos 7 dias completos, ${blocoIni.slice(8, 10)}–${fmt.data(blocoFim)})` },
       { v: melhor.v, rotulo: `melhor dia já registrado (${fmt.data(melhor.dia)})` },
-      { v: vivos.ultimaSemanaCompleta, rotulo: 'pilotos que cadastraram alguém na última semana completa' },
+      { v: vivos.ultimaSemanaCompleta, rotulo: 'pessoas que cadastraram alguém na última semana completa' },
     ],
     origem: [
       { evento: 'Cadastro pelo bot de WhatsApp', v: PX.origem.bot },
@@ -375,9 +375,9 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
       { rotulo: 'Meta declarada', v: meta },
     ],
     quatroPalavras: [
-      { palavra: 'Passageiro', e: 'pessoa indicada por um piloto e gravada uma única vez, com nome e telefone', naoE: 'não é adesão fechada nem interesse confirmado depois' },
-      { palavra: 'Piloto', e: 'ficha de quem topou indicar passageiros para o clube', naoE: `não é gente trabalhando: ${fmt.n(faixasProducao[0].pilotos)} fichas nunca cadastraram ninguém` },
-      { palavra: 'Meta somada / Projetada', e: 'a soma das metas anotadas em cada ficha de piloto', naoE: 'não é previsão: nenhuma dessas metas foi combinada caso a caso' },
+      { palavra: 'Lead', e: 'pessoa indicada por uma pessoa e gravada uma única vez, com nome e telefone', naoE: 'não é adesão fechada nem interesse confirmado depois' },
+      { palavra: 'Pessoa', e: 'ficha de quem topou indicar leads para o clube', naoE: `não é gente trabalhando: ${fmt.n(faixasProducao[0].pilotos)} fichas nunca cadastraram ninguém` },
+      { palavra: 'Meta somada / Projetada', e: 'a soma das metas anotadas em cada ficha de pessoa', naoE: 'não é previsão: nenhuma dessas metas foi combinada caso a caso' },
       { palavra: 'Captura', e: 'a parte das indicações feitas fora do sistema que chega a virar cadastro', naoE: 'ninguém mediu — falta o denominador' },
     ],
     ritmoLeitura,
@@ -434,7 +434,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     muda: [
       {
         t: 'Mede-se prontidão, não adesão.',
-        d: `Os ${fmt.n(PX.contabilizados)} cadastros foram gravados uma vez e ninguém os confirmou depois: só ${fmt.n(conf.vaiAderir + conf.naoVai)} das ${fmt.n(PX.fichas)} fichas têm alguma resposta, e nenhuma diz de que aeroporto a pessoa sai. O total cresce com o número de pilotos diferentes cadastrando no mesmo dia, cujo recorde é ${fmt.n(recorde.v)} (${fmt.data(recorde.dia)}), ${fmt.pct(recorde.pctAtivos)} dos ativos.`,
+        d: `Os ${fmt.n(PX.contabilizados)} cadastros foram gravados uma vez e ninguém os confirmou depois: só ${fmt.n(conf.vaiAderir + conf.naoVai)} das ${fmt.n(PX.fichas)} fichas têm alguma resposta, e nenhuma diz de que aeroporto a pessoa sai. O total cresce com o número de pessoas diferentes cadastrando no mesmo dia, cujo recorde é ${fmt.n(recorde.v)} (${fmt.data(recorde.dia)}), ${fmt.pct(recorde.pctAtivos)} dos ativos.`,
       },
       {
         t: `Os ${fmt.n(meta)} não cabem na conta que a própria equipe faz.`,
@@ -442,7 +442,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
       },
       {
         t: `${fmt.pct(famLid.registrosPct, 0)} dos cadastros vêm de ${fmt.pct(famLid.redePct, 0)} da rede.`,
-        d: `As ${F.lideranca} somam ${fmt.n(famLid.pilotos)} pilotos e ${fmt.n(famLid.passageiros)} registros; a ${F.lista} tem ${fmt.n(famR20.pilotos)} fichas e ${fmt.n(famR20.passageiros)} cadastros. Tratar a ${F.lista} como rede disponível incha todos os denominadores.`,
+        d: `As ${F.lideranca} somam ${fmt.n(famLid.pilotos)} pessoas e ${fmt.n(famLid.passageiros)} registros; a ${F.lista} tem ${fmt.n(famR20.pilotos)} fichas e ${fmt.n(famR20.passageiros)} cadastros. Tratar a ${F.lista} como rede disponível incha todos os denominadores.`,
       },
       {
         t: 'Abrir ficha nova parou de dar retorno.',
@@ -454,15 +454,15 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
       },
     ],
     naoMede: [
-      'De onde o passageiro embarca. A base guarda o telefone, não a cidade nem o aeroporto; o DDD só indica o chip.',
+      'De onde o lead embarca. A base guarda o telefone, não a cidade nem o aeroporto; o DDD só indica o chip.',
       `Se o cadastro vira adesão. ${fmt.n(conf.semResposta)} de ${fmt.n(PX.fichas)} fichas não têm status; qualquer taxa de conversão seria chute.`,
       `Captura. Não existe denominador no sistema; os ${linhasCen.filter((l) => !l.limite).map((l) => fmt.pct(l.captura, 0)).join(', ').replace(/, ([^,]*)$/, ' e $1')} dos cenários são premissas.`,
       `O 20/80. É hipótese do gestor, apoiada em ${fmt.n(DATAS.dias)} dias de histórico, sem a semana do surto e sem temporadas anteriores.`,
-      `Quem cadastrou de fato. A linha de WhatsApp gravada é a atual do piloto, e ${fmt.data(hoje)} está incompleto.`,
+      `Quem cadastrou de fato. A linha de WhatsApp gravada é a atual da pessoa, e ${fmt.data(hoje)} está incompleto.`,
     ],
     regua: {
       linhas: reguaLinhas,
-      nota: `${verdes ? `${fmt.n(verdes)} das três métricas está no verde.` : 'Nenhuma das três métricas está no verde.'} A única que anda na direção certa é a de pilotos vivos — e mesmo ela ganhou ${fmt.n(cresceu)} pessoas desde a semana de ${fmt.data(DATAS.semanas[0])}, com ${fmt.n(semanasAteDiaD)} semanas pela frente.`,
+      nota: `${verdes ? `${fmt.n(verdes)} das três métricas está no verde.` : 'Nenhuma das três métricas está no verde.'} A única que anda na direção certa é a de pessoas vivas — e mesmo ela ganhou ${fmt.n(cresceu)} pessoas desde a semana de ${fmt.data(DATAS.semanas[0])}, com ${fmt.n(semanasAteDiaD)} semanas pela frente.`,
     },
     p: [13, 21],
   };
@@ -493,7 +493,7 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const ativos = PI.funil.find((x) => x.id === 'ativos').v;
 
   const pd = S.passageiros_dia;
-  exige(pd.length === DATAS.dias, `passageiros_dia tem ${pd.length} dias`);
+  exige(pd.length === DATAS.dias, `leads_dia tem ${pd.length} dias`);
   exige(pd[pd.length - 1].parcial && pd[pd.length - 1].d === DATAS.medidoEm, 'último dia não é o parcial');
   exige(soma(pd, (p) => p.v) === PX.contabilizados, `série soma ${soma(pd, (p) => p.v)} ≠ ${PX.contabilizados}`);
   const maior = pd.reduce((a, p) => (p.v > a.v ? p : a));
@@ -509,12 +509,12 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
 
   const pl = S.pilotos_distintos_dia;
   const maxPl = Math.max(...pl.map((p) => p.v));
-  exige(maxPl === PX.recordePilotosDia.v && pl.filter((p) => p.v === maxPl).length === 1 && pl.find((p) => p.v === maxPl).d === PX.recordePilotosDia.dia, 'recorde de pilotos fora do lugar');
+  exige(maxPl === PX.recordePilotosDia.v && pl.filter((p) => p.v === maxPl).length === 1 && pl.find((p) => p.v === maxPl).d === PX.recordePilotosDia.dia, 'recorde de pessoas fora do lugar');
   exige(arred(soma(bloco, (p) => p.v) / soma(pl.slice(-8, -1), (p) => p.v), 1) === PX.produtividade7d, 'produtividade dos 7 dias');
   exige(pct(B.recordePilotosDia.v, ativos) === B.recordePilotosDia.pctAtivos, 'pct do recorde');
 
   const pps = B.pilotosPorSemana;
-  exige(pps[3].v === PI.vivosVariantes.ultimaSemanaCompleta && pps[4].v === PI.vivosVariantes.semanaAberta && pps[4].aberta, 'pilotos por semana ≠ variantes');
+  exige(pps[3].v === PI.vivosVariantes.ultimaSemanaCompleta && pps[4].v === PI.vivosVariantes.semanaAberta && pps[4].aberta, 'pessoas por semana ≠ variantes');
 
   const H = S.cadastros_hora_30d;
   const R = B.relogio;
@@ -551,12 +551,12 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   exige(B.horaMaisCheia.v < B.cenarios.linhas.find((l) => l.id === 'medio').regDiaSurto / 24, 'hora mais cheia grande demais para a frase das 24 horas');
 
   exige(soma(B.times, (t) => t.passageiros) === PX.somaTabelaTimes, 'tabela de times não soma 9.845');
-  exige(soma(B.times, (t) => t.pilotos) === ativos, 'pilotos da tabela ≠ ativos');
+  exige(soma(B.times, (t) => t.pilotos) === ativos, 'pessoas da tabela ≠ ativos');
   exige(soma(B.times, (t) => t.produzem) === TRES.metaDeQuemJaProduz.pilotos, 'produzem ≠ quem já produz');
   for (const t of B.times) {
     exige(t.produzem <= t.pilotos && t.produzem <= t.passageiros && t.bateram <= t.produzem, `time ${t.time} incoerente`);
     exige(t.produzemPct === pct(t.produzem, t.pilotos), `pct de ${t.time}`);
-    exige(t.passageiros === 0 || t.produzem > 0, `${t.time} tem passageiro sem produtor`);
+    exige(t.passageiros === 0 || t.produzem > 0, `${t.time} tem lead sem produtor`);
   }
   exige(B.times.find((t) => t.time === 'R20_CAPITAL').pilotos === PI.linhaImportadaR20.capital, 'R20_CAPITAL');
   exige(soma(B.familias, (f) => f.passageiros) === PX.somaTabelaTimes && soma(B.familias, (f) => f.pilotos) === ativos, 'famílias não somam');

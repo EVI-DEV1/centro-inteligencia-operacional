@@ -9,8 +9,8 @@
 
   // Séries que uma planilha pode substituir, com palavras que ajudam no mapeamento automático.
   const ALVOS = [
-    { id: 'passageiros_dia', nome: 'Passageiros por dia', chaves: ['passageiro', 'cadastro', 'indicac', 'lead'] },
-    { id: 'pilotos_distintos_dia', nome: 'Pilotos distintos por dia', chaves: ['piloto', 'embaixador', 'vendedor'] },
+    { id: 'passageiros_dia', nome: 'Leads por dia', chaves: ['passageiro', 'cadastro', 'indicac', 'lead'] },
+    { id: 'pilotos_distintos_dia', nome: 'Pessoas distintos por dia', chaves: ['piloto', 'embaixador', 'vendedor'] },
     { id: 'conversas_novas_dia', nome: 'Conversas novas por dia', chaves: ['conversa', 'whatsapp', 'mensage'] },
     { id: 'chamados_abertos_dia', nome: 'Chamados abertos por dia', chaves: ['aberto', 'ticket', 'chamado'] },
     { id: 'chamados_fechados_dia', nome: 'Chamados fechados por dia', chaves: ['fechado', 'resolvido'] },
@@ -105,9 +105,9 @@
     const EST = { atualizado: ['ok', 'Sincronizado'], atrasado: ['parado', 'Coleta parada'] };
     const est = (id, padrao) => (sens[id] ? EST[sens[id].estado] || ['ok', 'Conectado'] : padrao);
     const lista = [
-      { nome: 'PostgreSQL · Central Horizonte', tipo: 'Banco de dados', icone: 'dados', e: est('central', ['ok', 'Conectado']), det: 'bot, pilotos, passageiros e chamados · leitura de agregados' },
+      { nome: 'PostgreSQL · Central', tipo: 'Banco de dados', icone: 'dados', e: est('central', ['ok', 'Conectado']), det: 'bot, pessoas, leads e chamados · leitura de agregados' },
       { nome: 'WhatsApp Business Cloud API', tipo: 'Mensageria', icone: 'central', e: ['ok', 'Webhook ativo'], det: 'conversas, etapas do bot e status das linhas' },
-      { nome: 'Torre · operação', tipo: 'Banco de dados', icone: 'operacao', e: est('operacao', ['ok', 'Conectado']), det: 'material, estoque, refeição, visitas e atendimento' },
+      { nome: 'OPS Intelligence · operação', tipo: 'Banco de dados', icone: 'operacao', e: est('operacao', ['ok', 'Conectado']), det: 'material, estoque, refeição, visitas e atendimento' },
       { nome: 'Instagram e Facebook Graph', tipo: 'Redes sociais', icone: 'alcance', e: est('redes', ['parado', 'Coleta parada']), det: sens.redes ? sens.redes.detalhe : 'seguidores, alcance e comentários' },
       { nome: 'Planilha CSV / Excel', tipo: 'Arquivo', icone: 'planilha', e: imp.atual ? ['ok', 'Planilha ativa'] : ['livre', 'Pronto para importar'], det: imp.atual ? `${imp.atual.arquivo} · ${f.n(imp.atual.linhas)} linhas` : 'arraste um .csv ou .xlsx logo abaixo', acao: '#importar' },
       { nome: 'API REST / JSON', tipo: 'Integração', icone: 'conector', e: ['livre', 'Contrato publicado'], det: 'qualquer sistema que entregue o formato de série abaixo', acao: '#contrato' },
@@ -267,10 +267,10 @@
   }
 
   function contrato() {
-    const exemplo = `GET /api/v1/series/passageiros_dia?de=2026-10-12&ate=2026-11-14
+    const exemplo = `GET /api/v1/series/leads_dia?de=2026-10-12&ate=2026-11-14
 
 {
-  "serie": "passageiros_dia",
+  "serie": "leads_dia",
   "unidade": "cadastros",
   "fuso": "America/Sao_Paulo",
   "pontos": [

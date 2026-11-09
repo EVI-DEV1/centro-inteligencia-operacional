@@ -142,7 +142,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const diurnas = horasCarga.filter((h) => h < 18).sort((a, b) => horas[b] - horas[a]);
   const noturnas = horasCarga.filter((h) => h >= 18).sort((a, b) => horas[b] - horas[a]);
   const horaTxt = (h) => `${h}h (${f.n(horas[h])})`;
-  const horaLeitura = `${ext(diurnas.length).replace(/^./, (c) => c.toUpperCase())} horas concentram quase tudo — ${diurnas.slice(0, -1).map(horaTxt).join(', ')} e ${horaTxt(diurnas[diurnas.length - 1])} — e mais uma à noite, ${noturnas.map(horaTxt).join(' e ')}. Não é o horário em que as pessoas decidem virar piloto: é o horário em que alguém da equipe rodou a carga. Na madrugada inteira há ${f.n(madrugada)} fichas em ${f.n(D.dias)} dias.`;
+  const horaLeitura = `${ext(diurnas.length).replace(/^./, (c) => c.toUpperCase())} horas concentram quase tudo — ${diurnas.slice(0, -1).map(horaTxt).join(', ')} e ${horaTxt(diurnas[diurnas.length - 1])} — e mais uma à noite, ${noturnas.map(horaTxt).join(' e ')}. Não é o horário em que as pessoas decidem virar pessoa: é o horário em que alguém da equipe rodou a carga. Na madrugada inteira há ${f.n(madrugada)} fichas em ${f.n(D.dias)} dias.`;
   const detalhe = CARGAS.filter((c) => c.hora.length)
     .map((c, i) => {
       const cel = c.hora.map(([h, v]) => `${h}h (${f.n(v)})`);
@@ -167,7 +167,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const semCarga = coortes.filter((c) => !c.carga);
   const comCarga = coortes.filter((c) => c.carga);
   const ult = coortes[coortes.length - 1];
-  const coortesLeitura = `As ${extF(semCarga.length)} semanas sem carga somam ${f.n(U.soma(semCarga, (c) => c.pilotos))} pilotos e ${f.n(U.soma(semCarga, (c) => c.passageiros))} passageiros; as ${extF(comCarga.length)} com carga somam ${f.n(U.soma(comCarga, (c) => c.pilotos))} pilotos e ${f.n(U.soma(comCarga, (c) => c.passageiros))} passageiros. A coorte diz em 24 horas o que vai render: quem não cadastra ninguém no primeiro dia quase nunca cadastra depois.`;
+  const coortesLeitura = `As ${extF(semCarga.length)} semanas sem carga somam ${f.n(U.soma(semCarga, (c) => c.pilotos))} pessoas e ${f.n(U.soma(semCarga, (c) => c.passageiros))} leads; as ${extF(comCarga.length)} com carga somam ${f.n(U.soma(comCarga, (c) => c.pilotos))} pessoas e ${f.n(U.soma(comCarga, (c) => c.passageiros))} leads. A coorte diz em 24 horas o que vai render: quem não cadastra ninguém no primeiro dia quase nunca cadastra depois.`;
 
   const planos = A.VOCAB.planos;
   const embaixadas = A.PASSAGEIROS.lideranca.pilotos;
@@ -183,7 +183,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const nunca = ativos - falaram;
   const ultimaMensagem = [...ULTIMA, { faixa: 'nunca', v: nunca, vazio: true }];
   const tres = ULTIMA[0].v + ULTIMA[1].v;
-  const ultimaMensagemLeitura = `Em ${f.n(nunca)} das ${f.n(ativos)} fichas ativas (${f.pct(U.pct(nunca, ativos))}) o campo está vazio; só ${f.n(tres)} pilotos falaram nos últimos 3 dias. Pelo campo da ficha sobram ${f.n(falaram)} pilotos com alguma mensagem; pelas sessões do bot, ${f.n(canal)}.`;
+  const ultimaMensagemLeitura = `Em ${f.n(nunca)} das ${f.n(ativos)} fichas ativas (${f.pct(U.pct(nunca, ativos))}) o campo está vazio; só ${f.n(tres)} pessoas falaram nos últimos 3 dias. Pelo campo da ficha sobram ${f.n(falaram)} pessoas com alguma mensagem; pelas sessões do bot, ${f.n(canal)}.`;
 
   const linhas = [...A.CENTRAL.linhas].sort((a, b) => b.passageiros - a.passageiros);
   const whatsappProducao = linhas.map((l) => ({ numero: l.numero, pilotos: l.pilotos, passageiros: l.passageiros, pct: l.pct }));
@@ -197,14 +197,14 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     total: asp.total,
     estados: [
       { estado: 'na fila', v: asp.naFila, comControlador: asp.naFilaComControlador },
-      { estado: 'virou piloto', v: asp.viraramPiloto, comControlador: ESTADOS_COM_CONTROLADOR.piloto },
-      { estado: 'virou passageiro', v: asp.viraramPassageiro, comControlador: ESTADOS_COM_CONTROLADOR.passageiro },
+      { estado: 'virou pessoa', v: asp.viraramPiloto, comControlador: ESTADOS_COM_CONTROLADOR.piloto },
+      { estado: 'virou lead', v: asp.viraramPassageiro, comControlador: ESTADOS_COM_CONTROLADOR.passageiro },
     ],
     fontes: FONTES.map((fo) => {
       const taxa = fo.viraramPiloto / fo.fichas;
       return { ...fo, faixa: taxa >= 0.9 ? 'azul' : taxa >= 0.3 ? 'laranja' : 'vermelho' };
     }),
-    leitura: `A fila não é base: é agenda. São ${f.n(asp.naFila)} aspirantes esperando, ${f.n(asp.naFilaComControlador)} deles com controlador já definido. Divididos pelos ${f.n(P.contasControlador)} controladores, dão ${f.n(contatosPorControlador)} contatos por pessoa até ${f.data(D.diaD)}. Tratar a fila como lista de ligações a fazer, não como base a converter em lote.`,
+    leitura: `A fila não é base: é agenda. São ${f.n(asp.naFila)} aspirantes esperando, ${f.n(asp.naFilaComControlador)} deles com admin já definido. Divididos pelos ${f.n(P.contasControlador)} admins, dão ${f.n(contatosPorControlador)} contatos por pessoa até ${f.data(D.diaD)}. Tratar a fila como lista de ligações a fazer, não como base a converter em lote.`,
     contatosPorControlador,
   };
 
@@ -224,35 +224,35 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     nota: `A faixa verde não é meta oficial: é o que as ${extF(semCarga.length)} coortes sem carga em massa de fato entregaram. Serve para comparar, não para cobrar.`,
     linhas: [
       { metrica: 'Ativação da coorte em 7 dias', verde: `≥ ${verdeAtiv}%`, amarelo: `30–${verdeAtiv}%`, vermelho: '< 30%', hoje: f.pct(ult.em7d), hojeNota: `coorte ${f.data(ult.semana)}, aberta`, status: status(ult.em7d, verdeAtiv, 30) },
-      { metrica: 'Passageiros por ficha da coorte', verde: `≥ ${verdeFicha}`, amarelo: `10–${verdeFicha}`, vermelho: '< 10', hoje: f.dec(ult.porFicha), status: status(ult.porFicha, verdeFicha, 10) },
-      { metrica: 'Pilotos que cadastraram alguém na última semana', verde: `≥ ${f.n(produziu)}`, amarelo: `${f.n(vivo)}–${f.n(produziu)}`, vermelho: `< ${f.n(vivo)}`, hoje: f.n(vivo), hojeNota: 'na borda', status: status(vivo, produziu, vivo) },
+      { metrica: 'Leads por ficha da coorte', verde: `≥ ${verdeFicha}`, amarelo: `10–${verdeFicha}`, vermelho: '< 10', hoje: f.dec(ult.porFicha), status: status(ult.porFicha, verdeFicha, 10) },
+      { metrica: 'Pessoas que cadastraram alguém na última semana', verde: `≥ ${f.n(produziu)}`, amarelo: `${f.n(vivo)}–${f.n(produziu)}`, vermelho: `< ${f.n(vivo)}`, hoje: f.n(vivo), hojeNota: 'na borda', status: status(vivo, produziu, vivo) },
       { metrica: 'Fichas ativas com "última mensagem" preenchida', verde: '≥ 70%', amarelo: '30–70%', vermelho: '< 30%', hoje: f.pct(pctFalaram), status: status(pctFalaram, 70, 30) },
-      { metrica: 'Fichas de piloto com porta de entrada registrada', verde: '≥ 50%', amarelo: '15–50%', vermelho: '< 15%', hoje: f.pct(origemRegistradaPct), status: status(origemRegistradaPct, 50, 15) },
+      { metrica: 'Fichas de pessoa com porta de entrada registrada', verde: '≥ 50%', amarelo: '15–50%', vermelho: '< 15%', hoje: f.pct(origemRegistradaPct), status: status(origemRegistradaPct, 50, 15) },
     ],
   };
 
   const onboarding = ficha.find((c) => /onboarding/.test(c.campo));
   const mapa = ficha.find((c) => /mapa/.test(c.campo));
-  const frase = `Piloto criado não é piloto que produz. Em ${f.n(D.dias)} dias o sistema registrou ${f.n(totalFichas)} fichas de piloto; ${f.n(fichasDeCarga)} delas (${f.pct(fichasDeCargaPct)}) nasceram em ${ext(diasDeCarga.length)} dias de carga em massa. No mesmo recorte, ${f.n(vivo)} pilotos cadastraram alguém na última semana. A base que trabalha é de centenas; a base que existe é de milhares.`;
+  const frase = `Pessoa criado não é pessoa que produz. Em ${f.n(D.dias)} dias o sistema registrou ${f.n(totalFichas)} fichas de pessoa; ${f.n(fichasDeCarga)} delas (${f.pct(fichasDeCargaPct)}) nasceram em ${ext(diasDeCarga.length)} dias de carga em massa. No mesmo recorte, ${f.n(vivo)} pessoas cadastraram alguém na última semana. A base que trabalha é de centenas; a base que existe é de milhares.`;
 
   const livro = {
     letra: 'A',
-    titulo: 'Pilotos: quem entra, por onde e quando',
-    pergunta: 'Quantos pilotos existem de verdade, como foram criados e quais produzem.',
+    titulo: 'Pessoas: quem entra, por onde e quando',
+    pergunta: 'Quantas pessoas existem de verdade, como foram criados e quais produzem.',
     frase,
     kpis: [
-      { v: ativos, rotulo: 'pilotos ativos hoje' },
+      { v: ativos, rotulo: 'pessoas ativas hoje' },
       { v: criados7d, rotulo: `criados nos 7 dias completos (${setesDias[0].slice(8, 10)}–${f.data(setesDias[6])})` },
-      { v: asp.total - asp.viraramPiloto, rotulo: 'aspirantes que ainda não viraram piloto' },
+      { v: asp.total - asp.viraramPiloto, rotulo: 'aspirantes que ainda não viraram pessoa' },
       { v: vivo, rotulo: 'cadastraram alguém na última semana' },
     ],
     funil: P.funil.map((d) => ({
       id: d.id,
       ...{
-        ativos: { rotulo: 'Pilotos ativos' },
+        ativos: { rotulo: 'Pessoas ativas' },
         dono: { rotulo: 'com dono de verdade', detalhe: 'sem órfãos e sem a fila de triagem' },
         canal: { rotulo: 'já trocaram mensagem com o bot' },
-        produziu: { rotulo: 'já cadastraram ao menos 1 passageiro' },
+        produziu: { rotulo: 'já cadastraram ao menos 1 lead' },
         vivo: { rotulo: 'cadastraram alguém na última semana' },
         kit: { rotulo: 'com a tag de kit recebido' },
       }[d.id],
@@ -263,7 +263,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
       ...(d.id === 'vivo' ? { operacional: true } : {}),
     })),
     metaFaseA: P.metaFaseA,
-    funilLeitura: `Cada seta para baixo é uma peneira. O gargalo está entre "tem dono" e "falou com o bot": ${f.n(P.semContatoComDono)} pilotos têm controlador e nunca trocaram mensagem com o sistema. A base que responde a um comando hoje está entre ${f.n(kit)} e ${f.n(produziu)} pilotos; a operacional é ${f.n(vivo)}.`,
+    funilLeitura: `Cada seta para baixo é uma peneira. O gargalo está entre "tem dono" e "falou com o bot": ${f.n(P.semContatoComDono)} pessoas têm admin e nunca trocaram mensagem com o sistema. A base que responde a um comando hoje está entre ${f.n(kit)} e ${f.n(produziu)} pessoas; a operacional é ${f.n(vivo)}.`,
     semContatoComDono: P.semContatoComDono,
     totalFichas,
     fichasDeCarga,
@@ -285,15 +285,15 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     whatsappProducao,
     prePilotos,
     muda: [
-      { t: 'Criar piloto em massa não rende — está medido, não é opinião.', d: `${f.n(fichasDeCarga)} das ${f.n(totalFichas)} fichas (${f.pct(fichasDeCargaPct)}) nasceram em ${ext(diasDeCarga.length)} dias de carga. A coorte de ${f.data(ult.semana)}, com ${f.n(ult.pilotos)} pilotos, tem ${f.n(ult.ativaram)} que já cadastraram alguém — ${f.pct(ult.ativaramPct)} — e ${f.dec(ult.porFicha)} passageiro por ficha. Continuar convertendo a fila em lote adiciona linhas, não adesões.` },
-      { t: `Quem entra por vontade própria produz ${vezes} vezes mais.`, d: `Aspirante que escreveu ao bot rende ${f.dec(pre.passageirosPorFicha)} passageiros e o QR rende ${f.dec(qr.passageirosPorFicha)}, contra ${f.dec(lista.passageirosPorFicha)} da lista importada. A porta boa é a mais estreita — e é a que menos recebe atenção.` },
+      { t: 'Criar pessoa em massa não rende — está medido, não é opinião.', d: `${f.n(fichasDeCarga)} das ${f.n(totalFichas)} fichas (${f.pct(fichasDeCargaPct)}) nasceram em ${ext(diasDeCarga.length)} dias de carga. A coorte de ${f.data(ult.semana)}, com ${f.n(ult.pilotos)} pessoas, tem ${f.n(ult.ativaram)} que já cadastraram alguém — ${f.pct(ult.ativaramPct)} — e ${f.dec(ult.porFicha)} lead por ficha. Continuar convertendo a fila em lote adiciona linhas, não adesões.` },
+      { t: `Quem entra por vontade própria produz ${vezes} vezes mais.`, d: `Aspirante que escreveu ao bot rende ${f.dec(pre.passageirosPorFicha)} leads e o QR rende ${f.dec(qr.passageirosPorFicha)}, contra ${f.dec(lista.passageirosPorFicha)} da lista importada. A porta boa é a mais estreita — e é a que menos recebe atenção.` },
       { t: 'A base nunca foi acesa.', d: `Em ${f.n(nunca)} das ${f.n(ativos)} fichas ativas (${f.pct(U.pct(nunca, ativos))}) o campo de última mensagem está vazio; pelas sessões do bot, ${f.n(canal)} já falaram. ${f.n(onboarding.v)} (${f.pct(onboarding.pct)}) passaram pelo onboarding e ${f.n(mapa.v)} (${f.pct(mapa.pct)}) receberam o mapa. O problema não é reengajar: é fazer o primeiro contato, que nunca houve.` },
-      { t: `O estoque real são ${f.n(asp.naFila)} aspirantes na fila, sem contato.`, d: `Desses, ${f.n(asp.naFilaComControlador)} já têm controlador atribuído. Converter em lote já foi feito ${ext(cargasFila)} vezes e não produziu. O que ainda não foi feito é falar com eles — e ${f.n(D.faltavamDiasNaMedicao)} dias dão para chamar ${f.n(asp.naFila)} pessoas se houver escala humana.` },
-      { t: `A produção depende de ${ext(dois.length)} números de WhatsApp.`, d: `${dois.map((w) => w.numero).join(' e ')} concentram ${f.pct(doisPct)} dos ${f.n(totalPass)} passageiros com ficha. Um bloqueio numa dessas contas derruba a maior parte do cadastro.` },
+      { t: `O estoque real são ${f.n(asp.naFila)} aspirantes na fila, sem contato.`, d: `Desses, ${f.n(asp.naFilaComControlador)} já têm admin atribuído. Converter em lote já foi feito ${ext(cargasFila)} vezes e não produziu. O que ainda não foi feito é falar com eles — e ${f.n(D.faltavamDiasNaMedicao)} dias dão para chamar ${f.n(asp.naFila)} pessoas se houver escala humana.` },
+      { t: `A produção depende de ${ext(dois.length)} números de WhatsApp.`, d: `${dois.map((w) => w.numero).join(' e ')} concentram ${f.pct(doisPct)} dos ${f.n(totalPass)} leads com ficha. Um bloqueio numa dessas contas derruba a maior parte do cadastro.` },
     ],
     naoMede: [
-      `Origem só existe para ${f.n(FICHAS_DO_BOT)} de ${f.n(totalFichas)} pilotos (${f.pct(origemRegistradaPct)}) — as fichas criadas pelo bot.`,
-      'Não existe data de entrega do kit na ficha do piloto — só a marca de recebido. Sem a data, não dá para dizer que o kit causou produção.',
+      `Origem só existe para ${f.n(FICHAS_DO_BOT)} de ${f.n(totalFichas)} pessoas (${f.pct(origemRegistradaPct)}) — as fichas criadas pelo bot.`,
+      'Não existe data de entrega do kit na ficha da pessoa — só a marca de recebido. Sem a data, não dá para dizer que o kit causou produção.',
       `A data da ficha não é a data do compromisso — para as ${f.n(asp.viraramPiloto)} fichas convertidas, o sistema registra o dia da conversão.`,
       'O número de WhatsApp é o atual, não o histórico.',
       `${f.data(D.medidoEm)} está incompleto e a coorte de ${f.data(ult.semana)} ainda não completou 7 dias: os dois só podem subir.`,
@@ -326,7 +326,7 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
 
   const fichas = S.fichas_piloto_dia;
   eq(fichas.length, A.DATAS.dias, 'dias da série de fichas');
-  eq(soma(fichas, (p) => p.v), P.totalFichas, 'soma de fichas_piloto_dia × totalFichas');
+  eq(soma(fichas, (p) => p.v), P.totalFichas, 'soma de fichas_pessoa_dia × totalFichas');
   eq(L.totalFichas, P.totalFichas, 'totalFichas');
   eq(S.pilotos_acumulado[S.pilotos_acumulado.length - 1].v, P.totalFichas, 'fim do acumulado');
   eq(soma(fichas.filter((p) => p.carga), (p) => p.v), P.fichasDeCarga, 'soma dos dias de carga');
@@ -350,7 +350,7 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   eq(L.coortes.map((c) => c.semana).join(), A.DATAS.semanas.join(), 'semanas das coortes');
   L.coortes.forEach((c) => {
     const s = soma(fichas.filter((p) => U.semanaDe(p.d) === c.semana), (p) => p.v);
-    eq(c.pilotos, s, `pilotos da coorte ${c.semana} × série`);
+    eq(c.pilotos, s, `pessoas da coorte ${c.semana} × série`);
     eq(c.ativaramPct, U.pct(c.ativaram, c.pilotos), `ativaramPct ${c.semana}`);
     eq(c.porFicha, U.arred(c.passageiros / c.pilotos, 1), `porFicha ${c.semana}`);
     if (c.em1d > c.em7d || c.em7d > c.ativaramPct) erros.push(`coorte ${c.semana}: em1d ≤ em7d ≤ ativaram quebrado`);
@@ -358,19 +358,19 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   const pri = L.coortes[0];
   const ult = L.coortes[L.coortes.length - 1];
   eq(pri.porFicha, P.safra.primeira.porFicha, 'porFicha da primeira safra');
-  eq(ult.pilotos, P.safra.ultima.pilotos, 'pilotos da última safra');
+  eq(ult.pilotos, P.safra.ultima.pilotos, 'pessoas da última safra');
   eq(ult.ativaramPct, P.safra.ultima.ativacaoPct, 'ativação da última safra');
   eq(ult.porFicha, P.safra.ultima.porFicha, 'porFicha da última safra');
   if (!ult.aberta || !ult.carga) erros.push('última coorte precisa ser aberta e com carga');
-  eq(soma(L.coortes, (c) => c.passageiros), soma(L.whatsappProducao, (w) => w.passageiros), 'passageiros das coortes × WhatsApp');
+  eq(soma(L.coortes, (c) => c.passageiros), soma(L.whatsappProducao, (w) => w.passageiros), 'leads das coortes × WhatsApp');
 
   const ativos = P.funil[0].v;
-  eq(soma(L.metas, (m) => m.pilotos), ativos, 'pilotos por plano × ativos');
+  eq(soma(L.metas, (m) => m.pilotos), ativos, 'pessoas por plano × ativos');
   eq(soma(L.metas, (m) => m.meta * m.pilotos), P.funil[0].meta, 'meta dos planos × meta dos ativos');
-  if (L.metas.some((m) => m.pilotos <= 0 || !Number.isInteger(m.pilotos))) erros.push('plano com pilotos inválido');
+  if (L.metas.some((m) => m.pilotos <= 0 || !Number.isInteger(m.pilotos))) erros.push('plano com número de pessoas inválido');
   L.metas.forEach((m) => eq(m.pct, U.pct(m.pilotos, ativos), `pct plano ${m.meta}`));
   eq(soma(L.ultimaMensagem, (u) => u.v), ativos, 'última mensagem × ativos');
-  eq(soma(L.whatsappProducao, (w) => w.pilotos), ativos, 'pilotos por linha × ativos');
+  eq(soma(L.whatsappProducao, (w) => w.pilotos), ativos, 'pessoas por linha × ativos');
   for (let i = 1; i < L.whatsappProducao.length; i++) if (L.whatsappProducao[i].passageiros > L.whatsappProducao[i - 1].passageiros) erros.push('whatsappProducao fora da ordem');
   eq(L.metaFaseA.join(), P.metaFaseA.join(), 'metaFaseA');
   eq(L.funil.find((d) => d.operacional).id, 'vivo', 'degrau operacional');
@@ -393,9 +393,9 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   eq(soma(pp.estados, (e) => e.v), pp.total, 'estados × total de aspirantes');
   eq(pp.total, P.aspirantes.total, 'total de aspirantes');
   eq(soma(criadas, (p) => p.v), P.aspirantes.total, 'aspirantes criados × total');
-  eq(soma(conv, (p) => p.v), P.aspirantes.viraramPiloto, 'convertidos × viraram piloto');
+  eq(soma(conv, (p) => p.v), P.aspirantes.viraramPiloto, 'convertidos × viraram pessoa');
   conv.forEach((c, i) => {
-    if (c.v > fichas[i].v) erros.push(`${c.d}: ${c.v} convertidos > ${fichas[i].v} fichas de piloto`);
+    if (c.v > fichas[i].v) erros.push(`${c.d}: ${c.v} convertidos > ${fichas[i].v} fichas de pessoa`);
   });
   let ac = 0;
   let acC = 0;
@@ -412,14 +412,14 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   if (soma(pp.fontes, (x) => x.fichas) > pp.total) erros.push('fontes somam mais que o total');
   if (soma(pp.fontes, (x) => x.viraramPiloto) > P.aspirantes.viraramPiloto) erros.push('fontes convertem mais que o total');
   for (let i = 1; i < pp.fontes.length; i++) if (pp.fontes[i].fichas > pp.fontes[i - 1].fichas) erros.push('fontes fora da ordem');
-  eq(pp.contatosPorControlador, Math.round(P.aspirantes.naFila / P.contasControlador), 'contatos por controlador');
+  eq(pp.contatosPorControlador, Math.round(P.aspirantes.naFila / P.contasControlador), 'contatos por admin');
 
   if (soma(L.portas, (p) => p.fichas) > L.fichasCriadasPeloBot) erros.push('portas somam mais que as fichas do bot');
   eq(L.origemRegistradaPct, U.pct(L.fichasCriadasPeloBot, P.totalFichas), 'origemRegistradaPct');
 
   const setes = U.intervalo(U.somarDias(A.DATAS.medidoEm, -7), U.somarDias(A.DATAS.medidoEm, -1));
   eq(L.kpis[1].v, soma(fichas.filter((p) => setes.includes(p.d)), (p) => p.v), 'kpi criados em 7 dias');
-  eq(L.kpis[2].v, P.aspirantes.naFila + P.aspirantes.viraramPassageiro, 'kpi aspirantes que não viraram piloto');
+  eq(L.kpis[2].v, P.aspirantes.naFila + P.aspirantes.viraramPassageiro, 'kpi aspirantes que não viraram pessoa');
 
   const hojeVivo = L.regua.linhas.find((l) => /última semana/.test(l.metrica));
   eq(hojeVivo.hoje, U.fmt.n(P.funil.find((d) => d.id === 'vivo').v), 'régua: vivos hoje');

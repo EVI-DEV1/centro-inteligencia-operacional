@@ -112,7 +112,7 @@
     return G.painel({
       id: 'ritmo',
       titulo: `O ritmo não sobe: ~${f.n(B.cenarios.ritmoAtual)} por dia há um mês`,
-      comoLer: `Passageiros cadastrados por dia; a linha é a média dos 7 dias. Só os dias com ${f.n(limiar)} ou mais levam número.${parcial ? ` Lilás claro: ${f.data(parcial.d)}, incompleto.` : ''}`,
+      comoLer: `Leads cadastrados por dia; a linha é a média dos 7 dias. Só os dias com ${f.n(limiar)} ou mais levam número.${parcial ? ` Lilás claro: ${f.data(parcial.d)}, incompleto.` : ''}`,
       largura: 3,
       grafico: (el) =>
         G.barrasDia(el, {
@@ -123,13 +123,13 @@
           linhas: [{ nome: 'média de 7 dias', pontos: T.dados.mm7(), cor: 'var(--atencao)', largura: 2 }],
         }),
       legenda: [
-        { rotulo: 'passageiros no dia', cor: 'var(--eletrico)' },
+        { rotulo: 'leads no dia', cor: 'var(--eletrico)' },
         { rotulo: 'média de 7 dias', cor: 'var(--atencao)', forma: 'linha' },
         { rotulo: 'dia incompleto', cor: 'var(--parcial)' },
       ],
       leitura: B.ritmoLeitura,
       p: 14,
-      tabela: { colunas: ['Dia', 'Passageiros'], linhas: serie.map((p) => [f.data(p.d), f.n(p.v)]) },
+      tabela: { colunas: ['Dia', 'Leads'], linhas: serie.map((p) => [f.data(p.d), f.n(p.v)]) },
     });
   }
 
@@ -140,18 +140,18 @@
     const rec = B.recordePilotosDia || { v: Math.max(...serie.map((p) => p.v)) };
     const recorde = rec.v;
     return G.painel({
-      titulo: 'O termômetro: quantos pilotos cadastram no mesmo dia',
-      comoLer: `Pessoas distintas que gravaram ao menos um nome no dia${ativos === null ? '' : ` (de ${f.n(ativos)} ativos)`}. Embaixo, em gráfico separado: registros por piloto que cadastrou.`,
+      titulo: 'O termômetro: quantas pessoas cadastram no mesmo dia',
+      comoLer: `Pessoas distintas que gravaram ao menos um nome no dia${ativos === null ? '' : ` (de ${f.n(ativos)} ativos)`}. Embaixo, em gráfico separado: registros por pessoa que cadastrou.`,
       largura: 1,
       grafico: (el) => {
         const a = T.h('div');
         const b = T.h('div', { class: 'sub-grafico' });
-        el.append(a, T.h('p', { class: 'sub-titulo leitura' }, 'Registros por piloto que cadastrou no dia'), b);
-        G.barrasDia(a, { serie, altura: 170, nome: 'pilotos distintos', cor: (p) => (p.v === recorde ? 'var(--ciano)' : 'var(--eletrico)'), referencias: [{ v: recorde, rotulo: `recorde ${f.n(recorde)}`, cor: 'var(--ciano)' }], divisoes: 3 });
-        G.barrasDia(b, { serie: prod, altura: 120, nome: 'registros por piloto', formatoDica: (v) => f.n(v, 1), cor: () => 'var(--referencia)', divisoes: 2 });
+        el.append(a, T.h('p', { class: 'sub-titulo leitura' }, 'Registros por pessoa que cadastrou no dia'), b);
+        G.barrasDia(a, { serie, altura: 170, nome: 'pessoas distintas', cor: (p) => (p.v === recorde ? 'var(--ciano)' : 'var(--eletrico)'), referencias: [{ v: recorde, rotulo: `recorde ${f.n(recorde)}`, cor: 'var(--ciano)' }], divisoes: 3 });
+        G.barrasDia(b, { serie: prod, altura: 120, nome: 'registros por pessoa', formatoDica: (v) => f.n(v, 1), cor: () => 'var(--referencia)', divisoes: 2 });
       },
       leitura: rec.dia
-        ? `O recorde é recente — ${f.n(recorde)} pilotos em ${f.data(rec.dia)} — e não passa de ${f.pct(rec.pctAtivos)} dos ativos. Quem cadastra grava quase sempre perto de ${f.n(B.produtividade7d)} nomes por dia (${f.nFlex(B.produtividade7d)} nos últimos 7): o total cresce com mais pilotos no mesmo dia, não com mais produtividade de cada um.`
+        ? `O recorde é recente — ${f.n(recorde)} pessoas em ${f.data(rec.dia)} — e não passa de ${f.pct(rec.pctAtivos)} dos ativos. Quem cadastra grava quase sempre perto de ${f.n(B.produtividade7d)} nomes por dia (${f.nFlex(B.produtividade7d)} nos últimos 7): o total cresce com mais pessoas no mesmo dia, não com mais produtividade de cada um.`
         : null,
       p: 14,
     });
@@ -169,7 +169,7 @@
       titulo,
       comoLer: `Soma dos dias de cada semana (segunda a domingo).${aberta && typeof n === 'number' ? ` A semana de ${f.data(aberta.semana)} tem ${f.n(n)} ${n === 1 ? 'dia medido' : 'dias medidos'}.` : ''}`,
       largura: 1,
-      grafico: (el) => G.colunas(el, { altura: 190, todosValores: true, nome: 'passageiros por semana', itens: B.semanas.map((s) => ({ rotulo: f.data(s.semana), v: s.v, cor: s.aberta ? 'var(--parcial)' : 'var(--eletrico)' })), larguraMax: 44 }),
+      grafico: (el) => G.colunas(el, { altura: 190, todosValores: true, nome: 'leads por semana', itens: B.semanas.map((s) => ({ rotulo: f.data(s.semana), v: s.v, cor: s.aberta ? 'var(--parcial)' : 'var(--eletrico)' })), larguraMax: 44 }),
       leitura:
         topo && ultimaFechada && topo !== ultimaFechada
           ? `Nenhuma semana voltou aos ${f.n(topo.v)} cadastros de ${faixaSemana(topo.semana)}; a última fechada somou ${f.n(ultimaFechada.v)}. Em ${f.n(B.semanas.length)} semanas o volume semanal não encontrou um degrau novo.`
@@ -318,7 +318,7 @@
     return G.painel({
       id: 'times',
       titulo,
-      comoLer: 'Para cada família: fatia da rede (pilotos) contra fatia dos registros. Ponto vazio = % da rede; ponto cheio = % dos registros.',
+      comoLer: 'Para cada família: fatia da rede (pessoas) contra fatia dos registros. Ponto vazio = % da rede; ponto cheio = % dos registros.',
       largura: 3,
       grafico: (el) => {
         const grade = T.h('div', { class: 'times-grade' });
@@ -340,7 +340,7 @@
           T.h(
             'table',
             { class: 'tabela-dados' },
-            T.h('thead', null, T.h('tr', null, ['Time', 'Pilotos', 'Passageiros', 'Produzem', 'Média de quem produz', 'Bateram', '7 dias'].map((x) => T.h('th', { scope: 'col' }, x)))),
+            T.h('thead', null, T.h('tr', null, ['Time', 'Pessoas', 'Leads', 'Produzem', 'Média de quem produz', 'Bateram', '7 dias'].map((x) => T.h('th', { scope: 'col' }, x)))),
             T.h(
               'tbody',
               null,
@@ -364,7 +364,7 @@
       },
       leitura:
         lid && fria
-          ? `As ${FAMILIA_LIDERANCA} são ${f.n(lid.pilotos)} pilotos (${f.pct(lid.redePct)} da rede) e fizeram ${f.pct(lid.registrosPct)} dos registros. A ${FAMILIA_FRIA}, com ${f.n(fria.pilotos)} pilotos, produziu ${f.n(fria.passageiros)} — é lista fria, para ativar ou tirar do denominador, não rede disponível.`
+          ? `As ${FAMILIA_LIDERANCA} são ${f.n(lid.pilotos)} pessoas (${f.pct(lid.redePct)} da rede) e fizeram ${f.pct(lid.registrosPct)} dos registros. A ${FAMILIA_FRIA}, com ${f.n(fria.pilotos)} pessoas, produziu ${f.n(fria.passageiros)} — é lista fria, para ativar ou tirar do denominador, não rede disponível.`
           : null,
       p: 18,
     });
@@ -378,7 +378,7 @@
     return G.painel({
       id: 'quem-produz',
       titulo: 'Quem produz — e quem já produziu e parou',
-      comoLer: 'Faixas de produção por piloto, tempo até o primeiro passageiro e há quanto tempo cada produtor não cadastra.',
+      comoLer: 'Faixas de produção por pessoa, tempo até o primeiro lead e há quanto tempo cada produtor não cadastra.',
       largura: 3,
       grafico: (el) => {
         const grade = T.h('div', { class: 'grade-3' });
@@ -387,13 +387,13 @@
         const b = T.h('div');
         const c = T.h('div', { id: 'parados' });
         grade.append(a, b, c);
-        a.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'Passageiros entregues por faixa (e quantos pilotos há nela)'));
-        G.barrasH(a, { compacta: true, itens: B.faixasProducao.map((x) => ({ rotulo: `${x.faixa} passageiros`, sub: `${f.n(x.pilotos)} pilotos`, v: x.passageiros, texto: f.n(x.passageiros), cor: x.faixa === '88+' ? 'var(--ciano)' : 'var(--eletrico)' })) });
-        b.appendChild(T.h('p', { class: 'sub-titulo leitura' }, `Tempo até o primeiro passageiro (${f.n(T.soma(B.tempoAtePrimeiro, (x) => x.v))} que ativaram)`));
+        a.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'Leads entregues por faixa (e quantas pessoas há nela)'));
+        G.barrasH(a, { compacta: true, itens: B.faixasProducao.map((x) => ({ rotulo: `${x.faixa} leads`, sub: `${f.n(x.pilotos)} pessoas`, v: x.passageiros, texto: f.n(x.passageiros), cor: x.faixa === '88+' ? 'var(--ciano)' : 'var(--eletrico)' })) });
+        b.appendChild(T.h('p', { class: 'sub-titulo leitura' }, `Tempo até o primeiro lead (${f.n(T.soma(B.tempoAtePrimeiro, (x) => x.v))} que ativaram)`));
         const cb = T.h('div');
         b.appendChild(cb);
-        G.colunas(cb, { altura: 170, todosValores: true, nome: 'tempo até o primeiro passageiro', itens: B.tempoAtePrimeiro.map((x, i) => ({ rotulo: x.faixa, v: x.v, cor: i < 3 ? 'var(--eletrico)' : 'var(--referencia)' })), larguraMax: 30 });
-        b.appendChild(T.h('p', { class: 'nota-pequena' }, `${f.pct(B.ativacao24hEntreQuemAtiva)} de quem ativa faz isso em 24 h — mas, entre todos os pilotos com 2+ dias de ficha, só ${f.pct(B.ativacao24hSobreTodos)} ativam em 24 h e ${f.pct(B.nuncaAtivamPct, 'auto')} nunca ativaram.`));
+        G.colunas(cb, { altura: 170, todosValores: true, nome: 'tempo até o primeiro lead', itens: B.tempoAtePrimeiro.map((x, i) => ({ rotulo: x.faixa, v: x.v, cor: i < 3 ? 'var(--eletrico)' : 'var(--referencia)' })), larguraMax: 30 });
+        b.appendChild(T.h('p', { class: 'nota-pequena' }, `${f.pct(B.ativacao24hEntreQuemAtiva)} de quem ativa faz isso em 24 h — mas, entre todas as pessoas com 2+ dias de ficha, só ${f.pct(B.ativacao24hSobreTodos)} ativam em 24 h e ${f.pct(B.nuncaAtivamPct, 'auto')} nunca ativaram.`));
         const produtores = T.soma(B.parados, (x) => x.v);
         c.appendChild(T.h('p', { class: 'sub-titulo leitura' }, `Os ${f.n(produtores)} produtores, pelo tempo desde o último registro`));
         const parado7 = (x) => /7\s*[–-]\s*14|>\s*14/.test(x.faixa || '');
@@ -402,7 +402,7 @@
       },
       leitura:
         zero && topo
-          ? `${f.n(zero.pilotos)} dos ${f.n(totalPilotos)} pilotos ativos nunca cadastraram ninguém. Os ${f.n(topo.pilotos)} do topo (88 ou mais cada) fizeram ${f.n(topo.passageiros)} — ${f.pct(totalPass ? (topo.passageiros / totalPass) * 100 : 0, 0)} de tudo.`
+          ? `${f.n(zero.pilotos)} das ${f.n(totalPilotos)} pessoas ativas nunca cadastraram ninguém. Os ${f.n(topo.pilotos)} do topo (88 ou mais cada) fizeram ${f.n(topo.passageiros)} — ${f.pct(totalPass ? (topo.passageiros / totalPass) * 100 : 0, 0)} de tudo.`
           : null,
       p: 19,
     });
@@ -421,13 +421,13 @@
         const c = T.h('div', { class: 'confirmacao' });
         const du = T.h('div');
         grade.append(k, d, c, du);
-        k.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'Kit × produção (média por piloto)'));
+        k.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'Kit × produção (média por pessoa)'));
         G.barrasH(k, { compacta: true, itens: B.kit.map((x) => ({ rotulo: x.grupo, v: x.media, texto: `${f.nFlex(x.media)} · ${f.pct(x.produzemPct)}`, cor: x.grupo.includes('COM') ? 'var(--eletrico)' : 'var(--referencia)' })) });
         k.appendChild(T.h('p', { class: 'nota-pequena' }, B.kitLeitura));
-        d.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'DDD do telefone do passageiro'));
+        d.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'DDD do telefone do lead'));
         G.barrasH(d, { compacta: true, max: Math.max(...B.ddd.map((x) => x.v)), itens: B.ddd.map((x) => ({ rotulo: `DDD ${x.ddd}`, v: x.v, texto: `${f.n(x.v)} · ${f.pct(x.pct)}`, cor: x.ddd === B.dddBase ? 'var(--eletrico)' : 'var(--referencia)' })) });
         const fora = B.dddForaDoEstado;
-        d.appendChild(T.h('p', { class: 'nota-pequena' }, `O DDD é do chip, não diz de onde a pessoa embarca. ${f.n(fora)} ${fora === 1 ? 'passageiro tem' : 'passageiros têm'} DDD de fora do estado-base.`));
+        d.appendChild(T.h('p', { class: 'nota-pequena' }, `O DDD é do chip, não diz de onde a pessoa embarca. ${f.n(fora)} ${fora === 1 ? 'lead tem' : 'leads têm'} DDD de fora do estado-base.`));
         const conf = (estado) => B.confirmacao.find((x) => x.estado === estado) || null;
         const semResposta = conf('sem nenhuma resposta');
         const vai = conf('disse que vai aderir');
@@ -441,8 +441,8 @@
         );
         const fd = B.fichaDupla;
         du.append(
-          T.h('p', { class: 'sub-titulo leitura' }, 'Piloto e passageiro ao mesmo tempo'),
-          T.comp.medidor({ v: fd.tambemPassageiro, max: Math.max(fd.ativos, fd.tambemPassageiro), rotulo: 'pilotos que também são passageiros', formato: (v) => `${f.n(v)} · ${f.pct(fd.pct)}`, cor: 'var(--rosa)' }),
+          T.h('p', { class: 'sub-titulo leitura' }, 'Pessoa e lead ao mesmo tempo'),
+          T.comp.medidor({ v: fd.tambemPassageiro, max: Math.max(fd.ativos, fd.tambemPassageiro), rotulo: 'pessoas que também são leads', formato: (v) => `${f.n(v)} · ${f.pct(fd.pct)}`, cor: 'var(--rosa)' }),
           T.comp.medidor({ v: fd.produzem, max: Math.max(fd.tambemPassageiro, fd.produzem), rotulo: 'desses, já cadastraram alguém', formato: (v) => f.n(v), cor: 'var(--eletrico)' }),
           T.h('p', { class: 'nota-pequena' }, `Ser as duas coisas é legítimo; o problema é a meta desses ${f.n(fd.tambemPassageiro)} (${f.n(fd.metaDeles)}) entrar na Projetada por cima da indicação que eles mesmos já são.`)
         );
@@ -452,7 +452,7 @@
   }
 
   T.modulos.passageiros = {
-    titulo: 'Passageiros',
+    titulo: 'Leads',
     render(main) {
       main.append(
         T.pag.abertura(B, 'passageiros', 'passageiros', { regua: B.regua.linhas, explicas: ['contabilizados', 'ritmo', null, 'funil-vivo'] }),

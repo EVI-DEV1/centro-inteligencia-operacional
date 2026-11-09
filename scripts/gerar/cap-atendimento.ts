@@ -171,7 +171,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     letra: 'F',
     titulo: 'Atendimento: quem responde',
     pergunta: 'Tempo até a baixa, concentração, fila e assuntos.',
-    frase: `Uma pessoa responde por quase tudo: uma única conta deu ${fmt.pct(top.pct)} das ${fmt.n(AT.baixas30d)} baixas dos últimos 30 dias, e só ${fmt.n(AT.contasQueDeramBaixa)} das ${fmt.n(AT.contasTorre)} contas da Torre já apertaram o botão.`,
+    frase: `Uma pessoa responde por quase tudo: uma única conta deu ${fmt.pct(top.pct)} das ${fmt.n(AT.baixas30d)} baixas dos últimos 30 dias, e só ${fmt.n(AT.contasQueDeramBaixa)} das ${fmt.n(AT.contasTorre)} contas do OPS Intelligence já apertaram o botão.`,
     kpis: [
       { v: baixas7d, rotulo: `baixas nos últimos 7 dias completos (${fmt.data(ini7)} a ${fmt.data(ontem)})` },
       { v: MEDIANA_ONTEM_H, rotulo: `mediana de espera até a baixa ontem (${fmt.data(ontem)})`, formato: 'horas' },
@@ -203,7 +203,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     muda: [
       {
         t: `Uma pessoa é ${fmt.pct(top.pct)} das baixas.`,
-        d: `${fmt.n(top.v)} de ${fmt.n(AT.baixas30d)} baixas em 30 dias saíram de uma única conta, e só ${fmt.n(AT.contasQueDeramBaixa)} das ${fmt.n(AT.contasTorre)} contas da Torre já usaram o botão. Não se trata de elogiar ou cobrar alguém: é um ponto único de falha. Bastam alguns dias de ausência para a fila ficar sem dono.`,
+        d: `${fmt.n(top.v)} de ${fmt.n(AT.baixas30d)} baixas em 30 dias saíram de uma única conta, e só ${fmt.n(AT.contasQueDeramBaixa)} das ${fmt.n(AT.contasTorre)} contas do OPS Intelligence já usaram o botão. Não se trata de elogiar ou cobrar alguém: é um ponto único de falha. Bastam alguns dias de ausência para a fila ficar sem dono.`,
       },
       {
         t: `${destaque.assunto} é o assunto que pede pessoa — e é o que mais espera.`,
@@ -216,7 +216,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     ],
     naoMede: [
       'A primeira resposta: o relógio só para no clique de baixa.',
-      'O que se responde pelo celular: mensagem enviada do aparelho de alguém da equipe não passa pela Torre.',
+      'O que se responde pelo celular: mensagem enviada do aparelho de alguém da equipe não passa pelo OPS Intelligence.',
       `A região da maior parte das conversas: ${fmt.pct(semRegiaoPct)} chegam sem região.`,
     ],
     regua: {

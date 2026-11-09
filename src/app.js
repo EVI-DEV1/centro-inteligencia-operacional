@@ -88,7 +88,7 @@
     return T.h(
       'aside',
       { class: 'lateral' },
-      T.h('a', { class: 'marca', href: '#/', 'aria-label': 'Torre — painel executivo' }, logo(), T.h('span', { class: 'marca-texto' }, T.h('span', { class: 'marca-nome' }, 'Torre'), T.h('span', { class: 'marca-sub' }, 'Ops Intelligence'))),
+      T.h('a', { class: 'marca', href: '#/', 'aria-label': 'OPS Intelligence — painel executivo' }, logo(), T.h('span', { class: 'marca-texto' }, T.h('span', { class: 'marca-nome' }, 'OPS Intelligence'), T.h('span', { class: 'marca-sub' }, 'Ops Intelligence'))),
       T.h(
         'div',
         { class: 'workspace', title: 'Demonstração: o Clube Horizonte não existe.' },
@@ -99,7 +99,7 @@
       T.h(
         'div',
         { class: 'lateral-rodape' },
-        T.h('a', { class: 'plano-card', href: 'produto.html' }, T.h('span', { class: 'plano-selo' }, 'PRO'), T.h('b', null, 'Conheça a Torre'), T.h('span', null, 'Planos, recursos e integrações'), T.icone('seta')),
+        T.h('a', { class: 'plano-card', href: 'produto.html' }, T.h('span', { class: 'plano-selo' }, 'PRO'), T.h('b', null, 'Conheça o OPS Intelligence'), T.h('span', null, 'Planos, recursos e integrações'), T.icone('seta')),
         T.h('div', { class: 'usuario' }, T.h('span', { class: 'usuario-avatar' }, 'EV'), T.h('span', { class: 'usuario-texto' }, T.h('b', null, 'Eliane Vitoriano'), T.h('small', null, 'Admin · Front-end')), T.h('a', { class: 'usuario-git', href: 'https://github.com/EVI-DEV1/centro-inteligencia-operacional', target: '_blank', rel: 'noopener', title: 'Código no GitHub', 'aria-label': 'Código no GitHub' }, T.icone('conector')))
       )
     );
@@ -383,11 +383,11 @@
       T.numerosNaLeitura(pagina);
     } catch (e) {
       console.error('[torre] falha ao montar a página', id, e);
-      pagina.appendChild(T.h('p', { class: 'erro-pagina' }, 'Esta página não conseguiu montar. Os dados continuam no livro; recarregue a Torre.'));
+      pagina.appendChild(T.h('p', { class: 'erro-pagina' }, 'Esta página não conseguiu montar. Os dados continuam no livro; recarregue o OPS Intelligence.'));
     }
     T.$$('.faixa', document).forEach((a) => (a.dataset.rota === id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
     const p = T.paginas.find((x) => x.id === id);
-    document.title = `${p ? p.nome : 'Visão executiva'} · Torre Ops Intelligence · demo com dados fictícios`;
+    document.title = `${p ? p.nome : 'Visão executiva'} · OPS Intelligence · demo com dados fictícios`;
     if (migalha) migalha.textContent = p ? p.nome : 'Visão executiva';
     T.mov.revelar(pagina);
     if (alvo) setTimeout(() => destacar(alvo), 120);

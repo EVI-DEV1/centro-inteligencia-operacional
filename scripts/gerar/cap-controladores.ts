@@ -153,7 +153,7 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
 
   // ------------------------------------------------------------ conferências internas do modelo
   const pilotosComControlador = ativos - SD.orfaos;
-  if (soma(todas, (c) => c.pilotos) !== pilotosComControlador) throw new Error(`pilotos das carteiras ${soma(todas, (c) => c.pilotos)} ≠ ${pilotosComControlador}`);
+  if (soma(todas, (c) => c.pilotos) !== pilotosComControlador) throw new Error(`pessoas das carteiras ${soma(todas, (c) => c.pilotos)} ≠ ${pilotosComControlador}`);
   if (soma(todas, (c) => c.produzem) !== produzemComDono + triagem.produzem) throw new Error('produzem não fecha com a decomposição');
   if (todas.length !== A.PILOTOS.controladoresComPiloto) throw new Error(`carteiras ${todas.length} ≠ ${A.PILOTOS.controladoresComPiloto}`);
   if (Math.max(...[helo, ...demais].map((c) => c.passageiros)) >= menorTop) throw new Error('carteira de fora passou o 20º');
@@ -210,10 +210,10 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
 
   // ------------------------------------------------------------ faixas de carteira
   const FAIXAS = [
-    { faixa: '1 a 9 pilotos', de: 1, ate: 9 },
-    { faixa: '10 a 29 pilotos', de: 10, ate: 29 },
-    { faixa: '30 a 39 pilotos', de: 30, ate: 39 },
-    { faixa: '40 a 99 pilotos', de: 40, ate: 99 },
+    { faixa: '1 a 9 pessoas', de: 1, ate: 9 },
+    { faixa: '10 a 29 pessoas', de: 10, ate: 29 },
+    { faixa: '30 a 39 pessoas', de: 30, ate: 39 },
+    { faixa: '40 a 99 pessoas', de: 40, ate: 99 },
   ];
   const faixasCart = FAIXAS.map((f): FaixaCarteira => {
     const cs = regulares.filter((c) => c.pilotos >= f.de && c.pilotos <= f.ate);
@@ -261,8 +261,8 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     mutiraoPct: pct(vMutirao, respondidas),
     faixas,
     cobertura,
-    coberturaNota: `Linhas respondidas sobre os pilotos que cada pessoa tem hoje. A rodada retrata ${fmt.data(DATA_RODADA)}; piloto que mudou de controlador depois continua pesando na conta de quem respondeu — por isso há quem passe de 100%.`,
-    leitura: `As carteiras de verdade responderam quase inteiras. Foge à regra justamente a maior conta: a da fila de triagem da Rota 20 tem ${fmt.n(triagem.pilotos)} pilotos e respondeu ${fmt.n(triagem.resp)} ${triagem.resp === 1 ? 'linha' : 'linhas'}. Esses ${fmt.n(triagem.pilotos)} carregam ${fmt.n(decomp('deposito').meta)} de meta na Projetada sem ninguém cobrando.`,
+    coberturaNota: `Linhas respondidas sobre as pessoas que cada pessoa tem hoje. A rodada retrata ${fmt.data(DATA_RODADA)}; pessoa que mudou de admin depois continua pesando na conta de quem respondeu — por isso há quem passe de 100%.`,
+    leitura: `As carteiras de verdade responderam quase inteiras. Foge à regra justamente a maior conta: a da fila de triagem da Rota 20 tem ${fmt.n(triagem.pilotos)} pessoas e respondeu ${fmt.n(triagem.resp)} ${triagem.resp === 1 ? 'linha' : 'linhas'}. Esses ${fmt.n(triagem.pilotos)} carregam ${fmt.n(decomp('deposito').meta)} de meta na Projetada sem ninguém cobrando.`,
   };
 
   // ------------------------------------------------------------ régua
@@ -273,11 +273,11 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
   const regua = {
     nota: `Os limites verde/amarelo/vermelho são proposta deste capítulo para a pré-temporada, não medição. A coluna "hoje" é medida (${fmt.data(D.medidoEm)}, dia incompleto).`,
     linhas: [
-      { metrica: 'Pilotos sem dono real (órfãos + fila de triagem)', verde: 'até 40', amarelo: '41 a 180', vermelho: 'mais de 180', hoje: fmt.n(SD.total), status: statusPor(SD.total, 40, 180) },
+      { metrica: 'Pessoas sem dono real (órfãos + fila de triagem)', verde: 'até 40', amarelo: '41 a 180', vermelho: 'mais de 180', hoje: fmt.n(SD.total), status: statusPor(SD.total, 40, 180) },
       { metrica: 'Linhas da rodada respondidas', verde: '80% ou mais', amarelo: '55% a 79%', vermelho: 'menos de 55%', hoje: fmt.pct(rodada.respondidasPct), status: statusPor(rodada.respondidasPct, 80, 55, false) },
-      { metrica: 'Controladores que cadastraram alguém na semana', verde: '38 ou mais', amarelo: '22 a 37', vermelho: 'menos de 22', hoje: `${comCadastro} de ${nCart}`, status: statusPor(comCadastro, 38, 22, false) },
-      { metrica: 'Controladores com 10 ou mais cadastros na semana', verde: '26 ou mais', amarelo: '13 a 25', vermelho: 'menos de 13', hoje: `${dezOuMais} de ${nCart}`, status: statusPor(dezOuMais, 26, 13, false) },
-      { metrica: 'Pilotos com dono que nunca falaram com o bot', verde: 'até 250', amarelo: '251 a 500', vermelho: 'mais de 500', hoje: fmt.n(A.PILOTOS.semContatoComDono), status: statusPor(A.PILOTOS.semContatoComDono, 250, 500) },
+      { metrica: 'Admin que cadastraram alguém na semana', verde: '38 ou mais', amarelo: '22 a 37', vermelho: 'menos de 22', hoje: `${comCadastro} de ${nCart}`, status: statusPor(comCadastro, 38, 22, false) },
+      { metrica: 'Admin com 10 ou mais cadastros na semana', verde: '26 ou mais', amarelo: '13 a 25', vermelho: 'menos de 13', hoje: `${dezOuMais} de ${nCart}`, status: statusPor(dezOuMais, 26, 13, false) },
+      { metrica: 'Pessoas com dono que nunca falaram com o bot', verde: 'até 250', amarelo: '251 a 500', vermelho: 'mais de 500', hoje: fmt.n(A.PILOTOS.semContatoComDono), status: statusPor(A.PILOTOS.semContatoComDono, 250, 500) },
     ],
   };
 
@@ -290,18 +290,18 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
 
   const controladores = {
     letra: 'C',
-    titulo: 'Controladores e expectativa: quem sustenta a rede',
+    titulo: 'Admin e expectativa: quem sustenta a rede',
     pergunta: 'Quem produz, quem lança expectativa e o que cabe dentro da Projetada.',
-    frase: `A Projetada conta fichas: soma a meta de cada piloto ativo, com ou sem dono, conversa ou passageiro. A Real conta outra coisa — quanto a pessoa que coordena aquele piloto acredita que ele vai trazer. A primeira é ${fmt.dec(TR.razaoProjetadaReal)} vezes a segunda, e essa distância não vem de otimismo: vem de cadastro que ninguém acompanha.`,
+    frase: `A Projetada conta fichas: soma a meta de cada pessoa ativa, com ou sem dono, conversa ou lead. A Real conta outra coisa — quanto a pessoa que coordena aquele pessoa acredita que ele vai trazer. A primeira é ${fmt.dec(TR.razaoProjetadaReal)} vezes a segunda, e essa distância não vem de otimismo: vem de cadastro que ninguém acompanha.`,
     kpis: [
-      { v: A.PILOTOS.contasControlador, rotulo: `contas de controlador ativas (${fmt.n(A.PILOTOS.controladoresComPiloto)} com ao menos um piloto)` },
-      { v: TR.projetada, rotulo: `Projetada — soma das metas dos ${fmt.n(ativos)} pilotos ativos` },
+      { v: A.PILOTOS.contasControlador, rotulo: `contas de admin ativas (${fmt.n(A.PILOTOS.controladoresComPiloto)} com ao menos uma pessoa)` },
+      { v: TR.projetada, rotulo: `Projetada — soma das metas das ${fmt.n(ativos)} pessoas ativas` },
       { v: TR.real, rotulo: `Real lançada — rodada de ${fmt.data(DATA_RODADA)}` },
-      { v: TR.contabilizados, rotulo: `Contabilizados — passageiros no banco desde ${fmt.data(D.inicio)}` },
+      { v: TR.contabilizados, rotulo: `Contabilizados — leads no banco desde ${fmt.data(D.inicio)}` },
     ],
     contasAtivas: A.PILOTOS.contasControlador,
     comPiloto: A.PILOTOS.controladoresComPiloto,
-    comoLerLancou: 'Só conta a linha com carimbo de envio (lancadoEm). Zero carimbado é resposta — "este piloto não vai trazer ninguém". Linha sem carimbo não vale zero: quer dizer que ninguém respondeu.',
+    comoLerLancou: 'Só conta a linha com carimbo de envio (lancadoEm). Zero carimbado é resposta — "esta pessoa não vai trazer ninguém". Linha sem carimbo não vale zero: quer dizer que ninguém respondeu.',
     carteiras: faixasCart.map((f) => f.item),
     pilotosComControlador,
     top20,
@@ -315,19 +315,19 @@ export function gerar({ rng, A, U }: Contexto): SaidaCapitulo {
     naoLancaramMasProduzem,
     lancaramTudoSemPassageiro,
     muda: [
-      { t: `${fmt.n(SD.total)} pilotos estão sem dono de verdade — e ninguém cobra por eles.`, d: `São ${fmt.n(SD.orfaos)} órfãos e ${fmt.n(SD.triagem)} parados na conta de triagem da Rota 20. Somam ${fmt.n(SD.meta)} de meta projetada (${fmt.pct(SD.pctProjetada)} da Projetada) e só ${fmt.n(SD.comPassageiro)} deles têm algum passageiro. Na rodada de ${fmt.data(DATA_RODADA)} essa conta respondeu ${fmt.n(triagem.resp)} ${triagem.resp === 1 ? 'linha' : 'linhas'} de ${fmt.n(triagem.linhas)}.` },
+      { t: `${fmt.n(SD.total)} pessoas estão sem dono de verdade — e ninguém cobra por eles.`, d: `São ${fmt.n(SD.orfaos)} órfãos e ${fmt.n(SD.triagem)} parados na conta de triagem da Rota 20. Somam ${fmt.n(SD.meta)} de meta projetada (${fmt.pct(SD.pctProjetada)} da Projetada) e só ${fmt.n(SD.comPassageiro)} deles têm algum lead. Na rodada de ${fmt.data(DATA_RODADA)} essa conta respondeu ${fmt.n(triagem.resp)} ${triagem.resp === 1 ? 'linha' : 'linhas'} de ${fmt.n(triagem.linhas)}.` },
       { t: 'A rodada teve resposta — e a resposta mais comum foi zero.', d: `${fmt.n(respondidas)} das ${fmt.n(linhas)} linhas têm carimbo (${fmt.pct(rodada.respondidasPct)}); ${fmt.n(responderamZero)} delas vieram com zero, e a Real inteira sai de ${fmt.n(linhasQueFormamReal)} linhas. O ponto cego são as ${fmt.n(semCarimbo)} sem carimbo: ninguém sabe se valem zero ou se ninguém perguntou.` },
-      { t: top10Soma.pct > 50 ? 'Dez carteiras sustentam mais da metade da rede.' : 'Dez carteiras sustentam boa parte da rede.', d: `Os 10 maiores somam ${fmt.n(top10Pass)} dos ${fmt.n(deTotalComControlador)} passageiros com controlador (${fmt.pct(top10Soma.pct)}). Na última semana, 10 carteiras fizeram ${fmt.n(semanaTop10)} dos ${fmt.n(semanaTotal)} cadastros; a maior delas, ${fmt.n(lista[0].ult7d)}.` },
-      { t: 'Responder a rodada não é o mesmo que produzir.', d: `${fmt.n(naoLancaramMasProduzem.controladores)} controladores não lançaram linha nenhuma e ainda assim somam ${fmt.n(naoLancaramMasProduzem.passageiros)} passageiros. Outros ${fmt.n(lancaramTudoSemPassageiro.controladores)}, com ${fmt.n(lancaramTudoSemPassageiro.pilotos)} pilotos, responderam todas as linhas e não têm passageiro nenhum.` },
-      { t: `Duas contas independentes param perto de ${fmt.n(pertoDeMil)} mil.`, d: `A Real (${fmt.n(TR.real)}) fica a ${fmt.pct(pct(pertoReal, TR.metaDeQuemJaProduz.v))} da soma das metas dos ${fmt.n(TR.metaDeQuemJaProduz.pilotos)} pilotos que já cadastraram alguém (${fmt.n(TR.metaDeQuemJaProduz.v)}). Podem coincidir por acaso — mas ambas estão a mais de ${distanciaMil} mil da Projetada. A logística se planeja pela Real, não pela Projetada.` },
+      { t: top10Soma.pct > 50 ? 'Dez carteiras sustentam mais da metade da rede.' : 'Dez carteiras sustentam boa parte da rede.', d: `Os 10 maiores somam ${fmt.n(top10Pass)} dos ${fmt.n(deTotalComControlador)} leads com admin (${fmt.pct(top10Soma.pct)}). Na última semana, 10 carteiras fizeram ${fmt.n(semanaTop10)} dos ${fmt.n(semanaTotal)} cadastros; a maior delas, ${fmt.n(lista[0].ult7d)}.` },
+      { t: 'Responder a rodada não é o mesmo que produzir.', d: `${fmt.n(naoLancaramMasProduzem.controladores)} admins não lançaram linha nenhuma e ainda assim somam ${fmt.n(naoLancaramMasProduzem.passageiros)} leads. Outros ${fmt.n(lancaramTudoSemPassageiro.controladores)}, com ${fmt.n(lancaramTudoSemPassageiro.pilotos)} pessoas, responderam todas as linhas e não têm lead nenhum.` },
+      { t: `Duas contas independentes param perto de ${fmt.n(pertoDeMil)} mil.`, d: `A Real (${fmt.n(TR.real)}) fica a ${fmt.pct(pct(pertoReal, TR.metaDeQuemJaProduz.v))} da soma das metas das ${fmt.n(TR.metaDeQuemJaProduz.pilotos)} pessoas que já cadastraram alguém (${fmt.n(TR.metaDeQuemJaProduz.v)}). Podem coincidir por acaso — mas ambas estão a mais de ${distanciaMil} mil da Projetada. A logística se planeja pela Real, não pela Projetada.` },
     ],
     naoMede: [
       `A Real não traz data: informa tamanho, não prazo. Nenhuma rodada perguntou "quantos entre ${fmt.data(D.faseB.inicio)} e ${fmt.data(D.diaD)}".`,
       'Com uma rodada só não existe série: não há como dizer se a expectativa subiu ou caiu.',
       'O zero tem dois sentidos: "não traz ninguém" e "não sei" chegam ao banco do mesmo jeito.',
-      'Cada piloto tem um único controlador: quando ele troca, o histórico sai do ranking de quem o cedeu.',
+      'Cada pessoa tem um único admin: quando ele troca, o histórico sai do ranking de quem o cedeu.',
       'Não há medida de esforço: carteira parada tanto pode ser gente parada quanto gente trabalhando sem registrar.',
-      'O carimbo não prova conversa: lancadoEm mostra que alguém respondeu no painel, não que falou com o piloto.',
+      'O carimbo não prova conversa: lancadoEm mostra que alguém respondeu no painel, não que falou com a pessoa.',
     ],
     regua,
     p: [22, 27],
@@ -357,20 +357,20 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
 
   // âncoras
   eq(C.contasAtivas, A.PILOTOS.contasControlador, 'contas ativas');
-  eq(C.comPiloto, A.PILOTOS.controladoresComPiloto, 'com piloto');
-  eq(C.pilotosComControlador, ativos - SD.orfaos, 'pilotos com controlador');
+  eq(C.comPiloto, A.PILOTOS.controladoresComPiloto, 'com pessoa');
+  eq(C.pilotosComControlador, ativos - SD.orfaos, 'pessoas com admin');
   for (const k of Object.keys(SD)) eq(C.semDono[k], SD[k], `semDono.${k}`);
   eq(C.rodada.real, A.TRES.real, 'Real');
   eq(C.kpis.map((k) => k.v).join('|'), [A.PILOTOS.contasControlador, A.TRES.projetada, A.TRES.real, A.TRES.contabilizados].join('|'), 'kpis');
 
   // carteiras
   eq(soma(C.carteiras, (c) => c.carteiras), C.comPiloto, 'soma das carteiras');
-  eq(soma(S.carteiras_pilotos), C.pilotosComControlador, 'soma de carteiras_pilotos');
-  eq(S.carteiras_pilotos.length, C.carteiras.length, 'tamanho de carteiras_pilotos');
-  eq(soma(C.carteiras, (c) => c.passageiros), C.top10Soma.deTotalComControlador, 'passageiros das carteiras');
+  eq(soma(S.carteiras_pilotos), C.pilotosComControlador, 'soma de carteiras_pessoas');
+  eq(S.carteiras_pilotos.length, C.carteiras.length, 'tamanho de carteiras_pessoas');
+  eq(soma(C.carteiras, (c) => c.passageiros), C.top10Soma.deTotalComControlador, 'leads das carteiras');
   const tri = C.carteiras.findIndex((c) => c.triagem);
-  eq(S.carteiras_pilotos[tri], SD.triagem, 'pilotos da carteira de triagem');
-  if (C.top10Soma.deTotalComControlador > A.TRES.contabilizados) erros.push('com controlador passa dos contabilizados');
+  eq(S.carteiras_pilotos[tri], SD.triagem, 'pessoas da carteira de triagem');
+  if (C.top10Soma.deTotalComControlador > A.TRES.contabilizados) erros.push('com admin passa dos contabilizados');
 
   // top 20
   C.top20.forEach((c, i) => {
@@ -405,7 +405,7 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
     if (m.b < m.ult7d) erros.push(`metade 2 menor que a semana: ${m.nome}`);
   }
   const chaves = Object.keys(S.controladores_acumulado);
-  eq(chaves.join('|'), A.PESSOAS.controladores.slice(0, 5).join('|'), 'chaves de controladores_acumulado');
+  eq(chaves.join('|'), A.PESSOAS.controladores.slice(0, 5).join('|'), 'chaves de admins_acumulado');
   for (const nome of chaves) {
     const s = S.controladores_acumulado[nome];
     const t = C.top20.find((c) => c.nome === nome);
@@ -426,7 +426,7 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   eq(R.faixas.find((f) => f.zero).v, R.responderamZero, 'faixa zero');
   eq(R.zeroPct, pct(R.responderamZero, R.respondidas), 'zeroPct');
   eq(R.linhasQueFormamReal, R.respondidas - R.responderamZero, 'linhas que formam a Real');
-  eq(R.mediaPorPiloto, arred(R.real / R.linhasQueFormamReal, 1), 'média por piloto');
+  eq(R.mediaPorPiloto, arred(R.real / R.linhasQueFormamReal, 1), 'média por pessoa');
   eq(R.semFiltro - R.real, R.diferencaSemCarimbo, 'sem filtro');
   eq(soma(R.respostasPorDia, (d) => d.v), R.respondidas, 'respostas por dia');
   const maxDia = Math.max(...R.respostasPorDia.map((d) => d.v));

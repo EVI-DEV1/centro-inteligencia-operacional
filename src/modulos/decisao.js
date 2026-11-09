@@ -67,7 +67,7 @@
           T.h('ul', { class: 'funciona-lista', 'data-revela': '' }, L.fechamento.funcionando.map((x) => T.h('li', null, T.carimbo('verde', null, true), T.h('b', null, x.t), T.h('span', null, x.d))))
         ),
         T.comp.secao(
-          { id: 'conferencias', titulo: 'Conferências do próprio livro', sub: 'Divergências encontradas ao cruzar os números do PDF. A Torre mostra o número do livro e sinaliza; não corrige em silêncio.' },
+          { id: 'conferencias', titulo: 'Conferências do próprio livro', sub: 'Divergências encontradas ao cruzar os números do PDF. O OPS Intelligence mostra o número do livro e sinaliza; não corrige em silêncio.' },
           T.h(
             'div',
             { class: 'conferencias', 'data-revela': '' },
@@ -81,10 +81,10 @@
             'div',
             { class: 'cegos-colunas', 'data-revela': '' },
             [
-              ['Pilotos', L.pilotos.naoMede],
-              ['Passageiros', L.passageiros.naoMede],
-              ['Controladores', L.controladores.naoMede],
-              ['Central Horizonte', L.central.naoMede],
+              ['Pessoas', L.pilotos.naoMede],
+              ['Leads', L.passageiros.naoMede],
+              ['Admin', L.controladores.naoMede],
+              ['Central', L.central.naoMede],
               ['Operação', L.operacao.naoMede],
               ['Atendimento e alcance', [...L.atendimento.naoMede, ...L.alcance.naoMede]],
             ].map(([t, lista2]) => T.comp.naoMede(lista2, t))

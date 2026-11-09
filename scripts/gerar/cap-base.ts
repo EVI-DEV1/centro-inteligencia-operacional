@@ -55,12 +55,12 @@ export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
     faltavamDiasNaMedicao: D.faltavamDiasNaMedicao,
     hojeDemo: D.hojeDemo,
     marcos: { ...D.marcos, simulado: [...D.marcos.simulado] },
-    frase: `Nenhum número desta Torre mede resultado: todos medem prontidão. A temporada depende de duas respostas — em ${fmt.data(D.d7)} existem de ${fmt.n(metaMin)} a ${fmt.n(metaMax)} pilotos com material na mão e canal aberto? E o sistema aguenta de ${flex(medio.xMelhorDia)} a ${flex(otimista.xMelhorDia)} vezes o seu melhor dia, sete dias seguidos?`,
+    frase: `Nenhum número desta OPS Intelligence mede resultado: todos medem prontidão. A temporada depende de duas respostas — em ${fmt.data(D.d7)} existem de ${fmt.n(metaMin)} a ${fmt.n(metaMax)} pessoas com material na mão e canal aberto? E o sistema aguenta de ${flex(medio.xMelhorDia)} a ${flex(otimista.xMelhorDia)} vezes o seu melhor dia, sete dias seguidos?`,
     capa: [
-      { v: P.contabilizados, rotulo: 'pessoas indicadas e cadastradas (passageiros)' },
+      { v: P.contabilizados, rotulo: 'pessoas indicadas e cadastradas (leads)' },
       { v: P.ritmo, rotulo: 'por dia, média dos últimos 7 dias completos' },
-      { v: de('vivo').v, rotulo: 'pilotos prontos e vivos (funil aninhado)' },
-      { v: de('ativos').v, rotulo: 'pilotos ativos cadastrados' },
+      { v: de('vivo').v, rotulo: 'pessoas prontas e vivos (funil aninhado)' },
+      { v: de('ativos').v, rotulo: 'pessoas ativas cadastrados' },
     ],
     p: 1,
   };
@@ -68,32 +68,32 @@ export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
   const pares = [
     {
       par: 'Registrado · no mundo',
-      significado: 'Registrado quer dizer que existe uma linha no banco — é só isso que a Torre enxerga. No mundo quer dizer que aconteceu com alguém. Indicação que ficou fora do sistema não ganha convite nem lembrete.',
+      significado: 'Registrado quer dizer que existe uma linha no banco — é só isso que o OPS Intelligence enxerga. No mundo quer dizer que aconteceu com alguém. Indicação que ficou fora do sistema não ganha convite nem lembrete.',
     },
     {
-      par: 'Piloto · Passageiro · Controlador',
-      significado: 'Piloto é o embaixador que indica pelo WhatsApp, sem login. Passageiro é a pessoa indicada e cadastrada por um piloto (no banco, "Indicado"). Controlador coordena um grupo de pilotos e entra no painel com login.',
+      par: 'Pessoa · Lead · Admin',
+      significado: 'Pessoa é o embaixador que indica pelo WhatsApp, sem login. Lead é a pessoa indicada e cadastrada por uma pessoa (no banco, "Indicado"). Admin coordena um grupo de pessoas e entra no painel com login.',
     },
     {
       par: 'Projetada · Real · Contabilizados',
-      significado: 'Projetada é a soma dos planos dos pilotos ativos. Real é o que cada controlador lançou que os seus pilotos vão trazer (vale só com carimbo). Contabilizados são os passageiros já gravados no banco.',
+      significado: 'Projetada é a soma dos planos das pessoas ativas. Real é o que cada admin lançou que as suas pessoas vão trazer (vale só com carimbo). Contabilizados são os leads já gravados no banco.',
     },
   ];
 
   const coresDoLivro = 'A série principal é azul e a referência é cinza. Vermelho aparece apenas onde há ação a tomar. Roxo sinaliza madrugada ou carga em lote; azul claro, o dia que ainda não terminou. Nenhuma cor vem sem uma palavra ao lado.';
 
   const glossario = [
-    { termo: 'Clube Horizonte / Central Horizonte', def: 'Clube Horizonte é o nome que o público conhece; Central Horizonte é o sistema por trás dele (bot de WhatsApp, painel de pilotos e banco).' },
-    { termo: 'Plano · Anel · Patente', def: `Plano é quantos passageiros o piloto se propôs a trazer (${A.VOCAB.planos.slice(0, 2).join(' ou ')}; ${A.VOCAB.planos.slice(2).join('/')} nas embaixadas). Anel é o progresso da pessoa contra o próprio plano. Patente é a faixa por passageiros absolutos (${A.VOCAB.patentes.join(', ')}).` },
-    { termo: 'Aspirante', def: 'Ficha de alguém que pode virar piloto, vinda de lista importada ou do formulário de visitas. Passar a piloto não dispara mensagem para ninguém.' },
-    { termo: 'Base pronta', def: 'Pilotos que atravessam o funil aninhado inteiro: dono real → canal aberto → já cadastrou alguém → vivo na semana. Não se confunde com o total de ativos.' },
+    { termo: 'Clube Horizonte / Central', def: 'Clube Horizonte é o nome que o público conhece; Central é o sistema por trás dele (bot de WhatsApp, painel de pessoas e banco).' },
+    { termo: 'Plano · Anel · Patente', def: `Plano é quantos leads a pessoa se propôs a trazer (${A.VOCAB.planos.slice(0, 2).join(' ou ')}; ${A.VOCAB.planos.slice(2).join('/')} nas embaixadas). Anel é o progresso da pessoa contra o próprio plano. Patente é a faixa por leads absolutos (${A.VOCAB.patentes.join(', ')}).` },
+    { termo: 'Aspirante', def: 'Ficha de alguém que pode virar pessoa, vinda de lista importada ou do formulário de visitas. Passar a pessoa não dispara mensagem para ninguém.' },
+    { termo: 'Base pronta', def: 'Pessoas que atravessam o funil aninhado inteiro: dono real → canal aberto → já cadastrou alguém → vivo na semana. Não se confunde com o total de ativos.' },
     { termo: 'Captura', def: 'A parte do que acontece no mundo que vira registro no sistema — e só o que é registrado recebe convite e lembrete.' },
-    { termo: 'Convite', def: 'Cartão ou mensagem com o código de adesão do Dia D, um por passageiro.' },
-    { termo: 'Baixa', def: 'Botão da Torre que encerra uma conversa com uma nota do motivo. O "tempo de atendimento" medido vai até esse clique, não até a primeira resposta.' },
-    { termo: 'Kit', def: 'Material físico do piloto, montado na base operacional. "Recebeu kit" é uma etiqueta marcada por decisão da coordenação e não guarda data.' },
+    { termo: 'Convite', def: 'Cartão ou mensagem com o código de adesão do Dia D, um por lead.' },
+    { termo: 'Baixa', def: 'Botão do OPS Intelligence que encerra uma conversa com uma nota do motivo. O "tempo de atendimento" medido vai até esse clique, não até a primeira resposta.' },
+    { termo: 'Kit', def: 'Material físico da pessoa, montado na base operacional. "Recebeu kit" é uma etiqueta marcada por decisão da coordenação e não guarda data.' },
     { termo: 'Sessão do bot · etapa', def: 'Todo telefone em conversa tem uma sessão parada em alguma etapa; MENU é a etapa de descanso.' },
     { termo: 'linha1…linha6, sac', def: `Apelidos dos números de WhatsApp da Central. A linha6 trouxe ${fmt.pct(linha6.pct, 0)} da entrada e está ${linha6.alerta.replace(/ \(.*$/, '')}; a linha4 ${linha4.alerta}.` },
-    { termo: 'Fila de triagem', def: `Uma única controladora com ${fmt.n(deposito.pilotos)} pilotos (a triagem da ${A.VOCAB.familias.lista}), ${fmt.n(deposito.comPassageiro)} deles com passageiro. Não é equipe: é fila parada.` },
+    { termo: 'Fila de triagem', def: `Uma única controladora com ${fmt.n(deposito.pilotos)} pessoas (a triagem da ${A.VOCAB.familias.lista}), ${fmt.n(deposito.comPassageiro)} deles com lead. Não é equipe: é fila parada.` },
   ];
 
   const metodo = {
@@ -107,7 +107,7 @@ export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
       'Latência do bot: nenhuma mensagem tem carimbo de processamento.',
       `O ensaio de disparo de ${fmt.data(eloMensagens.quando)} em si: não ficou gravado.`,
       'Conversão cadastro → adesão: parâmetro do gestor.',
-      'Quem abre qual tela da Torre: não existe registro de leitura.',
+      'Quem abre qual tela do OPS Intelligence: não existe registro de leitura.',
       `Operação de rua formal: tabelas zeradas; as ${fmt.n(campoMin)}–${fmt.n(campoMax)} pessoas por dia em campo trabalham fora do sistema.`,
       'Captura: pede um denominador que não está no sistema.',
     ],
@@ -118,21 +118,21 @@ export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
   const tresNumeros = {
     projetada: {
       v: T3.projetada,
-      def: 'Soma dos planos dos pilotos ativos.',
-      leitura: `Conta fichas. Um piloto criado ontem numa carga entra com plano ${A.VOCAB.planos[1]} e nenhum passageiro. Pela decomposição exclusiva, só ${fmt.n(T3.metaDeQuemJaProduz.v)} estão com quem já produz.`,
+      def: 'Soma dos planos das pessoas ativas.',
+      leitura: `Conta fichas. Uma pessoa criada ontem numa carga entra com plano ${A.VOCAB.planos[1]} e nenhum lead. Pela decomposição exclusiva, só ${fmt.n(T3.metaDeQuemJaProduz.v)} estão com quem já produz.`,
       naoE: 'não é previsão: nenhum desses planos foi combinado um a um',
     },
     real: {
       v: T3.real,
-      def: `O que os controladores lançaram na rodada de ${fmt.data(RODADA.data)}, só com carimbo.`,
-      leitura: `Mede a aposta de quem convive com os pilotos. Fica ${fmt.pct(soAcima, 0)} acima do contabilizado: ninguém está contando com um salto.`,
+      def: `O que os admins lançaram na rodada de ${fmt.data(RODADA.data)}, só com carimbo.`,
+      leitura: `Mede a aposta de quem convive com as pessoas. Fica ${fmt.pct(soAcima, 0)} acima do contabilizado: ninguém está contando com um salto.`,
       detalhe: RODADA.linhas ? `${fmt.n(RODADA.respondidas)} de ${fmt.n(RODADA.linhas)} linhas com carimbo` : 'só as linhas com carimbo',
       naoE: 'não é contabilizado: é expectativa de quem convive',
     },
     contabilizados: {
       v: T3.contabilizados,
-      def: 'Passageiros gravados no banco.',
-      leitura: `É o único dos três que é fato. Mas é cadastro feito pelo piloto, sem confirmação com a pessoa: ${fmt.n(P.semStatus)} das ${fmt.n(P.fichas)} fichas não têm status de confirmação.`,
+      def: 'Leads gravados no banco.',
+      leitura: `É o único dos três que é fato. Mas é cadastro feito pela pessoa, sem confirmação com a pessoa: ${fmt.n(P.semStatus)} das ${fmt.n(P.fichas)} fichas não têm status de confirmação.`,
       naoE: 'não é adesão: é cadastro gravado uma vez',
     },
     metaDeclarada: { v: T3.metaDeclarada, conta: T3.metaConta, origem: T3.metaOrigem },
@@ -145,7 +145,7 @@ export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
     pisoHonesto: T3.pisoHonesto,
     tetoHonesto: T3.tetoHonesto,
     soFicha: T3.soFicha,
-    leituraDecomposicao: `Só ${fmt.n(T3.pisoHonesto)} de plano estão com quem já cadastrou alguém. Descontados órfãos, fila de triagem e fichas sem passageiro, restam ${fmt.n(T3.tetoHonesto)} com dono e algum sinal. Os outros ${fmt.n(T3.soFicha)} são ficha. Piso honesto: ${mil(T3.pisoHonesto)}; teto honesto: ${mil(T3.tetoHonesto)}.`,
+    leituraDecomposicao: `Só ${fmt.n(T3.pisoHonesto)} de plano estão com quem já cadastrou alguém. Descontados órfãos, fila de triagem e fichas sem lead, restam ${fmt.n(T3.tetoHonesto)} com dono e algum sinal. Os outros ${fmt.n(T3.soFicha)} são ficha. Piso honesto: ${mil(T3.pisoHonesto)}; teto honesto: ${mil(T3.tetoHonesto)}.`,
     p: [3, 26],
   };
 
@@ -170,7 +170,7 @@ export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
       fim: D.faseA.fim,
       dias: diasFaseA,
       objetivo: 'Montar a base pronta e provar a capacidade. Cadastro nesta fase vale 20% do resultado.',
-      medir: ['pilotos prontos', 'kits conferidos', 'canal aberto com o bot', 'sem dono = 0', 'simulado de surto feito', 'insumos da Fase B recebidos'],
+      medir: ['pessoas prontas', 'kits conferidos', 'canal aberto com o bot', 'sem dono = 0', 'simulado de surto feito', 'insumos da Fase B recebidos'],
     },
     {
       id: 'B',
@@ -179,7 +179,7 @@ export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
       fim: D.faseB.fim,
       dias: diasFaseB,
       objetivo: 'Só capturar: nada se constrói nestes dias. Tudo medido por hora.',
-      medir: ['cadastros/hora', 'pilotos vivos no dia', 'fila do bot em minutos', 'falhas', '% com convite', 'chamados > 2 h'],
+      medir: ['cadastros/hora', 'pessoas vivas no dia', 'fila do bot em minutos', 'falhas', '% com convite', 'chamados > 2 h'],
     },
     {
       id: 'C',
@@ -207,9 +207,9 @@ export function verificar(saida: SaidaCapitulo, { A, U }: Contexto): string[] {
   if (somaMeta !== tn.projetada.v) erros.push(`decomposição soma ${somaMeta}, Projetada é ${tn.projetada.v}`);
   const somaPilotos = soma(tn.decomposicao, (g) => g.pilotos);
   const ativos = A.PILOTOS.funil.find((d) => d.id === 'ativos').v;
-  if (somaPilotos !== ativos) erros.push(`decomposição tem ${somaPilotos} pilotos, ativos são ${ativos}`);
+  if (somaPilotos !== ativos) erros.push(`decomposição tem ${somaPilotos} pessoas, ativos são ${ativos}`);
   const comPassageiro = soma(tn.decomposicao, (g) => g.comPassageiro);
-  if (comPassageiro !== tn.metaDeQuemJaProduz.pilotos) erros.push(`pilotos com passageiro na decomposição (${comPassageiro}) ≠ meta de quem já produz (${tn.metaDeQuemJaProduz.pilotos})`);
+  if (comPassageiro !== tn.metaDeQuemJaProduz.pilotos) erros.push(`pessoas com lead na decomposição (${comPassageiro}) ≠ meta de quem já produz (${tn.metaDeQuemJaProduz.pilotos})`);
   for (const g of tn.decomposicao) if (g.pct !== pct(g.meta, tn.projetada.v)) erros.push(`pct do grupo ${g.id} não bate`);
   const sinal = soma(tn.decomposicao.filter((g) => g.natureza === 'sinal'), (g) => g.meta);
   const ficha = soma(tn.decomposicao.filter((g) => g.natureza === 'ficha'), (g) => g.meta);
