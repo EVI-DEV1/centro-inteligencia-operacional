@@ -1,7 +1,7 @@
 // Junta a Torre num único HTML autônomo: CSS e JS embutidos, fontes em data URI.
 // uso (na raiz do projeto):
 //   node scripts/build.mjs   → dist/centro-inteligencia.html (retrato fixo com dados fictícios: abre do disco)
-// Antes do build, os dados precisam existir: node scripts/gerar-dados.mjs
+// Antes do build, os dados precisam existir: node scripts/gerar-dados.ts
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -42,7 +42,7 @@ html = html.replace(/<script src="([^"]+)"><\/script>/g, (_, src) => {
 
 if (faltando.length) {
   console.error('Arquivos referenciados que não existem:', faltando.join(', '));
-  if (faltando.some((f) => f.startsWith('src/dados/'))) console.error('Rode antes: node scripts/gerar-dados.mjs');
+  if (faltando.some((f) => f.startsWith('src/dados/'))) console.error('Rode antes: node scripts/gerar-dados.ts');
   process.exit(1);
 }
 
