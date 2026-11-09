@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0a0a0d" />
+    <title>Torre Ops Intelligence — o painel que transforma operação em decisão</title>
+    <meta name="description" content="Projeto de portfólio: painel operacional com visão executiva, filtros globais, importação de CSV/Excel e exportação em PDF, CSV e JSON. Demonstração com dados fictícios." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c6cff'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M16 6.5v19M11.5 25.5h9M12.5 12.5h7l-1 6h-5z' fill='none' stroke='%230a0a0d' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="src/estilo/fontes.css" />
+    <style>
+      :root {
+        --fundo: #0a0a0d;
+        --fundo-2: #111116;
+        --fio: rgba(255, 255, 255, 0.08);
+        --fio-2: rgba(255, 255, 255, 0.14);
+        --t1: #f5f5f7;
+        --t2: #b4b4bf;
+        --t3: #84848f;
+        --violeta: #7c6cff;
+        --ciano: #22d3ee;
+        --grad: linear-gradient(135deg, #7c6cff 0%, #22d3ee 100%);
+        --f: 'Archivo', 'Segoe UI', system-ui, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: var(--f);
+        font-stretch: 100%;
+        color: var(--t1);
+        background:
+          radial-gradient(1100px 600px at 70% -10%, rgba(124, 108, 255, 0.18), transparent 60%),
+          radial-gradient(900px 500px at 0% 30%, rgba(34, 211, 238, 0.07), transparent 60%),
+          var(--fundo);
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+      }
+      .wrap {
+        width: min(1180px, 92vw);
+        margin: 0 auto;
+      }
+      /* nav */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(14px) saturate(1.3);
+        background: rgba(10, 10, 13, 0.72);
+        border-bottom: 1px solid var(--fio);
+      }
+      .nav .wrap {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        height: 64px;
+      }
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 17px;
+      }
+      .marca small {
+        font-weight: 500;
+        color: var(--t3);
+        font-size: 13px;
+      }
+      .nav ul {
+        display: flex;
+        gap: 22px;
+        list-style: none;
+        margin: 0 auto 0 0;
+        padding: 0;
+        font-size: 14px;
+        color: var(--t2);
+      }
+      .nav ul a {
+        text-decoration: none;
+      }
+      .nav ul a:hover {
+        color: var(--t1);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 42px;
+        padding: 0 18px;
+        border-radius: 11px;
+        font-weight: 600;
+        font-size: 14.5px;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: transform 160ms, box-shadow 200ms, background 160ms;
+      }
+      .btn-p {
+        color: #0a0a0d;
+        background: var(--grad);
+        box-shadow: 0 10px 30px -10px rgba(124, 108, 255, 0.9);
+      }
+      .btn-p:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 34px -10px rgba(124, 108, 255, 1);
+      }
+      .btn-s {
+        border: 1px solid var(--fio-2);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .btn-s:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .btn-mini {
+        height: 36px;
+        padding: 0 14px;
+        font-size: 13.5px;
+      }
+      svg.i {
+        width: 17px;
+        height: 17px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      /* hero */
+      .hero {
+        padding: 84px 0 40px;
+        text-align: center;
+      }
+      .selo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 12px 5px 6px;
+        border: 1px solid var(--fio-2);
+        border-radius: 999px;
+        font-size: 13px;
+        color: var(--t2);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .selo b {
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: #0a0a0d;
+        background: var(--grad);
+      }
+      h1 {
+        margin: 22px auto 0;
+        max-width: 17ch;
+        font-size: clamp(38px, 5.6vw, 70px);
+        line-height: 1.02;
+        letter-spacing: -0.035em;
+        font-weight: 750;
+      }
+      .grad {
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .lead {
+        margin: 22px auto 0;
+        max-width: 62ch;
+        font-size: clamp(16px, 1.4vw, 19px);
+        color: var(--t2);
+      }
+      .ctas {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 32px;
+        flex-wrap: wrap;
+      }
+      .nota {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--t3);
+      }
+      /* janela do produto */
+      .janela {
+        position: relative;
+        margin: 56px auto 0;
+        border-radius: 18px;
+        border: 1px solid var(--fio-2);
+        background: var(--fundo-2);
+        box-shadow: 0 40px 120px -40px rgba(124, 108, 255, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+        overflow: hidden;
+      }
+      .janela::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(180deg, rgba(124, 108, 255, 0.6), transparent 40%);
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+      .janela-barra {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        height: 38px;
+        padding: 0 14px;
+        border-bottom: 1px solid var(--fio);
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .janela-barra i {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #2a2a33;
+      }
+      .janela-barra span {
+        margin: 0 auto;
+        padding: 3px 14px;
+        border-radius: 7px;
+        font-size: 12px;
+        color: var(--t3);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .tela {
+        --escala: 0.8;
+        position: relative;
+        aspect-ratio: 1440 / 880;
+        overflow: hidden;
+      }
+      .tela iframe {
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: 1440px;
+        height: 880px;
+        border: 0;
+        transform: scale(var(--escala));
+        transform-origin: 0 0;
+        pointer-events: none;
+      }
+      .tela a.cobre {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+      }
+      /* logos */
+      .integra {
+        padding: 56px 0 20px;
+        text-align: center;
+      }
+      .integra p {
+        margin: 0 0 18px;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--t3);
+      }
+      .pilulas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      .pilulas span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--fio);
+        background: rgba(255, 255, 255, 0.025);
+        font-size: 14px;
+        color: var(--t2);
+      }
+      .pilulas i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--ciano);
+      }
+      /* seções */
+      section.bloco {
+        padding: 96px 0 0;
+      }
+      .cab {
+        max-width: 720px;
+        margin-bottom: 40px;
+      }
+      .cab small {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--violeta);
+      }
+      h2 {
+        margin: 10px 0 0;
+        font-size: clamp(28px, 3.2vw, 42px);
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+      .cab p {
+        margin: 14px 0 0;
+        color: var(--t2);
+        font-size: 17px;
+      }
+      .recursos {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .recurso {
+        padding: 22px;
+        border-radius: 16px;
+        border: 1px solid var(--fio);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+        transition: border-color 200ms, transform 200ms;
+      }
+      .recurso:hover {
+        border-color: rgba(124, 108, 255, 0.45);
+        transform: translateY(-2px);
+      }
+      .recurso .ic {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        background: rgba(124, 108, 255, 0.14);
+        color: #a99fff;
+        margin-bottom: 16px;
+      }
+      .recurso .ic svg {
+        width: 20px;
+        height: 20px;
+      }
+      .recurso h3 {
+        margin: 0;
+        font-size: 17px;
+        letter-spacing: -0.01em;
+      }
+      .recurso p {
+        margin: 8px 0 0;
+        font-size: 14.5px;
+        color: var(--t2);
+      }
+      /* vitrine */
+      .vitrine {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+        gap: 48px;
+        align-items: center;
+        margin-top: 72px;
+      }
+      .vitrine.inv {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
+      }
+      .vitrine.inv .texto {
+        order: 2;
+      }
+      .vitrine h3 {
+        margin: 0;
+        font-size: clamp(22px, 2.2vw, 30px);
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+      }
+      .vitrine p {
+        color: var(--t2);
+        font-size: 16px;
+      }
+      .vitrine ul {
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+      .vitrine li {
+        display: flex;
+        gap: 10px;
+        font-size: 15px;
+        color: var(--t2);
+      }
+      .vitrine li svg {
+        flex: none;
+        margin-top: 3px;
+        color: #34d399;
+      }
+      .vitrine .janela {
+        margin: 0;
+      }
+      .vitrine .tela {
+        --escala: 0.48;
+      }
+      /* passos */
+      .passos {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        counter-reset: p;
+      }
+      .passo {
+        position: relative;
+        padding: 26px 22px 22px;
+        border-radius: 16px;
+        border: 1px solid var(--fio);
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .passo::before {
+        counter-increment: p;
+        content: counter(p, decimal-leading-zero);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--ciano);
+      }
+      .passo h3 {
+        margin: 10px 0 6px;
+        font-size: 18px;
+      }
+      .passo p {
+        margin: 0;
+        color: var(--t2);
+        font-size: 14.5px;
+      }
+      /* números */
+      .numeros {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .numeros div {
+        padding: 22px;
+        border-radius: 16px;
+        border: 1px solid var(--fio);
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .numeros b {
+        display: block;
+        font-size: 36px;
+        letter-spacing: -0.03em;
+      }
+      .numeros span {
+        color: var(--t2);
+        font-size: 14px;
+      }
+      /* preços */
+      .planos {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        align-items: stretch;
+      }
+      .plano {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 26px;
+        border-radius: 18px;
+        border: 1px solid var(--fio);
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .plano.destaque {
+        border-color: rgba(124, 108, 255, 0.6);
+        background: linear-gradient(180deg, rgba(124, 108, 255, 0.16), rgba(34, 211, 238, 0.03));
+        box-shadow: 0 30px 80px -40px rgba(124, 108, 255, 0.8);
+      }
+      .plano h3 {
+        margin: 0;
+        font-size: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .plano h3 em {
+        font-style: normal;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        padding: 3px 9px;
+        border-radius: 999px;
+        color: #0a0a0d;
+        background: var(--grad);
+      }
+      .preco {
+        font-size: 40px;
+        font-weight: 750;
+        letter-spacing: -0.03em;
+      }
+      .preco small {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--t3);
+      }
+      .plano p {
+        margin: 0;
+        color: var(--t2);
+        font-size: 14.5px;
+      }
+      .plano ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 9px;
+        font-size: 14.5px;
+        color: var(--t2);
+        flex: 1;
+      }
+      .plano li {
+        display: flex;
+        gap: 9px;
+      }
+      .plano li svg {
+        flex: none;
+        margin-top: 3px;
+        color: #34d399;
+      }
+      .plano .btn {
+        justify-content: center;
+      }
+      .aviso-preco {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--t3);
+        text-align: center;
+      }
+      /* stack */
+      .stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .stack span {
+        padding: 8px 14px;
+        border-radius: 10px;
+        border: 1px solid var(--fio);
+        background: rgba(255, 255, 255, 0.025);
+        font-size: 14px;
+      }
+      .stack b {
+        color: var(--ciano);
+        font-weight: 600;
+      }
+      /* faq */
+      details {
+        border-bottom: 1px solid var(--fio);
+        padding: 18px 0;
+      }
+      summary {
+        cursor: pointer;
+        font-size: 17px;
+        font-weight: 600;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      summary::after {
+        content: '+';
+        color: var(--t3);
+        font-size: 22px;
+        line-height: 1;
+      }
+      details[open] summary::after {
+        content: '–';
+      }
+      details p {
+        margin: 10px 0 0;
+        color: var(--t2);
+        max-width: 75ch;
+      }
+      /* cta final */
+      .final {
+        margin: 110px 0 0;
+        padding: 56px 32px;
+        text-align: center;
+        border-radius: 24px;
+        border: 1px solid rgba(124, 108, 255, 0.4);
+        background:
+          radial-gradient(600px 240px at 50% 0%, rgba(124, 108, 255, 0.35), transparent 70%),
+          rgba(255, 255, 255, 0.02);
+      }
+      .final h2 {
+        max-width: 22ch;
+        margin: 0 auto;
+      }
+      .final p {
+        color: var(--t2);
+        margin: 14px auto 0;
+        max-width: 60ch;
+      }
+      footer {
+        margin-top: 80px;
+        padding: 30px 0 40px;
+        border-top: 1px solid var(--fio);
+        font-size: 13.5px;
+        color: var(--t3);
+      }
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      footer a {
+        color: var(--t2);
+      }
+      [data-entra] {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      [data-entra].visto {
+        opacity: 1;
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        [data-entra] {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+      @media (max-width: 960px) {
+        .nav ul {
+          display: none;
+        }
+        .nav .wrap {
+          justify-content: space-between;
+        }
+        .recursos,
+        .planos,
+        .passos {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .numeros {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .vitrine,
+        .vitrine.inv {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+        .vitrine.inv .texto {
+          order: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="ok" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" /></symbol>
+      <symbol id="seta" viewBox="0 0 24 24"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5" /></symbol>
+      <symbol id="git" viewBox="0 0 24 24"><path d="M9 19c-4 1.5-4-2-6-2.5M15 21v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.7 11.7 0 0 0-6.2 0C6.6 2.8 5.6 3.1 5.6 3.1a4.3 4.3 0 0 0-.1 3.2A4.7 4.7 0 0 0 4.2 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" /></symbol>
+      <symbol id="painel" viewBox="0 0 24 24"><rect x="3.8" y="3.8" width="7" height="8.5" rx="1.6" /><rect x="13.2" y="3.8" width="7" height="5" rx="1.6" /><rect x="13.2" y="11.2" width="7" height="9" rx="1.6" /><rect x="3.8" y="14.7" width="7" height="5.5" rx="1.6" /></symbol>
+      <symbol id="filtro" viewBox="0 0 24 24"><path d="M4 5.5h16l-6.2 7.3v5.4l-3.6 1.8v-7.2z" /></symbol>
+      <symbol id="upload" viewBox="0 0 24 24"><path d="M12 15.5v-11M7 9l5-5 5 5" /><path d="M4.5 19.5h15" /></symbol>
+      <symbol id="download" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5" /><path d="M4.5 19.5h15" /></symbol>
+      <symbol id="estrela" viewBox="0 0 24 24"><path d="M12 3.5l2.4 5 5.4.7-4 3.8 1 5.4L12 15.8l-4.8 2.6 1-5.4-4-3.8 5.4-.7z" /></symbol>
+      <symbol id="tela" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="11.5" rx="1.6" /><path d="M10.4 7.8v5.1l4.3-2.55z" /><path d="M9 20h6M12 16v4" /></symbol>
+      <symbol id="busca" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" /><path d="M20 20l-4.2-4.2" /></symbol>
+      <symbol id="olho" viewBox="0 0 24 24"><path d="M2.8 12s3.4-6.2 9.2-6.2 9.2 6.2 9.2 6.2-3.4 6.2-9.2 6.2S2.8 12 2.8 12z" /><circle cx="12" cy="12" r="2.6" /></symbol>
+    </svg>
+
+    <nav class="nav" aria-label="Principal">
+      <div class="wrap">
+        <a class="marca" href="#topo">
+          <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c6cff" /><stop offset="1" stop-color="#22d3ee" /></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)" /><path d="M16 6.5v19M11.5 25.5h9M12.5 12.5h7l-1 6h-5z" fill="none" stroke="#0a0a0d" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" /><circle cx="16" cy="6.5" r="2.2" fill="#0a0a0d" /></svg>
+          Torre <small>Ops Intelligence</small>
+        </a>
+        <ul>
+          <li><a href="#recursos">Recursos</a></li>
+          <li><a href="#integracoes">Integrações</a></li>
+          <li><a href="#planos">Planos</a></li>
+          <li><a href="#tecnologia">Tecnologia</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <a class="btn btn-p btn-mini" href="index.html">Abrir a demo <svg class="i"><use href="#seta" /></svg></a>
+      </div>
+    </nav>
+
+    <main id="topo">
+      <header class="hero wrap">
+        <span class="selo" data-entra><b>NOVO</b> Importe sua planilha e veja o painel recalcular na hora</span>
+        <h1 data-entra>A operação inteira, <span class="grad">numa tela que decide</span>.</h1>
+        <p class="lead" data-entra>
+          A Torre junta bot de WhatsApp, banco de dados, redes sociais e planilhas num painel executivo: o que está acontecendo,
+          o que está parado e qual decisão tomar hoje — com a página da fonte ao lado de cada número.
+        </p>
+        <div class="ctas" data-entra>
+          <a class="btn btn-p" href="index.html">Explorar a demo ao vivo <svg class="i"><use href="#seta" /></svg></a>
+          <a class="btn btn-s" href="index.html#/dados?alvo=importar"><svg class="i"><use href="#upload" /></svg> Testar com meu CSV</a>
+        </div>
+        <p class="nota" data-entra>Sem cadastro · abre no navegador · dados de demonstração fictícios</p>
+
+        <div class="janela" data-entra>
+          <div class="janela-barra"><i></i><i></i><i></i><span>torre.app / visão executiva</span></div>
+          <div class="tela" id="tela-hero"><iframe src="index.html" title="Prévia ao vivo do painel executivo" tabindex="-1" loading="eager"></iframe><a class="cobre" href="index.html" aria-label="Abrir a demo"></a></div>
+        </div>
+      </header>
+
+      <section class="integra wrap" id="integracoes">
+        <p>Conecta as fontes que a operação já usa</p>
+        <div class="pilulas">
+          <span><i></i>PostgreSQL</span>
+          <span><i></i>WhatsApp Business Cloud API</span>
+          <span><i></i>Instagram e Facebook Graph</span>
+          <span><i></i>Planilhas CSV e Excel</span>
+          <span><i></i>API REST / JSON</span>
+          <span><i></i>GitHub Actions</span>
+        </div>
+      </section>
+
+      <section class="bloco wrap" id="recursos">
+        <div class="cab" data-entra>
+          <small>Recursos</small>
+          <h2>Feito para quem precisa decidir antes do meio-dia</h2>
+          <p>Cada tela responde uma pergunta de gestão. Cada número abre um explicador com o que ele é, o que não é e de onde veio.</p>
+        </div>
+        <div class="recursos">
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#painel" /></svg></span><h3>Visão executiva</h3><p>KPIs com tendência e comparação com o período anterior, funil, projeção por cenário e decisões do dia numa só tela.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#filtro" /></svg></span><h3>Filtros globais</h3><p>Escolha 7, 14 ou 30 dias e todos os gráficos de todas as páginas se recortam juntos — inclusive as exportações.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#upload" /></svg></span><h3>Importação CSV e Excel</h3><p>Arraste um .csv ou .xlsx: a Torre acha a coluna de data, detecta as numéricas, sugere o mapeamento e recalcula o painel.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#download" /></svg></span><h3>Exportação em um clique</h3><p>Relatório em PDF, séries e decisões em CSV, livro de dados em JSON — e um botão CSV em cada gráfico.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#estrela" /></svg></span><h3>Central de decisão</h3><p>21 decisões priorizadas em "agir hoje" e "atenção", cada uma ligada ao dado que a sustenta e à ação recomendada.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#tela" /></svg></span><h3>Apresentação e telão</h3><p>Roteiro com holofote para reunião (tecla P) e modo telão que avança sozinho na parede da sala de operação (tecla T).</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#busca" /></svg></span><h3>Paleta de comandos</h3><p>Ctrl K para ir a qualquer página, trocar o período, exportar ou abrir uma decisão sem tirar a mão do teclado.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#olho" /></svg></span><h3>Privacidade de tela</h3><p>Uma tecla oculta os nomes da equipe antes de compartilhar a tela ou gravar uma reunião.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#ok" /></svg></span><h3>Acessível de verdade</h3><p>Estado sempre com ícone e palavra, nunca só cor; navegação por teclado, foco visível e respeito a movimento reduzido.</p></article>
+        </div>
+
+        <div class="vitrine" data-entra>
+          <div class="texto">
+            <h3>Traga seus números. O painel se adapta.</h3>
+            <p>A página de dados mostra a saúde de cada conector e recebe planilhas em CSV ou Excel, sem instalar nada.</p>
+            <ul>
+              <li><svg class="i"><use href="#ok" /></svg>Detecta datas em AAAA-MM-DD, DD/MM/AAAA e no formato serial do Excel</li>
+              <li><svg class="i"><use href="#ok" /></svg>Entende números brasileiros como 1.234,56</li>
+              <li><svg class="i"><use href="#ok" /></svg>Substitui séries do painel ou só analisa as colunas novas</li>
+            </ul>
+          </div>
+          <div class="janela">
+            <div class="janela-barra"><i></i><i></i><i></i><span>torre.app / dados e integrações</span></div>
+            <div class="tela"><iframe src="index.html#/dados" title="Prévia da página de dados e integrações" tabindex="-1" loading="lazy"></iframe><a class="cobre" href="index.html#/dados" aria-label="Abrir dados e integrações"></a></div>
+          </div>
+        </div>
+
+        <div class="vitrine inv" data-entra>
+          <div class="texto">
+            <h3>Uma torre que é o próprio funil</h3>
+            <p>A visualização assinatura mostra a prontidão da rede como um prédio: cada andar é uma etapa, a largura é quantos chegaram lá.</p>
+            <ul>
+              <li><svg class="i"><use href="#ok" /></svg>Meta tracejada ao lado do andar que importa</li>
+              <li><svg class="i"><use href="#ok" /></svg>Divergências da fonte mostradas, nunca escondidas</li>
+              <li><svg class="i"><use href="#ok" /></svg>Pista até o Dia D com os marcos da operação</li>
+            </ul>
+          </div>
+          <div class="janela">
+            <div class="janela-barra"><i></i><i></i><i></i><span>torre.app / torre de prontidão</span></div>
+            <div class="tela"><iframe src="index.html#/visao-geral" title="Prévia da torre de prontidão" tabindex="-1" loading="lazy"></iframe><a class="cobre" href="index.html#/visao-geral" aria-label="Abrir a torre de prontidão"></a></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bloco wrap">
+        <div class="cab" data-entra>
+          <small>Como funciona</small>
+          <h2>Do dado solto à decisão em três passos</h2>
+        </div>
+        <div class="passos">
+          <article class="passo" data-entra><h3>Conecte</h3><p>Banco de dados, WhatsApp, redes ou uma planilha. A Torre lê só agregados — nenhum dado pessoal sai da fonte.</p></article>
+          <article class="passo" data-entra><h3>Confira</h3><p>Um gerador tipado em TypeScript monta o livro de dados e uma conferência no GitHub Actions garante que todas as somas fecham.</p></article>
+          <article class="passo" data-entra><h3>Decida</h3><p>A visão executiva prioriza o que pede ação hoje. Exporte o relatório e leve para a reunião.</p></article>
+        </div>
+      </section>
+
+      <section class="bloco wrap">
+        <div class="numeros">
+          <div data-entra><b class="grad">12</b><span>páginas, do executivo ao detalhe</span></div>
+          <div data-entra><b class="grad">46</b><span>séries diárias conferidas a cada push</span></div>
+          <div data-entra><b class="grad">21</b><span>decisões ligadas ao dado de origem</span></div>
+          <div data-entra><b class="grad">0</b><span>dependências em produção</span></div>
+        </div>
+      </section>
+
+      <section class="bloco wrap" id="planos">
+        <div class="cab" data-entra>
+          <small>Planos</small>
+          <h2>Comece pela demo. Cresça com a operação.</h2>
+        </div>
+        <div class="planos">
+          <article class="plano" data-entra>
+            <h3>Starter</h3>
+            <div class="preco">R$ 0 <small>/mês</small></div>
+            <p>Para validar o painel com uma planilha.</p>
+            <ul>
+              <li><svg class="i"><use href="#ok" /></svg>Visão executiva e filtros</li>
+              <li><svg class="i"><use href="#ok" /></svg>Importação CSV e Excel</li>
+              <li><svg class="i"><use href="#ok" /></svg>Exportação em CSV</li>
+            </ul>
+            <a class="btn btn-s" href="index.html#/dados?alvo=importar">Começar com uma planilha</a>
+          </article>
+          <article class="plano destaque" data-entra>
+            <h3>Pro <em>MAIS ESCOLHIDO</em></h3>
+            <div class="preco">R$ 149 <small>/mês por workspace</small></div>
+            <p>Para a operação que vive no WhatsApp e no banco.</p>
+            <ul>
+              <li><svg class="i"><use href="#ok" /></svg>Tudo do Starter</li>
+              <li><svg class="i"><use href="#ok" /></svg>Conectores PostgreSQL e WhatsApp Business</li>
+              <li><svg class="i"><use href="#ok" /></svg>Central de decisão e régua por capítulo</li>
+              <li><svg class="i"><use href="#ok" /></svg>Relatório em PDF e modo telão</li>
+            </ul>
+            <a class="btn btn-p" href="index.html">Explorar o Pro na demo</a>
+          </article>
+          <article class="plano" data-entra>
+            <h3>Enterprise</h3>
+            <div class="preco">Sob consulta</div>
+            <p>Para várias equipes, fontes e regras de acesso.</p>
+            <ul>
+              <li><svg class="i"><use href="#ok" /></svg>Conectores sob medida via API</li>
+              <li><svg class="i"><use href="#ok" /></svg>Conferência de dados no seu CI</li>
+              <li><svg class="i"><use href="#ok" /></svg>Implantação acompanhada</li>
+            </ul>
+            <a class="btn btn-s" href="https://evi-dev.vercel.app" target="_blank" rel="noopener">Falar com a desenvolvedora</a>
+          </article>
+        </div>
+        <p class="aviso-preco">Preços ilustrativos: a Torre é um projeto de portfólio e não está à venda.</p>
+      </section>
+
+      <section class="bloco wrap" id="tecnologia">
+        <div class="cab" data-entra>
+          <small>Tecnologia</small>
+          <h2>Leve, tipado e conferido</h2>
+          <p>Sem framework e sem dependências de execução: abre do disco, carrega rápido e roda em qualquer navegador atual.</p>
+        </div>
+        <div class="stack" data-entra>
+          <span><b>HTML</b> semântico</span>
+          <span><b>CSS</b> com tokens e camadas</span>
+          <span><b>JavaScript</b> puro, SVG desenhado à mão</span>
+          <span><b>TypeScript</b> no gerador de dados</span>
+          <span><b>GitHub Actions</b> typecheck + conferência</span>
+          <span><b>Vercel</b> deploy estático</span>
+          <span><b>ZIP + DecompressionStream</b> para ler .xlsx</span>
+        </div>
+      </section>
+
+      <section class="bloco wrap" id="faq">
+        <div class="cab" data-entra>
+          <small>Perguntas</small>
+          <h2>Perguntas frequentes</h2>
+        </div>
+        <details><summary>Os dados são reais?</summary><p>Não. O Clube Horizonte não existe: pessoas, equipes, lugares e números são fictícios e gerados por um script com semente fixa, para a demonstração ser reproduzível.</p></details>
+        <details><summary>Posso testar com meus próprios números?</summary><p>Sim. Na página Dados e integrações, arraste um CSV ou .xlsx com uma coluna de data e colunas numéricas. Tudo acontece no seu navegador; nada é enviado para servidor.</p></details>
+        <details><summary>O que acontece quando eu filtro 14 dias?</summary><p>Todos os gráficos de série diária, em todas as páginas, passam a mostrar só os últimos 14 dias. Os KPIs comparam com os 14 dias anteriores e as exportações respeitam o mesmo recorte.</p></details>
+        <details><summary>Onde está o código?</summary><p>No GitHub, com o gerador de dados em TypeScript e a conferência automática a cada push: <a href="https://github.com/EVI-DEV1/centro-inteligencia-operacional" target="_blank" rel="noopener">EVI-DEV1/centro-inteligencia-operacional</a>.</p></details>
+      </section>
+
+      <section class="wrap">
+        <div class="final" data-entra>
+          <h2>Veja a Torre funcionando agora</h2>
+          <p>Abra a demo, aperte Ctrl K e experimente trocar o período, importar uma planilha ou gerar o relatório.</p>
+          <div class="ctas">
+            <a class="btn btn-p" href="index.html">Abrir a demo <svg class="i"><use href="#seta" /></svg></a>
+            <a class="btn btn-s" href="https://github.com/EVI-DEV1/centro-inteligencia-operacional" target="_blank" rel="noopener"><svg class="i"><use href="#git" /></svg> Ver o código</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>Torre Ops Intelligence · projeto de portfólio de <a href="https://evi-dev.vercel.app" target="_blank" rel="noopener">Eliane Vitoriano</a></span>
+        <span>Demonstração com dados fictícios · nenhuma empresa real envolvida</span>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        // Prévia ao vivo: o iframe do app é desenhado a 1440 px e reduzido para caber na janela.
+        const ajustar = () =>
+          document.querySelectorAll('.tela').forEach((t) => t.style.setProperty('--escala', String(t.clientWidth / 1440)));
+        ajustar();
+        new ResizeObserver(ajustar).observe(document.body);
+
+        const io = new IntersectionObserver(
+          (entradas) =>
+            entradas.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('visto');
+                io.unobserve(e.target);
+              }
+            }),
+          { rootMargin: '0px 0px -8% 0px' }
+        );
+        document.querySelectorAll('[data-entra]').forEach((el) => io.observe(el));
+      })();
+    </script>
+  </body>
+</html>
