@@ -1,4 +1,4 @@
-// Junta a Torre num único HTML autônomo: CSS e JS embutidos, fontes em data URI.
+// Junta o OPS Intelligence num único HTML autônomo: CSS e JS embutidos, fontes em data URI.
 // uso (na raiz do projeto):
 //   node scripts/build.mjs   → dist/centro-inteligencia.html (retrato fixo com dados fictícios: abre do disco)
 // Antes do build, os dados precisam existir: node scripts/gerar-dados.ts
@@ -54,7 +54,7 @@ const provas = [
   ['fontes embutidas', html.includes('data:font/woff2;base64,')],
   ['livro e séries embutidos', html.includes('data-origem="src/dados/livro.js"') && html.includes('data-origem="src/dados/series.js"')],
   ['retrato fixo (vivo.js sem busca de rede)', html.includes('data-origem="src/dados/vivo.js"') && !/fetch\(/.test(ler('src/dados/vivo.js'))],
-  ['aviso de dados fictícios no topo', html.includes("'Dados fictícios'")],
+  ['selo de simulação no modo demonstração', html.includes("'Simulação')")],
 ];
 const falhas = provas.filter(([, ok]) => !ok);
 fs.mkdirSync(path.dirname(SAIDA), { recursive: true });

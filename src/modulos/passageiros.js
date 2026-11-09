@@ -118,7 +118,7 @@
         G.barrasDia(el, {
           serie,
           altura: 250,
-          nome: 'passageiros',
+          nome: 'leads',
           rotuloSe: (p) => p.v >= limiar && !p.parcial,
           linhas: [{ nome: 'média de 7 dias', pontos: T.dados.mm7(), cor: 'var(--atencao)', largura: 2 }],
         }),

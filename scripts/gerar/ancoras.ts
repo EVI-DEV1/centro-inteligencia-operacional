@@ -76,7 +76,7 @@ export const TRES = {
   registradoSobreMetaPct: pct(9846, 112000),
   decomposicao: [
     { id: 'orfaos', grupo: 'Órfãos (sem admin)', pilotos: 44, comPassageiro: 4, meta: 1920, natureza: 'ficha' },
-    { id: 'deposito', grupo: 'Fila de triagem (1 controladora)', pilotos: 538, comPassageiro: 3, meta: 18640, natureza: 'ficha' },
+    { id: 'deposito', grupo: 'Fila de triagem (1 admin)', pilotos: 538, comPassageiro: 3, meta: 18640, natureza: 'ficha' },
     { id: 'dobro', grupo: 'É lead de outra pessoa', pilotos: 602, comPassageiro: 161, meta: 27480, natureza: 'sinal' },
     { id: 'novos', grupo: 'Criado há <7 dias, sem lead', pilotos: 523, comPassageiro: 0, meta: 23100, natureza: 'ficha' },
     { id: 'antigos', grupo: 'Antigo, sem lead', pilotos: 171, comPassageiro: 0, meta: 8560, natureza: 'ficha' },

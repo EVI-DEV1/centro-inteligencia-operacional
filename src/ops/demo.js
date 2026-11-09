@@ -221,14 +221,18 @@
           if (idade >= 1) etapa = 'em_contato';
           if (idade >= 3 && sorte < pQual) {
             etapa = 'qualificado';
-            qualificadoEm = N.somarDias(d, 2 + Math.floor(r() * 3));
+            qualificadoEm = N.somarDias(d, Math.min(idade, 2 + Math.floor(r() * 3)));
           }
           if (etapa === 'qualificado' && idade >= 6 && r() < 0.6) etapa = 'negociacao';
           if (etapa !== 'novo' && etapa !== 'em_contato' && idade >= 7 && sorte < pConv) {
-            etapa = 'convertido';
-            convertidoEm = N.somarDias(d, Math.min(idade, 5 + Math.floor(r() * 12)));
+            // a conversão leva de 5 a 16 dias; se esse dia ainda não chegou, o lead segue em negociação
+            // (antes a data era cortada em "hoje" e empilhava conversões no último dia)
+            const leva = 5 + Math.floor(r() * 12);
+            if (leva <= idade) {
+              etapa = 'convertido';
+              convertidoEm = N.somarDias(d, leva);
+            } else etapa = 'negociacao';
           } else if (idade >= 14 && etapa === 'em_contato' && r() < 0.55) etapa = 'perdido';
-          if (convertidoEm && convertidoEm > hoje) convertidoEm = hoje;
           const nome = `${escolher(r, PRIMEIROS)} ${INICIAIS[Math.floor(r() * INICIAIS.length)]}.`;
           const hora = Math.min(23, Math.max(7, Math.round(13 + normal(r) * 4)));
           const entradaEm = `${d}T${String(hora).padStart(2, '0')}:${String(Math.floor(r() * 60)).padStart(2, '0')}:00-03:00`;

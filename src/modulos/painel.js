@@ -100,7 +100,7 @@
     G.barrasDia(corpo, {
       serie,
       altura: 380,
-      nome: 'passageiros',
+      nome: 'leads',
       linhas: [{ nome: 'média de 7 dias', pontos: mm7, cor: 'var(--ciano)', largura: 2.4 }],
       cor: () => 'var(--eletrico)',
       margemEsq: 46,
@@ -108,7 +108,7 @@
     });
     const exportar = T.h(
       'button',
-      { class: 'botao-fantasma', type: 'button', onclick: () => T.planilha.baixarCSV([['data', 'passageiros', 'media_7_dias'], ...T.filtro.recortar(serie).map((p) => [p.d, p.v, (mm7.find((m) => m.d === p.d) || {}).v ?? ''])], 'torre-passageiros-por-dia.csv') },
+      { class: 'botao-fantasma', type: 'button', onclick: () => T.planilha.baixarCSV([['data', 'leads', 'media_7_dias'], ...T.filtro.recortar(serie).map((p) => [p.d, p.v, (mm7.find((m) => m.d === p.d) || {}).v ?? ''])], 'ops-leads-por-dia.csv') },
       T.icone('download'),
       'CSV'
     );
@@ -141,7 +141,7 @@
         );
       })
     );
-    return cartao({ id: 'funil', titulo: 'Funil de prontidão das pessoas', sub: 'de quem existe a quem produziu na última semana', acao: T.h('a', { class: 'botao-fantasma', href: '#/visao-geral' }, 'Ver a torre', T.icone('seta')) }, lista);
+    return cartao({ id: 'funil', titulo: 'Funil de prontidão das pessoas', sub: 'de quem existe a quem produziu na última semana', acao: T.h('a', { class: 'botao-fantasma', href: '#/pilotos?alvo=funil' }, 'Ver o funil', T.icone('seta')) }, lista);
   }
 
   function cenarios() {

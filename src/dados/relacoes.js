@@ -122,19 +122,24 @@
     };
   };
 
+  // Navegação do OPS Intelligence. `so`: 'horizonte' = só no cliente de demonstração Clube Horizonte
+  // (capítulos do livro do programa); 'admin' = só administradores. Os ids de rota antigos foram mantidos
+  // (pilotos, passageiros, controladores, plano) para não quebrar links e atalhos já usados.
   T.paginas = [
-    { id: 'painel', codigo: null, nome: 'Visão executiva', icone: 'painel' },
-    { id: 'visao-geral', codigo: '00', nome: 'Visão executiva', icone: 'visao' },
-    { id: 'pilotos', codigo: 'A', nome: 'Pessoas', icone: 'pilotos', capitulo: 'pilotos' },
-    { id: 'passageiros', codigo: 'B', nome: 'Leads', icone: 'passageiros', capitulo: 'passageiros' },
-    { id: 'controladores', codigo: 'C', nome: 'Admin', icone: 'controladores', capitulo: 'controladores' },
-    { id: 'central', codigo: 'D', nome: 'Central', icone: 'central', capitulo: 'central' },
-    { id: 'operacao', codigo: 'E', nome: 'Operação', icone: 'operacao', capitulo: 'operacao' },
-    { id: 'atendimento', codigo: 'F', parte: '1/2', nome: 'Atendimento', icone: 'atendimento', capitulo: 'atendimento' },
-    { id: 'alcance', codigo: 'F', parte: '2/2', nome: 'Alcance', icone: 'alcance', capitulo: 'alcance' },
-    { id: 'plano', codigo: null, codigoIcone: 'seta', nome: 'Caminho para o Dia D', icone: 'plano' },
-    { id: 'decisao', codigo: null, codigoIcone: 'decisao', nome: 'Central de Decisão', icone: 'decisao' },
-    { id: 'dados', codigo: null, nome: 'Dados e integrações', icone: 'dados' },
+    { id: 'painel', codigo: null, nome: 'Visão Executiva', icone: 'painel', grupo: 'Inteligência' },
+    { id: 'central', codigo: null, nome: 'Central', icone: 'central', grupo: 'Inteligência' },
+    { id: 'conteudo', codigo: null, nome: 'Análise de Conteúdo', icone: 'alcance', grupo: 'Inteligência' },
+    { id: 'plano', codigo: null, nome: 'Campanhas', icone: 'plano', grupo: 'Comercial' },
+    { id: 'passageiros', codigo: null, nome: 'Leads', icone: 'passageiros', grupo: 'Comercial', capitulo: 'passageiros' },
+    { id: 'pilotos', codigo: null, nome: 'Pessoas', icone: 'pilotos', grupo: 'Gestão', capitulo: 'pilotos' },
+    { id: 'controladores', codigo: null, nome: 'Admin', icone: 'controladores', grupo: 'Gestão', capitulo: 'controladores' },
+    { id: 'comparar', codigo: null, nome: 'Comparar clientes', icone: 'tendencia', grupo: 'Gestão', so: 'admin' },
+    { id: 'relatorio', codigo: null, nome: 'Resumo do programa', icone: 'visao', grupo: 'Programa Horizonte', so: 'horizonte' },
+    { id: 'operacao', codigo: 'E', nome: 'Operação', icone: 'operacao', capitulo: 'operacao', grupo: 'Programa Horizonte', so: 'horizonte' },
+    { id: 'atendimento', codigo: 'F', parte: '1/2', nome: 'Atendimento', icone: 'atendimento', capitulo: 'atendimento', grupo: 'Programa Horizonte', so: 'horizonte' },
+    { id: 'alcance', codigo: 'F', parte: '2/2', nome: 'Alcance', icone: 'alcance', capitulo: 'alcance', grupo: 'Programa Horizonte', so: 'horizonte' },
+    { id: 'decisao', codigo: null, codigoIcone: 'decisao', nome: 'Central de Decisão', icone: 'decisao', grupo: 'Programa Horizonte', so: 'horizonte' },
+    { id: 'dados', codigo: null, nome: 'Dados e integrações', icone: 'dados', grupo: 'Workspace' },
   ];
 
   const montarNucleos = () => {
@@ -318,7 +323,7 @@
       { id: 'chamados', nivel: nivelPela('agir', statusRegua(C.reguaFaseB, /chamados abertos/i)), area: 'central', titulo: `${f.n(ch.paradosMais48h)} dos ${f.n(ch.abertosAgora)} chamados abertos ${plural(ch.paradosMais48h, 'passou', 'passaram')} de 48 horas`, metrica: { v: f.n(ch.semDonoAutomatico), u: 'chamados sem fluxo automático' }, impacto: `O que está aberto — ${f.n(demandas)} ${plural(demandas, 'demanda', 'demandas')} e ${f.n(deControlador)} ${plural(deControlador, 'pedido', 'pedidos')} de admin — é justamente o que não tem dono automático.`, acao: `Dar dono aos ${f.n(ch.semDonoAutomatico)} chamados abertos de demanda e de admin.`, p: [31, 33], rota: 'central', alvo: 'chamados' },
       { id: 'carimbo', nivel: nivelPela('agir', statusRegua(O.regua, /sem carimbo/i)), area: 'operacao', titulo: 'A operação não consegue provar que entregou', metrica: { v: f.pct(pctSemCarimbo), u: 'pedidos arquivados sem carimbo' }, impacto: `${f.n(ped.arquivadosSemCarimbo)} de ${f.n(ped.total)} pedidos arquivados sem data de entrega, ${f.n(saidaEmBranco)} sem saída preenchida e ${f.n(et.conferidas)} ${plural(et.conferidas, 'kit conferido', 'kits conferidos')} em ${f.n(et.total)} etiquetas. As entregas estão entre ${f.n(entre[0])} e ${f.n(entre[1])}.`, acao: 'Arquivar só depois de "entregue" e tornar a saída obrigatória — fecha as duas lacunas de uma vez.', p: [35, 38, 43, 55], rota: 'operacao', alvo: 'esteira' },
       { id: 'lista', nivel: 'atencao', area: 'central', titulo: `${f.n(er.naLista)} conversas travaram na montagem da lista de convidados`, metrica: { v: f.n(er.naLista), u: `de ${f.n(er.comEtapa)} conversas com etapa` }, impacto: `${maiorBolso ? 'É o maior bolso de conversas travadas do bot — mais que todas as outras etapas juntas. ' : ''}Problema de roteiro, não de infraestrutura.`, acao: 'Encurtar a etapa da lista de convidados.', p: [30, 33], rota: 'central', alvo: 'etapas' },
-      { id: 'lote', nivel: 'atencao', area: 'pilotos', titulo: 'Converter a fila em lote não produz lead', metrica: { v: f.pct(ult.ativaramPct), u: `da safra de ${f.data(ult.semana)} ativou` }, impacto: `A coorte de ${f.data(ult.semana)} tem ${f.n(ult.pilotos)} pessoas e rende ${f.n(ult.porFicha, 1)} ${num(ult.porFicha) && ult.porFicha >= 2 ? 'passageiros' : 'passageiro'} por ficha${semCarga.length ? `; ${plural(semCarga.length, 'a semana sem carga ativou', 'as semanas sem carga ativaram')} ${juntar(semCarga)}` : ''}.`, acao: `Tratar as ${f.n(naFila)} fichas na fila como lista de ligações (cerca de ${f.n(pp.contatosPorControlador)} por admin até ${f.data(diaD)}), não como base a converter.`, p: [9, 11, 12], rota: 'pilotos', alvo: 'cargas' },
+      { id: 'lote', nivel: 'atencao', area: 'pilotos', titulo: 'Converter a fila em lote não produz lead', metrica: { v: f.pct(ult.ativaramPct), u: `da safra de ${f.data(ult.semana)} ativou` }, impacto: `A coorte de ${f.data(ult.semana)} tem ${f.n(ult.pilotos)} pessoas e rende ${f.n(ult.porFicha, 1)} ${num(ult.porFicha) && ult.porFicha >= 2 ? 'leads' : 'lead'} por ficha${semCarga.length ? `; ${plural(semCarga.length, 'a semana sem carga ativou', 'as semanas sem carga ativaram')} ${juntar(semCarga)}` : ''}.`, acao: `Tratar as ${f.n(naFila)} fichas na fila como lista de ligações (cerca de ${f.n(pp.contatosPorControlador)} por admin até ${f.data(diaD)}), não como base a converter.`, p: [9, 11, 12], rota: 'pilotos', alvo: 'cargas' },
       { id: 'parados', nivel: 'atencao', area: 'passageiros', titulo: `${f.n(par.v)} produtores estão parados há 7 dias ou mais`, metrica: { v: f.n(par.devem), u: 'leads de meta que eles devem' }, impacto: 'Já provaram que sabem usar o bot. Custam uma mensagem.', acao: 'Chamar primeiro quem já produziu e parou — antes de abrir qualquer ficha nova.', p: [19, 21, 52], rota: 'passageiros', alvo: 'parados' },
       { id: 'rodada', nivel: 'atencao', area: 'controladores', titulo: `A rodada de expectativa não tem prazo e ${f.n(rod.semCarimbo)} linhas ficaram sem resposta`, metrica: { v: f.pct(rod.zeroPct), u: 'das respostas vieram com zero' }, impacto: 'A Real diz um tamanho, não um prazo — e é com prazo que se decide logística de véspera.', acao: `Refazer a rodada com a pergunta "quanto entre ${f.data(fB.inicio)} e ${f.data(diaD)}". ${provaDe(/(?:controladores|admins) lançaram/i)}`.trim(), p: [25, 27, 54], rota: 'controladores', alvo: 'rodada' },
       { id: 'segunda', nivel: 'atencao', area: 'atendimento', titulo: segMaior ? `Segunda-feira paga o fim de semana${fraseMadr ? ` — e ${fraseMadr}` : ''}` : fraseMadr ? inicial(fraseMadr) : 'Espera até a baixa por dia da semana', metrica: { v: f.h(obj(seg).h), u: 'mediana de espera na segunda' }, impacto: [segMaior ? 'O que chega no sábado e no domingo espera a segunda.' : null, madr === 0 ? 'O sistema está no ar 24 horas; o atendimento não.' : null].filter(Boolean).join(' '), acao: `Turno curto de sábado ou domingo e escala de plantão 22h–8h${provaEscala ? ` (${minuscula(provaEscala.replace(/\.$/, ''))})` : ''}.`, p: [45, 51, 54], rota: 'atendimento', alvo: 'semana' },
@@ -425,9 +430,6 @@
     const top = lista(A.pessoas).reduce((m, p) => (p && num(p.pct) && (!m || p.pct > m.pct) ? p : m), null) || {};
     const col = coletaDiaria();
     return [
-      { rota: 'visao-geral', alvo: 'cena', legenda: `A torre é o funil de prontidão em forma de prédio: a base existe (${f.n(n.ativos)}); ${prontos && prontos.status === 'verde' ? 'a base pronta também' : 'a base pronta, não'} (${f.n(n.vivos)}). O contorno tracejado ao lado do andar dos ${f.n(n.vivos)} é a meta de ${f.data(d7)}.` },
-      { rota: 'visao-geral', alvo: 'prontidao', legenda: `Prontidão da Fase A: das ${f.n(fase.length)} métricas do livro, ${cont.vermelho ? `${f.n(cont.vermelho)} ${plural(cont.vermelho, 'pede', 'pedem')} ação hoje` : 'nenhuma pede ação hoje'} e ${cont.verde ? `${f.n(cont.verde)} ${plural(cont.verde, 'está firme', 'estão firmes')}` : 'nenhuma está firme'}.` },
-      { rota: 'visao-geral', alvo: 'tres-numeros', legenda: 'Os três números do painel — e por que nenhum deles é o resultado.' },
       { rota: 'pilotos', alvo: 'funil', legenda: `Base criada não é base produtiva: ${f.n(P.semContatoComDono)} pessoas têm dono e nunca falaram com o bot.` },
       { rota: 'pilotos', alvo: 'cargas', legenda: `${f.pct(P.fichasDeCargaPct)} das fichas nasceram em ${extenso(diasCarga)} ${plural(diasCarga, 'dia', 'dias')} de carga — e a safra de ${f.data(ult.semana)} ativou ${f.pct(ult.ativaramPct)}.` },
       { rota: 'passageiros', alvo: 'cenarios', legenda: `${cen.alcancam.length ? `${plural(cen.alcancam.length, 'O cenário', 'Os cenários')} ${juntar(cen.alcancam)} ${plural(cen.alcancam.length, 'chega', 'chegam')} a` : 'Nenhum cenário da própria equipe chega a'} ${f.n(cen.meta)}. O teto da conta é ${f.n(cen.pleno.emDiaD)}.` },

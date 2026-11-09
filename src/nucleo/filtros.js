@@ -114,7 +114,7 @@
               class: 'painel-exportar',
               type: 'button',
               title: 'Exportar os números deste gráfico em CSV',
-              onclick: () => T.planilha.baixarCSV([o.tabela.colunas, ...o.tabela.linhas], `torre-${T.planilha.slug(nome)}.csv`),
+              onclick: () => T.planilha.baixarCSV([o.tabela.colunas, ...o.tabela.linhas], `ops-${T.planilha.slug(nome)}.csv`),
             },
             T.icone('download'),
             'CSV'

@@ -55,7 +55,7 @@ export function gerar({ A, U, capitulos = {} }: Contexto): SaidaCapitulo {
     faltavamDiasNaMedicao: D.faltavamDiasNaMedicao,
     hojeDemo: D.hojeDemo,
     marcos: { ...D.marcos, simulado: [...D.marcos.simulado] },
-    frase: `Nenhum número desta OPS Intelligence mede resultado: todos medem prontidão. A temporada depende de duas respostas — em ${fmt.data(D.d7)} existem de ${fmt.n(metaMin)} a ${fmt.n(metaMax)} pessoas com material na mão e canal aberto? E o sistema aguenta de ${flex(medio.xMelhorDia)} a ${flex(otimista.xMelhorDia)} vezes o seu melhor dia, sete dias seguidos?`,
+    frase: `Nenhum número deste programa mede resultado: todos medem prontidão. A temporada depende de duas respostas — em ${fmt.data(D.d7)} existem de ${fmt.n(metaMin)} a ${fmt.n(metaMax)} pessoas com material na mão e canal aberto? E o sistema aguenta de ${flex(medio.xMelhorDia)} a ${flex(otimista.xMelhorDia)} vezes o seu melhor dia, sete dias seguidos?`,
     capa: [
       { v: P.contabilizados, rotulo: 'pessoas indicadas e cadastradas (leads)' },
       { v: P.ritmo, rotulo: 'por dia, média dos últimos 7 dias completos' },

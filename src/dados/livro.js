@@ -51,7 +51,7 @@ window.TORRE_LIVRO = {
    "simuladoAte": "2026-11-27",
    "d7": "2026-11-29"
   },
-  "frase": "Nenhum número desta OPS Intelligence mede resultado: todos medem prontidão. A temporada depende de duas respostas — em 29/11 existem de 700 a 1.300 pessoas com material na mão e canal aberto? E o sistema aguenta de 4,4 a 9 vezes o seu melhor dia, sete dias seguidos?",
+  "frase": "Nenhum número deste programa mede resultado: todos medem prontidão. A temporada depende de duas respostas — em 29/11 existem de 700 a 1.300 pessoas com material na mão e canal aberto? E o sistema aguenta de 4,4 a 9 vezes o seu melhor dia, sete dias seguidos?",
   "capa": [
    {
     "v": 9846,
@@ -195,7 +195,7 @@ window.TORRE_LIVRO = {
    },
    {
     "id": "deposito",
-    "grupo": "Fila de triagem (1 controladora)",
+    "grupo": "Fila de triagem (1 admin)",
     "pilotos": 538,
     "comPassageiro": 3,
     "meta": 18640,
@@ -2490,8 +2490,8 @@ window.TORRE_LIVRO = {
     "ativas7d": 4
    },
    {
-    "etapa": "PASSAGEIRO — dados",
-    "grupo": "passageiro",
+    "etapa": "LEAD — dados",
+    "grupo": "lead",
     "v": 33,
     "ativas7d": 9
    },
@@ -2529,7 +2529,7 @@ window.TORRE_LIVRO = {
   },
   "falasPorEtapa": [
    {
-    "etapa": "PASSAGEIRO — confirmação",
+    "etapa": "LEAD — confirmação",
     "v": 1632
    },
    {
@@ -2537,7 +2537,7 @@ window.TORRE_LIVRO = {
     "v": 875
    },
    {
-    "etapa": "PASSAGEIRO — dados",
+    "etapa": "LEAD — dados",
     "v": 195
    },
    {

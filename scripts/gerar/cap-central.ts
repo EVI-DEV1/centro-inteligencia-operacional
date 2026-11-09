@@ -201,7 +201,7 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
     { etapa: 'LISTA — compromisso', grupo: 'lista', v: 153, ativas7d: 3 },
     { etapa: 'LISTA — contatos', grupo: 'lista', v: 91, ativas7d: 2 },
     { etapa: 'LISTA — formato', grupo: 'lista', v: 54, ativas7d: 4 },
-    { etapa: 'PASSAGEIRO — dados', grupo: 'passageiro', v: 33, ativas7d: 9 },
+    { etapa: 'LEAD — dados', grupo: 'lead', v: 33, ativas7d: 9 },
     { etapa: 'CADASTRO — nome', grupo: 'cadastro', v: 26, ativas7d: 3 },
     { etapa: 'CADASTRO — compromisso', grupo: 'cadastro', v: 16, ativas7d: 2 },
     { etapa: 'CADASTRO — interesse', grupo: 'cadastro', v: 9, ativas7d: 1 },
@@ -212,7 +212,7 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
   const descanso = somaGrupo('descanso');
   const etapasResumo = { comEtapa, descanso, noMeio: comEtapa - descanso, naLista: somaGrupo('lista'), ativas7d: soma(etapas, (e) => e.ativas7d) };
 
-  const nomesFalas = ['PASSAGEIRO — confirmação', 'MENU — descanso', 'PASSAGEIRO — dados', 'sem etapa registrada', 'MATERIAL — para quem', 'MATERIAL — kit', 'outras 8 etapas'];
+  const nomesFalas = ['LEAD — confirmação', 'MENU — descanso', 'LEAD — dados', 'sem etapa registrada', 'MATERIAL — para quem', 'MATERIAL — kit', 'outras 8 etapas'];
   const partesFalas = distribuir(totalFalas, [55.2, 29.6, 6.6, 1.4, 0.9, 0.7, 5.6]);
   const falasPorEtapa = nomesFalas.map((etapa, i) => ({ etapa, v: partesFalas[i] }));
   const falasConfirmacaoPct = pct(partesFalas[0], totalFalas);

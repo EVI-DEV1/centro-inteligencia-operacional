@@ -105,6 +105,21 @@ test('demo é determinística e os clientes não compartilham dados', () => {
   assert.ok(b.campanhas.every((c) => c.clienteId === 'demo-aurora'));
 });
 
+test('demo: conversões não vêm do futuro nem se acumulam no último dia', () => {
+  for (const id of ['demo-horizonte', 'demo-aurora']) {
+    const cj = D.gerar(id, HOJE);
+    const conv = cj.leads.filter((l) => l.convertidoEm);
+    assert.ok(conv.length > 0);
+    assert.ok(conv.every((l) => l.convertidoEm <= HOJE && l.convertidoEm >= l.entradaEm.slice(0, 10)));
+    assert.ok(cj.leads.every((l) => !l.qualificadoEm || l.qualificadoEm <= HOJE));
+    const porDia = {};
+    for (const l of conv) porDia[l.convertidoEm] = (porDia[l.convertidoEm] || 0) + 1;
+    const dias = Object.keys(porDia).sort().slice(-31, -1);
+    const media = dias.reduce((a, d) => a + porDia[d], 0) / dias.length;
+    assert.ok((porDia[HOJE] || 0) <= media * 3, `pico em ${id}: ${porDia[HOJE]} hoje contra média ${media.toFixed(1)}`);
+  }
+});
+
 test('demo respeita integração desligada: sem métrica do canal', () => {
   const v = D.gerar('demo-vertice', HOJE); // Instagram com token expirado
   assert.ok(!v.diario.some((p) => p.canal === 'instagram'));

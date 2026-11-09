@@ -105,7 +105,7 @@
       { grupo: 'descanso', rotulo: 'descanso (MENU)', classe: 'descanso' },
       { grupo: 'lista', rotulo: 'lista de convidados', classe: 'gargalo' },
       { grupo: 'cadastro', rotulo: 'cadastro', classe: 'meio' },
-      { grupo: 'passageiro', rotulo: 'lead — dados', classe: 'meio' },
+      { grupo: 'lead', rotulo: 'lead — dados', classe: 'meio' },
       { grupo: 'outras', rotulo: outras.length === 1 ? outras[0].etapa : 'outras etapas', classe: 'meio' },
     ]
       .map((g2) => {
@@ -295,7 +295,7 @@
   function etapas() {
     const er = D.etapasResumo;
     const maiorBolso = er.naLista > er.noMeio - er.naLista;
-    const confirmacao = D.falasPorEtapa.find((e) => e.etapa.startsWith('PASSAGEIRO — conf'));
+    const confirmacao = D.falasPorEtapa.find((e) => /^(LEAD|PASSAGEIRO) — conf/.test(e.etapa));
     return G.painel({
       id: 'etapas',
       titulo: 'A perda tem endereço: a montagem da lista',
@@ -307,7 +307,7 @@
           itens: D.etapas.map((e) => ({ rotulo: e.etapa, v: e.v, texto: `${f.n(e.v)} · ${f.n(e.ativas7d)} ativas`, cor: e.grupo === 'descanso' ? 'var(--referencia)' : e.grupo === 'lista' ? 'var(--agir)' : 'var(--eletrico)' })),
         });
         el.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'Sobre o que as pessoas escrevem (falas por etapa)'));
-        G.barrasH(el, { compacta: true, itens: D.falasPorEtapa.map((e) => ({ rotulo: e.etapa, v: e.v, texto: f.n(e.v), cor: e.etapa.startsWith('PASSAGEIRO — conf') ? 'var(--ciano)' : 'var(--eletrico)' })) });
+        G.barrasH(el, { compacta: true, itens: D.falasPorEtapa.map((e) => ({ rotulo: e.etapa, v: e.v, texto: f.n(e.v), cor: /^(LEAD|PASSAGEIRO) — conf/.test(e.etapa) ? 'var(--ciano)' : 'var(--eletrico)' })) });
       },
       leitura: `${f.n(er.naLista)} das ${f.n(er.comEtapa)} conversas pararam no meio da lista de convidados${maiorBolso ? ' — mais do que todas as outras etapas fora do descanso somadas' : ''}.${confirmacao ? ` E ${f.pct(D.falasConfirmacaoPct)} de tudo o que se escreve acontece na confirmação de lead: é ali que uma resposta automática errada custa um cadastro.` : ''}`,
       p: 30,
@@ -427,7 +427,7 @@
 
   function chat() {
     const autores = T.dados.serie('chat_chamado_autor_dia');
-    const nomes = { piloto: 'piloto', controlador: 'controlador', administrador: 'administrador', bot: 'bot (automático)' };
+    const nomes = { piloto: 'pessoa', controlador: 'admin', administrador: 'administrador', bot: 'bot (automático)' };
     const todos = Object.values(autores).flat();
     const total = T.soma(todos);
     const pontosBot = autores.bot || [];
