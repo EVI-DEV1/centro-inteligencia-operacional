@@ -1,4 +1,4 @@
-/* Livro do painel — DADOS FICTÍCIOS de demonstração, gerados por scripts/gerar-dados.mjs (semente "voo").
+/* Livro do painel — DADOS FICTÍCIOS de demonstração, gerados por scripts/gerar-dados.ts (semente "voo").
    O Clube Horizonte não existe; pessoas, equipes, lugares e números foram inventados. */
 window.TORRE_LIVRO = {
  "meta": {

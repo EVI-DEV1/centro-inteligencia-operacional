@@ -123,7 +123,8 @@
   };
 
   T.paginas = [
-    { id: 'visao-geral', codigo: '00', nome: 'Visão geral', icone: 'visao' },
+    { id: 'painel', codigo: null, nome: 'Visão executiva', icone: 'painel' },
+    { id: 'visao-geral', codigo: '00', nome: 'Torre de prontidão', icone: 'visao' },
     { id: 'pilotos', codigo: 'A', nome: 'Pilotos', icone: 'pilotos', capitulo: 'pilotos' },
     { id: 'passageiros', codigo: 'B', nome: 'Passageiros', icone: 'passageiros', capitulo: 'passageiros' },
     { id: 'controladores', codigo: 'C', nome: 'Controladores', icone: 'controladores', capitulo: 'controladores' },
@@ -133,6 +134,7 @@
     { id: 'alcance', codigo: 'F', parte: '2/2', nome: 'Alcance', icone: 'alcance', capitulo: 'alcance' },
     { id: 'plano', codigo: null, codigoIcone: 'seta', nome: 'Caminho para o Dia D', icone: 'plano' },
     { id: 'decisao', codigo: null, codigoIcone: 'decisao', nome: 'Central de Decisão', icone: 'decisao' },
+    { id: 'dados', codigo: null, nome: 'Dados e integrações', icone: 'dados' },
   ];
 
   const montarNucleos = () => {
