@@ -15,7 +15,7 @@
   function fluxo() {
     const W = 1200;
     const H = 470;
-    const svg = s('svg', { viewBox: `0 0 ${W} ${H}`, class: 'fluxo', role: 'group', 'aria-label': 'Fluxo da Central Horizonte: mensagens entram pelos números de WhatsApp, viram conversas no bot, param em etapas, viram cadastro ou chamado humano.' });
+    const svg = s('svg', { viewBox: `0 0 ${W} ${H}`, class: 'fluxo', role: 'group', 'aria-label': 'Fluxo da Central: mensagens entram pelos números de WhatsApp, viram conversas no bot, param em etapas, viram cadastro ou chamado humano.' });
     const numeros = D.numeros.filter((n) => n.conversas !== null);
     const maxConv = Math.max(...numeros.map((n) => n.conversas));
     const maxAtivas = Math.max(1, ...numeros.map((n) => n.ativas7d || 0));
@@ -50,7 +50,7 @@
           [
             { valor: f.n(n.conversas), rotulo: 'conversas nascidas neste número', cor: risco ? 'var(--agir)' : 'var(--eletrico)', forma: 'barra' },
             { valor: f.n(n.ativas7d), rotulo: 'com movimento nos últimos 7 dias', cor: 'var(--ciano)', forma: 'ponto' },
-            { valor: f.n(n.passageiros), rotulo: 'passageiros pelo número atual do piloto', cor: 'var(--tinta-3)', forma: 'ponto' },
+            { valor: f.n(n.passageiros), rotulo: 'leads pelo número atual da pessoa', cor: 'var(--tinta-3)', forma: 'ponto' },
             n.alerta ? { valor: '!', rotulo: n.alerta, cor: 'var(--agir)', forma: 'ponto' } : null,
           ].filter(Boolean),
           n.numero
@@ -105,7 +105,7 @@
       { grupo: 'descanso', rotulo: 'descanso (MENU)', classe: 'descanso' },
       { grupo: 'lista', rotulo: 'lista de convidados', classe: 'gargalo' },
       { grupo: 'cadastro', rotulo: 'cadastro', classe: 'meio' },
-      { grupo: 'passageiro', rotulo: 'passageiro — dados', classe: 'meio' },
+      { grupo: 'lead', rotulo: 'lead — dados', classe: 'meio' },
       { grupo: 'outras', rotulo: outras.length === 1 ? outras[0].etapa : 'outras etapas', classe: 'meio' },
     ]
       .map((g2) => {
@@ -295,7 +295,7 @@
   function etapas() {
     const er = D.etapasResumo;
     const maiorBolso = er.naLista > er.noMeio - er.naLista;
-    const confirmacao = D.falasPorEtapa.find((e) => e.etapa.startsWith('PASSAGEIRO — conf'));
+    const confirmacao = D.falasPorEtapa.find((e) => /^(LEAD|PASSAGEIRO) — conf/.test(e.etapa));
     return G.painel({
       id: 'etapas',
       titulo: 'A perda tem endereço: a montagem da lista',
@@ -307,9 +307,9 @@
           itens: D.etapas.map((e) => ({ rotulo: e.etapa, v: e.v, texto: `${f.n(e.v)} · ${f.n(e.ativas7d)} ativas`, cor: e.grupo === 'descanso' ? 'var(--referencia)' : e.grupo === 'lista' ? 'var(--agir)' : 'var(--eletrico)' })),
         });
         el.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'Sobre o que as pessoas escrevem (falas por etapa)'));
-        G.barrasH(el, { compacta: true, itens: D.falasPorEtapa.map((e) => ({ rotulo: e.etapa, v: e.v, texto: f.n(e.v), cor: e.etapa.startsWith('PASSAGEIRO — conf') ? 'var(--ciano)' : 'var(--eletrico)' })) });
+        G.barrasH(el, { compacta: true, itens: D.falasPorEtapa.map((e) => ({ rotulo: e.etapa, v: e.v, texto: f.n(e.v), cor: /^(LEAD|PASSAGEIRO) — conf/.test(e.etapa) ? 'var(--ciano)' : 'var(--eletrico)' })) });
       },
-      leitura: `${f.n(er.naLista)} das ${f.n(er.comEtapa)} conversas pararam no meio da lista de convidados${maiorBolso ? ' — mais do que todas as outras etapas fora do descanso somadas' : ''}.${confirmacao ? ` E ${f.pct(D.falasConfirmacaoPct)} de tudo o que se escreve acontece na confirmação de passageiro: é ali que uma resposta automática errada custa um cadastro.` : ''}`,
+      leitura: `${f.n(er.naLista)} das ${f.n(er.comEtapa)} conversas pararam no meio da lista de convidados${maiorBolso ? ' — mais do que todas as outras etapas fora do descanso somadas' : ''}.${confirmacao ? ` E ${f.pct(D.falasConfirmacaoPct)} de tudo o que se escreve acontece na confirmação de lead: é ali que uma resposta automática errada custa um cadastro.` : ''}`,
       p: 30,
     });
   }
@@ -323,7 +323,7 @@
     return G.painel({
       id: 'numeros',
       titulo: 'Dois números carregam a entrada — e um deles não inicia conversa',
-      comoLer: 'Conversas nascidas em cada número, as vivas na semana e os passageiros pelo número atual do piloto.',
+      comoLer: 'Conversas nascidas em cada número, as vivas na semana e os leads pelo número atual da pessoa.',
       largura: 1,
       grafico: (el) =>
         el.appendChild(
@@ -333,7 +333,7 @@
             T.h(
               'table',
               { class: 'tabela-dados' },
-              T.h('thead', null, T.h('tr', null, ['Número', 'Conversas', 'Ativas 7 d', 'Passageiros'].map((x) => T.h('th', { scope: 'col' }, x)))),
+              T.h('thead', null, T.h('tr', null, ['Número', 'Conversas', 'Ativas 7 d', 'Leads'].map((x) => T.h('th', { scope: 'col' }, x)))),
               T.h(
                 'tbody',
                 null,
@@ -352,7 +352,7 @@
           )
         ),
       leitura: bloq
-        ? `O ${bloq.numero} aparece em ${f.pct(pct)} dos passageiros e reúne ${f.n(bloq.ativas7d)} das ${f.n(D.conversasVivasSemana)} conversas vivas. Regularizar o pagamento e confirmar o estado real da conta leva horas e destrava o canal de maior volume.`
+        ? `O ${bloq.numero} aparece em ${f.pct(pct)} dos leads e reúne ${f.n(bloq.ativas7d)} das ${f.n(D.conversasVivasSemana)} conversas vivas. Regularizar o pagamento e confirmar o estado real da conta leva horas e destrava o canal de maior volume.`
         : `As ${f.n(D.conversasVivasSemana)} conversas vivas da semana se repartem entre os números da tabela.`,
       nota: bloq ? `O bloqueio vem da verificação${dataVerif ? ` de ${dataVerif}` : ''}, não conferida no livro.` : null,
       p: [30, 33],
@@ -427,7 +427,7 @@
 
   function chat() {
     const autores = T.dados.serie('chat_chamado_autor_dia');
-    const nomes = { piloto: 'piloto', controlador: 'controlador', administrador: 'administrador', bot: 'bot (automático)' };
+    const nomes = { piloto: 'pessoa', controlador: 'admin', administrador: 'administrador', bot: 'bot (automático)' };
     const todos = Object.values(autores).flat();
     const total = T.soma(todos);
     const pontosBot = autores.bot || [];
@@ -459,12 +459,12 @@
     const hoje = D.pilotoFalouBot[0];
     const inicioGuarda = T.dados.serie('mensagens_dia')[0];
     const partes = [
-      nunca && ativos ? `${f.n(nunca.v)} dos ${f.n(ativos.v)} pilotos ativos não têm mensagem guardada${hoje && !hoje.vazio ? ` e só ${f.n(hoje.v)} falaram hoje` : ''}.` : null,
+      nunca && ativos ? `${f.n(nunca.v)} das ${f.n(ativos.v)} pessoas ativas não têm mensagem guardada${hoje && !hoje.vazio ? ` e só ${f.n(hoje.v)} falaram hoje` : ''}.` : null,
       inicioGuarda ? `A guarda começou em ${f.data(inicioGuarda.d)}${canal ? `; o funil conta ${f.n(canal.v)} por outro caminho (sessão aberta alguma vez)` : ''}.` : null,
     ];
     return G.painel({
-      titulo: 'Há quanto tempo cada piloto falou com o bot',
-      comoLer: `Os ${ativos ? `${f.n(ativos.v)} ` : ''}pilotos ativos pela última mensagem guardada. Hachura = nunca falou (nada guardado).`,
+      titulo: 'Há quanto tempo cada pessoa falou com o bot',
+      comoLer: `Os ${ativos ? `${f.n(ativos.v)} ` : ''}pessoas ativas pela última mensagem guardada. Hachura = nunca falou (nada guardado).`,
       largura: 1,
       grafico: (el) => G.colunas(el, { altura: 190, todosValores: true, nome: 'última fala com o bot', itens: D.pilotoFalouBot.map((x) => ({ rotulo: x.faixa.replace('há ', '').replace(' dias', ' d').replace('nunca falou (sem registro)', 'nunca').replace('falou hoje', 'hoje').replace('mais de 14 d', '>14 d'), rotuloLongo: x.faixa, v: x.v, cor: x.vazio ? 'var(--agir)' : 'var(--eletrico)', textura: x.vazio })), larguraMax: 32 }),
       leitura: partes.filter(Boolean).join(' '),
@@ -482,7 +482,7 @@
   }
 
   T.modulos.central = {
-    titulo: 'Central Horizonte',
+    titulo: 'Central',
     render(main) {
       main.append(
         T.pag.abertura(D, 'central', 'central', { regua: D.reguaFaseB.linhas, explicas: D.kpis.map(() => null) }),

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/ops.js": { "includeFiles": "src/ops/**", "maxDuration": 60 }
+  },
+  "rewrites": [
+    { "source": "/api/:caminho(.*)", "destination": "/api/ops?r=:caminho" }
+  ],
+  "crons": [{ "path": "/api/ops?r=sync", "schedule": "17 9 * * *" }],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    }
+  ]
+}

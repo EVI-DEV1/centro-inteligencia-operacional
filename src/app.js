@@ -6,18 +6,14 @@
 
   const janelaCurta = () => String(L.meta.janela || '').replace(/\s*\(.*\)\s*$/, '');
 
+  const O = T.ops;
   const leituraTrilho = () => {
+    if (!O.ehProgramaHorizonte()) return {};
     const n = T.numerosChave();
     return {
-      'visao-geral': [f.n(n.vivos), `de ${f.n(n.ativos)} prontos`],
-      pilotos: [f.n(n.nuncaFalaram), 'nunca falaram'],
-      passageiros: [f.n(n.ritmo), 'por dia, parado'],
-      controladores: [f.n(n.semDono), 'sem dono real'],
-      central: [f.n(n.teto), `× ${f.n(n.exige)} exigido`],
       operacao: [f.d(n.kraftDias), 'de caixa'],
       atendimento: [f.pct(n.concentracao), 'uma conta'],
       alcance: [f.d(n.coletaParada, 0), 'sem coleta'],
-      plano: [String(n.marcos), `marcos até ${f.data(L.meta.d7)}`],
       decisao: [String(T.alertas.filter((a) => a.nivel === 'agir').length), 'para agir hoje'],
     };
   };
@@ -42,7 +38,9 @@
     if (painelIntegridade && !painelIntegridade.hidden && !painelIntegridade.contains(e.target)) abrirIntegridade(false);
   });
 
-  const ICONE_PAGINA = { painel: 'painel', 'visao-geral': 'visao', dados: 'dados' };
+  const ICONE_PAGINA = { painel: 'painel', dados: 'dados' };
+  /** Páginas visíveis para o cliente e o papel atuais. */
+  T.paginasVisiveis = () => T.paginas.filter((p) => (p.so === 'horizonte' ? O.ehProgramaHorizonte() : p.so === 'admin' ? O.ehAdmin() : true));
 
   function logo() {
     const s = T.s;
@@ -60,9 +58,9 @@
   function faixaNav(p, i) {
     const leituras = leituraTrilho();
     const leitura = leituras[p.id];
-    const regua = p.capitulo ? T.dados.regua(p.capitulo) : null;
+    const regua = p.capitulo && O.ehProgramaHorizonte() ? T.dados.regua(p.capitulo) : null;
     const estado = regua && regua.length ? { c: T.dados.contagemRegua(regua), pior: T.dados.piorEstado(regua) } : null;
-    const agir = p.id === 'decisao' ? T.alertas.filter((a) => a.nivel === 'agir').length : null;
+    const agir = p.id === 'decisao' && O.ehProgramaHorizonte() ? T.alertas.filter((a) => a.nivel === 'agir').length : null;
     return T.h(
       'a',
       { class: 'faixa', href: `#/${p.id === 'painel' ? '' : p.id}`, 'data-rota': p.id, title: leitura ? `${p.nome} · ${leitura.join(' ')}${i < 10 ? ` (tecla ${i})` : ''}` : p.nome },
@@ -80,27 +78,46 @@
 
   function lateral() {
     const nav = T.h('nav', { class: 'trilho', 'aria-label': 'Navegação' });
-    const grupos = { painel: 'Geral', pilotos: 'Capítulos', plano: 'Missão', dados: 'Workspace' };
-    T.paginas.forEach((p, i) => {
-      if (grupos[p.id]) nav.appendChild(T.h('span', { class: 'trilho-separador' }, grupos[p.id]));
+    let grupo = null;
+    T.paginasVisiveis().forEach((p, i) => {
+      if (p.grupo !== grupo) {
+        grupo = p.grupo;
+        nav.appendChild(T.h('span', { class: 'trilho-separador' }, grupo));
+      }
       nav.appendChild(faixaNav(p, i));
     });
+    const cli = O.clienteAtual();
+    const iniciais = (nome) => String(nome || '?').split(/\s+/).map((x) => x[0]).join('').slice(0, 2).toUpperCase();
+    const usuarioNome = O.ehDemo() ? 'Eliane Vitoriano' : (O.sessao && O.sessao.perfil && O.sessao.perfil.nome) || 'Usuário';
+    const papelNome = { admin: 'Admin', gestor: 'Gestor', analista: 'Analista', atendimento: 'Atendimento', cliente: 'Cliente' }[O.papel()] || O.papel();
     return T.h(
       'aside',
       { class: 'lateral' },
-      T.h('a', { class: 'marca', href: '#/', 'aria-label': 'Torre — painel executivo' }, logo(), T.h('span', { class: 'marca-texto' }, T.h('span', { class: 'marca-nome' }, 'Torre'), T.h('span', { class: 'marca-sub' }, 'Ops Intelligence'))),
+      T.h('a', { class: 'marca', href: '#/', 'aria-label': 'OPS Intelligence — Visão Executiva' }, logo(), T.h('span', { class: 'marca-texto' }, T.h('span', { class: 'marca-nome' }, 'OPS'), T.h('span', { class: 'marca-sub' }, 'Intelligence'))),
       T.h(
-        'div',
-        { class: 'workspace', title: 'Demonstração: o Clube Horizonte não existe.' },
-        T.h('span', { class: 'workspace-avatar' }, 'CH'),
-        T.h('span', { class: 'workspace-texto' }, T.h('b', null, 'Clube Horizonte'), T.h('small', null, 'Workspace demo · dados fictícios'))
+        'label',
+        { class: 'workspace', title: O.ehDemo() ? 'Modo demonstração: clientes e números simulados.' : 'Cliente analisado' },
+        T.h('span', { class: 'workspace-avatar', style: cli && cli.cor ? { background: cli.cor } : null }, iniciais(cli && cli.nome)),
+        T.h(
+          'span',
+          { class: 'workspace-texto' },
+          T.h('select', { class: 'workspace-select', 'aria-label': 'Cliente', onchange: (e) => O.definir({ cliente: e.target.value }) }, O.clientes().map((c) => T.h('option', { value: c.id, selected: cli && c.id === cli.id }, c.nome))),
+          T.h('small', null, O.ehDemo() ? 'Simulação · dados de demonstração' : (cli && cli.segmento) || 'Dados reais')
+        )
       ),
       nav,
       T.h(
         'div',
         { class: 'lateral-rodape' },
-        T.h('a', { class: 'plano-card', href: 'produto.html' }, T.h('span', { class: 'plano-selo' }, 'PRO'), T.h('b', null, 'Conheça a Torre'), T.h('span', null, 'Planos, recursos e integrações'), T.icone('seta')),
-        T.h('div', { class: 'usuario' }, T.h('span', { class: 'usuario-avatar' }, 'EV'), T.h('span', { class: 'usuario-texto' }, T.h('b', null, 'Eliane Vitoriano'), T.h('small', null, 'Admin · Front-end')), T.h('a', { class: 'usuario-git', href: 'https://github.com/EVI-DEV1/centro-inteligencia-operacional', target: '_blank', rel: 'noopener', title: 'Código no GitHub', 'aria-label': 'Código no GitHub' }, T.icone('conector')))
+        T.h('a', { class: 'plano-card', href: 'produto.html' }, T.h('span', { class: 'plano-selo' }, 'PRO'), T.h('b', null, 'Conheça o OPS Intelligence'), T.h('span', null, 'Planos, recursos e integrações'), T.icone('seta')),
+        T.h(
+          'div',
+          { class: 'usuario' },
+          T.h('span', { class: 'usuario-avatar' }, iniciais(usuarioNome)),
+          T.h('span', { class: 'usuario-texto' }, T.h('b', null, usuarioNome), T.h('small', null, O.ehDemo() ? `${papelNome} · demonstração` : papelNome)),
+          O.ehDemo()
+            ? T.h('button', { class: 'usuario-git', type: 'button', title: 'Entrar para ver dados reais', 'aria-label': 'Entrar', onclick: () => O.ui.login() }, T.icone('cadeado'))
+            : T.h('button', { class: 'usuario-git', type: 'button', title: 'Sair', 'aria-label': 'Sair', onclick: () => O.sair() }, T.icone('voltar')), T.h('a', { class: 'usuario-git', href: 'https://github.com/EVI-DEV1/centro-inteligencia-operacional', target: '_blank', rel: 'noopener', title: 'Código no GitHub', 'aria-label': 'Código no GitHub' }, T.icone('conector')))
       )
     );
   }
@@ -113,9 +130,8 @@
       T.h('button', { type: 'button', role: 'menuitem', onclick: () => { fechar(); fn(); } }, T.icone(icone), texto);
     lista.append(
       item('pdf', 'Relatório em PDF', () => T.exportarRelatorio()),
-      item('planilha', 'Séries do período (CSV)', () => T.exportar.series()),
-      item('decisao', 'Decisões (CSV)', () => T.exportar.decisoes()),
-      item('dados', 'Livro de dados (JSON)', () => T.exportar.livro())
+      item('planilha', 'Leads do período (CSV)', () => O.exportarLeads && O.exportarLeads()),
+      item('dados', 'Conjunto de dados do cliente (JSON)', () => O.exportarConjunto && O.exportarConjunto())
     );
     const fechar = () => {
       lista.hidden = true;
@@ -173,21 +189,25 @@
     });
     T.on('modo', (v) => T.$$('button', modos).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modo === v))));
 
-    const agir = T.alertas.filter((a) => a.nivel === 'agir').length;
-    migalha = T.h('span', { class: 'migalha-atual' }, 'Visão executiva');
+    const horizonte = O.ehProgramaHorizonte();
+    const agir = horizonte ? T.alertas.filter((a) => a.nivel === 'agir').length : 0;
+    migalha = T.h('span', { class: 'migalha-atual' }, 'Visão Executiva');
+    const cli = O.clienteAtual();
 
     return T.h(
       'header',
       { class: 'topo' },
-      T.h('nav', { class: 'migalha', 'aria-label': 'Você está em' }, T.h('span', null, 'Clube Horizonte'), T.h('i', null, '/'), migalha),
+      T.h('nav', { class: 'migalha', 'aria-label': 'Você está em' }, T.h('span', null, cli ? cli.nome : 'OPS Intelligence'), T.h('i', null, '/'), migalha),
       T.h('button', { class: 'busca', type: 'button', onclick: () => T.paleta.abrir() }, T.icone('busca'), T.h('span', null, 'Buscar páginas e ações…'), T.h('kbd', null, 'Ctrl K')),
       T.h(
         'div',
         { class: 'comandos' },
-        T.h('span', { class: 'contagem-pilula', role: 'timer', title: `Faltam ${faltam} dias para o Dia D, ${f.data(L.meta.diaD)} · adesões fecham ${L.meta.encerramento}` }, T.h('b', null, `D-${Math.max(0, faltam)}`), T.h('span', null, `Dia D ${f.data(L.meta.diaD)}`)),
-        T.h('span', { class: 'integridade-ancora' }, integridadeBtn, painelIntegridade),
+        !horizonte ? null : T.h('span', { class: 'contagem-pilula', role: 'timer', title: `Faltam ${faltam} dias para o Dia D, ${f.data(L.meta.diaD)} · adesões fecham ${L.meta.encerramento}` }, T.h('b', null, `D-${Math.max(0, faltam)}`), T.h('span', null, `Dia D ${f.data(L.meta.diaD)}`)),
+        horizonte ? T.h('span', { class: 'integridade-ancora' }, integridadeBtn, painelIntegridade) : null,
         nomesBtn,
-        T.h('a', { class: 'botao-icone sino', href: '#/decisao', title: `${agir} decisões para agir hoje`, 'aria-label': `${agir} decisões para agir hoje` }, T.icone('sino'), agir ? T.h('i', { class: 'sino-badge' }, String(agir)) : null),
+        horizonte
+          ? T.h('a', { class: 'botao-icone sino', href: '#/decisao', title: `${agir} decisões para agir hoje`, 'aria-label': `${agir} decisões para agir hoje` }, T.icone('sino'), agir ? T.h('i', { class: 'sino-badge' }, String(agir)) : null)
+          : T.h('a', { class: 'botao-icone sino', href: '#/central', title: 'Alertas e pendências na Central', 'aria-label': 'Alertas e pendências na Central' }, T.icone('sino')),
         modos,
         T.h('a', { class: 'botao-secundario', href: '#/dados?alvo=importar' }, T.icone('upload'), T.h('span', { class: 'rotulo-opcional' }, 'Importar')),
         menuExportar()
@@ -195,12 +215,8 @@
     );
   }
 
-  function barraFiltros() {
-    const periodo = T.h('div', { class: 'segmentado', role: 'group', 'aria-label': 'Período' });
-    T.filtro.PERIODOS.forEach((p) =>
-      periodo.appendChild(T.h('button', { type: 'button', 'data-periodo': p.id, 'aria-pressed': String(T.filtro.periodo === p.id), onclick: () => T.filtro.definir('periodo', p.id) }, p.rotulo))
-    );
-    const fases = T.h('div', { class: 'segmentado', role: 'group', 'aria-label': 'Fase do painel' });
+  function grupoFase() {
+    const fases = T.h('div', { class: 'segmentado', role: 'group', 'aria-label': 'Fase do programa' });
     L.fases.forEach((fz) =>
       fases.appendChild(
         T.h(
@@ -212,35 +228,13 @@
       )
     );
     T.on('fase', (v) => T.$$('button', fases).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.fase === v))));
+    return T.h('label', { class: 'filtro-grupo' }, T.h('span', { class: 'filtro-rotulo' }, 'Fase do programa'), fases);
+  }
+  // a fase do livro só existe no relatório do programa Clube Horizonte
+  O.ui.extrasBarra = () => (O.ehProgramaHorizonte() ? grupoFase() : null);
 
-    const comparar = T.h('input', { type: 'checkbox', role: 'switch', checked: T.filtro.comparar, onchange: (e) => T.filtro.definir('comparar', e.target.checked) });
-    const resumo = T.h('span', { class: 'filtro-resumo' });
-    const pintar = () => {
-      T.$$('button', periodo).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.periodo === T.filtro.periodo)));
-      const imp = T.importacao && T.importacao.ativa();
-      T.limpar(resumo);
-      [
-        T.icone('filtro'),
-        T.h('span', null, T.filtro.ativo() ? `${T.filtro.rotulo()} · até ${f.data(T.filtro.ultimoDia())}` : `Todo o período · ${f.data(L.meta.periodo.inicio)} a ${f.data(L.meta.periodo.fim)}`),
-        imp ? T.h('span', { class: 'filtro-fonte' }, T.icone('planilha'), imp.arquivo) : null,
-        T.filtro.ativo() ? T.h('button', { class: 'filtro-limpar', type: 'button', onclick: () => T.filtro.definir('periodo', 'tudo') }, 'Limpar') : null,
-        T.h('span', { class: 'selo-demo', title: 'Demonstração: o Clube Horizonte não existe. Pessoas, equipes, lugares e números foram inventados.' }, T.icone('etiqueta'), 'Dados fictícios'),
-      ]
-        .filter(Boolean)
-        .forEach((el) => resumo.appendChild(el));
-    };
-    pintar();
-    T.on('filtro', pintar);
-    T.on('dados-importados', pintar);
-
-    return T.h(
-      'div',
-      { class: 'barra-filtros', role: 'region', 'aria-label': 'Filtros globais' },
-      T.h('label', { class: 'filtro-grupo' }, T.h('span', { class: 'filtro-rotulo' }, 'Período'), periodo),
-      T.h('label', { class: 'filtro-grupo' }, T.h('span', { class: 'filtro-rotulo' }, 'Fase'), fases),
-      T.h('label', { class: 'filtro-interruptor' }, comparar, T.h('span', { class: 'interruptor' }), 'Comparar com anterior'),
-      resumo
-    );
+  function barraFiltros() {
+    return O.ui.barraFiltros();
   }
 
   // ---------- avisos (toasts) ----------
@@ -269,16 +263,20 @@
     let itens = [];
     let sel = 0;
     const acoes = () => [
-      ...T.paginas.map((p) => ({ grupo: 'Páginas', icone: ICONE_PAGINA[p.id] || p.icone, texto: p.nome, fazer: () => T.irPara(p.id) })),
-      ...T.filtro.PERIODOS.map((p) => ({ grupo: 'Filtros', icone: 'filtro', texto: `Período: ${p.rotulo}`, fazer: () => T.filtro.definir('periodo', p.id) })),
+      ...T.paginasVisiveis().map((p) => ({ grupo: 'Páginas', icone: ICONE_PAGINA[p.id] || p.icone, texto: p.nome, fazer: () => T.irPara(p.id) })),
+      ...O.clientes().map((c) => ({ grupo: 'Clientes', icone: 'painel', texto: `Cliente: ${c.nome}`, fazer: () => O.definir({ cliente: c.id }) })),
+      ...O.nucleo.PERIODOS.filter((p) => p.id !== 'personalizado').map((p) => ({ grupo: 'Filtros', icone: 'filtro', texto: `Período: ${p.rotulo}`, fazer: () => O.definir({ periodo: p.id }) })),
+      ...O.nucleo.CANAIS.filter((c) => c.id !== 'outros').map((c) => ({ grupo: 'Filtros', icone: 'filtro', texto: `Plataforma: ${c.nome}`, fazer: () => O.definir({ plataforma: c.id }) })),
+      { grupo: 'Ações', icone: 'passageiros', texto: 'Ver leads em Kanban', fazer: () => T.irPara('passageiros') },
+      { grupo: 'Ações', icone: 'plano', texto: 'Criar campanha', fazer: () => T.irPara('plano') },
+      O.ehDemo() ? { grupo: 'Ações', icone: 'cadeado', texto: 'Entrar para ver dados reais', fazer: () => O.ui.login() } : { grupo: 'Ações', icone: 'voltar', texto: 'Sair', fazer: () => O.sair() },
       { grupo: 'Ações', icone: 'upload', texto: 'Importar planilha CSV/Excel', fazer: () => T.irPara('dados', 'importar') },
       { grupo: 'Ações', icone: 'pdf', texto: 'Exportar relatório em PDF', fazer: () => T.exportarRelatorio() },
-      { grupo: 'Ações', icone: 'planilha', texto: 'Exportar séries em CSV', fazer: () => T.exportar.series() },
-      { grupo: 'Ações', icone: 'decisao', texto: 'Exportar decisões em CSV', fazer: () => T.exportar.decisoes() },
+      ...(O.ehProgramaHorizonte() ? [{ grupo: 'Ações', icone: 'planilha', texto: 'Exportar séries do programa em CSV', fazer: () => T.exportar.series() }, { grupo: 'Ações', icone: 'decisao', texto: 'Exportar decisões em CSV', fazer: () => T.exportar.decisoes() }] : []),
       { grupo: 'Ações', icone: 'apresentar', texto: 'Modo apresentação', fazer: () => T.modo('apresentar') },
       { grupo: 'Ações', icone: 'telao', texto: 'Modo telão', fazer: () => T.modo('telao') },
       { grupo: 'Ações', icone: 'olho-fechado', texto: 'Ocultar ou mostrar nomes', fazer: () => T.definir('nomes', T.estado.nomes === 'ocultos' ? 'visiveis' : 'ocultos') },
-      ...T.alertas.filter((a) => a.nivel === 'agir').map((a) => ({ grupo: 'Decisões', icone: 'agir', texto: a.titulo, fazer: () => T.irPara(a.rota, a.alvo) })),
+      ...(O.ehProgramaHorizonte() ? T.alertas.filter((a) => a.nivel === 'agir').map((a) => ({ grupo: 'Decisões', icone: 'agir', texto: a.titulo, fazer: () => T.irPara(a.rota, a.alvo) })) : []),
     ];
     const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
     function pintar() {
@@ -378,17 +376,20 @@
     T.estado.rota = id;
     const pagina = T.h('div', { class: 'pagina', 'data-pagina': id });
     T.limpar(palco).appendChild(pagina);
+    const meta = T.paginas.find((x) => x.id === id);
     try {
-      T.modulos[id].render(pagina);
+      if (meta && meta.so === 'horizonte' && !O.ehProgramaHorizonte())
+        pagina.appendChild(O.ui.vazio('Relatório exclusivo do programa de demonstração', 'Esta página mostra os capítulos do livro do Clube Horizonte. Selecione o cliente "Clube Horizonte" no modo demonstração para vê-la.', T.h('button', { class: 'botao-secundario', type: 'button', onclick: () => O.definir({ modo: 'demonstracao', cliente: 'demo-horizonte' }) }, 'Abrir Clube Horizonte')));
+      else T.modulos[id].render(pagina);
       T.numerosNaLeitura(pagina);
     } catch (e) {
       console.error('[torre] falha ao montar a página', id, e);
-      pagina.appendChild(T.h('p', { class: 'erro-pagina' }, 'Esta página não conseguiu montar. Os dados continuam no livro; recarregue a Torre.'));
+      pagina.appendChild(T.h('p', { class: 'erro-pagina' }, 'Esta página não conseguiu montar. Os dados continuam no livro; recarregue o OPS Intelligence.'));
     }
     T.$$('.faixa', document).forEach((a) => (a.dataset.rota === id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
     const p = T.paginas.find((x) => x.id === id);
-    document.title = `${p ? p.nome : 'Visão executiva'} · Torre Ops Intelligence · demo com dados fictícios`;
-    if (migalha) migalha.textContent = p ? p.nome : 'Visão executiva';
+    document.title = `${p ? p.nome : 'Visão Executiva'} · OPS Intelligence${O.ehDemo() ? ' · simulação' : ''}`;
+    if (migalha) migalha.textContent = p ? p.nome : 'Visão Executiva';
     T.mov.revelar(pagina);
     if (alvo) setTimeout(() => destacar(alvo), 120);
     else window.scrollTo({ top: 0, behavior: 'auto' });
@@ -424,10 +425,24 @@
     holofote.classList.add('ativo');
   }
 
-  const textoLegendaFonte = () => `Telão · retrato de ${f.data(L.meta.medidoEm)} · dados fictícios`;
+  const textoLegendaFonte = () => `Telão · ${O.clienteAtual() ? O.clienteAtual().nome : ''} · ${O.ehDemo() ? 'simulação' : 'dados reais'}`;
+
+  const ROTEIRO_OPS = [
+    { rota: 'painel', alvo: 'ops-kpis', legenda: 'Os quatro números do período: visitas, novos leads, conversas e conversões — cada um com a variação contra o período anterior e a fonte.' },
+    { rota: 'painel', alvo: 'ops-audiencia', legenda: 'Evolução da audiência por plataforma. A cor segue a plataforma; dia sem dado aparece como lacuna, não como zero.' },
+    { rota: 'painel', alvo: 'ops-origem', legenda: 'De onde vêm os leads e quanto cada canal converte.' },
+    { rota: 'painel', alvo: 'ops-funil', legenda: 'O fluxo de captação, com as etapas estimadas sinalizadas e o maior ponto de abandono em destaque.' },
+    { rota: 'painel', alvo: 'ops-calor', legenda: 'Quando a audiência conversa: o mapa de calor sugere horários de publicação e de atendimento.' },
+    { rota: 'painel', alvo: 'ops-campanhas', legenda: 'Campanhas ativas: meta, prazo e fases no mesmo cartão.' },
+    { rota: 'painel', alvo: 'ops-insights', legenda: 'Insights que separam fato, hipótese e recomendação — e só aparecem com dados suficientes.' },
+    { rota: 'passageiros', alvo: 'leads-quadro', legenda: 'O Kanban de leads: arraste entre etapas, abra o histórico e veja a próxima ação.' },
+    { rota: 'plano', alvo: 'camp-inteligencia', legenda: 'A inteligência de campanhas: o histórico do cliente responde o que funcionou antes de planejar a próxima.' },
+  ];
+  const roteiro = () => ROTEIRO_OPS;
+  Object.defineProperty(T, 'roteiroAtual', { get: roteiro });
 
   function pintarLegenda() {
-    const q = T.roteiro[quadro];
+    const q = roteiro()[quadro];
     T.limpar(legenda);
     const modo = T.estado.modo;
     legenda.append(
@@ -435,8 +450,8 @@
         'div',
         { class: 'legenda-topo' },
         T.h('span', { class: 'leitura legenda-fonte' }, modo === 'telao' ? textoLegendaFonte() : 'Apresentação'),
-        T.h('span', { class: 'legenda-contador tab' }, `${quadro + 1} / ${T.roteiro.length}`),
-        T.h('span', { class: 'legenda-pontos' }, T.roteiro.map((_, i) => T.h('i', { class: i === quadro ? 'atual' : i < quadro ? 'feito' : null })))
+        T.h('span', { class: 'legenda-contador tab' }, `${quadro + 1} / ${roteiro().length}`),
+        T.h('span', { class: 'legenda-pontos' }, roteiro().map((_, i) => T.h('i', { class: i === quadro ? 'atual' : i < quadro ? 'feito' : null })))
       ),
       T.h('p', { class: 'legenda-texto' }, q.legenda),
       T.h(
@@ -468,9 +483,9 @@
   }
 
   function irQuadro(i) {
-    const n = T.roteiro.length;
+    const n = roteiro().length;
     quadro = ((i % n) + n) % n;
-    const q = T.roteiro[quadro];
+    const q = roteiro()[quadro];
     const mostrar = () => {
       holofoteAlvo = document.getElementById(q.alvo);
       if (holofoteAlvo) holofoteAlvo.scrollIntoView({ behavior: T.mov.reduzido ? 'auto' : 'smooth', block: 'center' });
@@ -536,7 +551,7 @@
       }
     }
     if (/^[0-9]$/.test(e.key)) {
-      const p = T.paginas[Number(e.key)];
+      const p = T.paginasVisiveis()[Number(e.key)];
       if (p) T.irPara(p.id);
     } else if (e.key === 'n' || e.key === 'N') T.definir('nomes', T.estado.nomes === 'ocultos' ? 'visiveis' : 'ocultos');
     else if ((e.key === 'p' || e.key === 'P') && modo === 'explorar') T.modo('apresentar');
@@ -567,6 +582,24 @@
     window.addEventListener('hashchange', render);
     window.addEventListener('resize', () => T.estado.modo !== 'explorar' && posicionarHolofote());
     T.on('filtro', remontar);
+    let topoAtual = topoEl;
+    const reconstruirMoldura = () => {
+      const nova = lateral();
+      lateralEl.replaceWith(nova);
+      lateralEl = nova;
+      const novoTopo = topo();
+      topoAtual.replaceWith(novoTopo);
+      topoAtual = novoTopo;
+      T.$$('.faixa', document).forEach((a) => (a.dataset.rota === T.estado.rota ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
+    };
+    T.on('ops:filtro', (m) => {
+      const mudouContexto = !m || !m.antes || m.antes.cliente !== m.depois.cliente || m.antes.modo !== m.depois.modo;
+      if (mudouContexto) reconstruirMoldura();
+      const p = T.paginas.find((x) => x.id === T.estado.rota);
+      if (p && ((p.so === 'horizonte' && !O.ehProgramaHorizonte()) || (p.so === 'admin' && !O.ehAdmin()))) return T.irPara('painel');
+      remontar();
+    });
+    T.on('ops:sessao', reconstruirMoldura);
     T.on('dados-importados', () => {
       const nova = lateral();
       lateralEl.replaceWith(nova);

@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0a0a0d" />
-    <title>Torre Ops Intelligence — o painel que transforma operação em decisão</title>
-    <meta name="description" content="Projeto de portfólio: painel operacional com visão executiva, filtros globais, importação de CSV/Excel e exportação em PDF, CSV e JSON. Demonstração com dados fictícios." />
+    <title>OPS Intelligence — inteligência de marketing, leads e campanhas</title>
+    <meta name="description" content="Projeto de portfólio: plataforma multicliente que junta Instagram, Facebook, Kommo e WhatsApp numa Visão Executiva com leads, campanhas e insights. Modo demonstração identificado como simulação." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c6cff'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M16 6.5v19M11.5 25.5h9M12.5 12.5h7l-1 6h-5z' fill='none' stroke='%230a0a0d' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="src/estilo/fontes.css" />
     <style>
@@ -679,7 +679,7 @@
       <div class="wrap">
         <a class="marca" href="#topo">
           <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c6cff" /><stop offset="1" stop-color="#22d3ee" /></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)" /><path d="M16 6.5v19M11.5 25.5h9M12.5 12.5h7l-1 6h-5z" fill="none" stroke="#0a0a0d" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" /><circle cx="16" cy="6.5" r="2.2" fill="#0a0a0d" /></svg>
-          Torre <small>Ops Intelligence</small>
+          OPS <small>Intelligence</small>
         </a>
         <ul>
           <li><a href="#recursos">Recursos</a></li>
@@ -694,20 +694,20 @@
 
     <main id="topo">
       <header class="hero wrap">
-        <span class="selo" data-entra><b>NOVO</b> Importe sua planilha e veja o painel recalcular na hora</span>
-        <h1 data-entra>A operação inteira, <span class="grad">numa tela que decide</span>.</h1>
+        <span class="selo" data-entra><b>NOVO</b> Visão Executiva por cliente, com filtros sincronizados</span>
+        <h1 data-entra>Redes, conversas e leads, <span class="grad">numa tela que decide</span>.</h1>
         <p class="lead" data-entra>
-          A Torre junta bot de WhatsApp, banco de dados, redes sociais e planilhas num painel executivo: o que está acontecendo,
-          o que está parado e qual decisão tomar hoje — com a página da fonte ao lado de cada número.
+          O OPS Intelligence junta Instagram, Facebook, Kommo e WhatsApp Business de cada cliente numa Visão Executiva: de onde
+          vêm os leads, quais conteúdos funcionam, como estão as campanhas — com fonte, período e última atualização em cada número.
         </p>
         <div class="ctas" data-entra>
           <a class="btn btn-p" href="index.html">Explorar a demo ao vivo <svg class="i"><use href="#seta" /></svg></a>
           <a class="btn btn-s" href="index.html#/dados?alvo=importar"><svg class="i"><use href="#upload" /></svg> Testar com meu CSV</a>
         </div>
-        <p class="nota" data-entra>Sem cadastro · abre no navegador · dados de demonstração fictícios</p>
+        <p class="nota" data-entra>Sem cadastro · abre no navegador · a demo é uma simulação identificada</p>
 
         <div class="janela" data-entra>
-          <div class="janela-barra"><i></i><i></i><i></i><span>torre.app / visão executiva</span></div>
+          <div class="janela-barra"><i></i><i></i><i></i><span>ops.app / visão executiva</span></div>
           <div class="tela" id="tela-hero"><iframe src="index.html" title="Prévia ao vivo do painel executivo" tabindex="-1" loading="eager"></iframe><a class="cobre" href="index.html" aria-label="Abrir a demo"></a></div>
         </div>
       </header>
@@ -715,30 +715,30 @@
       <section class="integra wrap" id="integracoes">
         <p>Conecta as fontes que a operação já usa</p>
         <div class="pilulas">
-          <span><i></i>PostgreSQL</span>
+          <span><i></i>Instagram Graph API</span>
+          <span><i></i>Facebook Pages</span>
+          <span><i></i>Kommo CRM</span>
           <span><i></i>WhatsApp Business Cloud API</span>
-          <span><i></i>Instagram e Facebook Graph</span>
+          <span><i></i>Supabase (PostgreSQL + RLS)</span>
           <span><i></i>Planilhas CSV e Excel</span>
-          <span><i></i>API REST / JSON</span>
-          <span><i></i>GitHub Actions</span>
         </div>
       </section>
 
       <section class="bloco wrap" id="recursos">
         <div class="cab" data-entra>
           <small>Recursos</small>
-          <h2>Feito para quem precisa decidir antes do meio-dia</h2>
+          <h2>Feito para quem cuida do crescimento de vários clientes</h2>
           <p>Cada tela responde uma pergunta de gestão. Cada número abre um explicador com o que ele é, o que não é e de onde veio.</p>
         </div>
         <div class="recursos">
-          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#painel" /></svg></span><h3>Visão executiva</h3><p>KPIs com tendência e comparação com o período anterior, funil, projeção por cenário e decisões do dia numa só tela.</p></article>
-          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#filtro" /></svg></span><h3>Filtros globais</h3><p>Escolha 7, 14 ou 30 dias e todos os gráficos de todas as páginas se recortam juntos — inclusive as exportações.</p></article>
-          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#upload" /></svg></span><h3>Importação CSV e Excel</h3><p>Arraste um .csv ou .xlsx: a Torre acha a coluna de data, detecta as numéricas, sugere o mapeamento e recalcula o painel.</p></article>
-          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#download" /></svg></span><h3>Exportação em um clique</h3><p>Relatório em PDF, séries e decisões em CSV, livro de dados em JSON — e um botão CSV em cada gráfico.</p></article>
-          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#estrela" /></svg></span><h3>Central de decisão</h3><p>21 decisões priorizadas em "agir hoje" e "atenção", cada uma ligada ao dado que a sustenta e à ação recomendada.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#painel" /></svg></span><h3>Visão Executiva por cliente</h3><p>Visitas, leads, conversas e conversões com variação contra o período anterior, audiência, origem dos leads, funil e mapa de calor.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#filtro" /></svg></span><h3>Filtros sincronizados</h3><p>Cliente, plataforma, período (até personalizado), campanha e indicador: cards, gráficos, rankings e insights mudam juntos, sem recarregar.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#upload" /></svg></span><h3>Importação CSV e Excel</h3><p>Arraste um .csv ou .xlsx: o OPS acha a coluna de data, detecta as numéricas, sugere o mapeamento e recalcula o painel.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#download" /></svg></span><h3>Leads em Kanban</h3><p>Novo, em contato, qualificado, em negociação, convertido e perdido — com origem, campanha, responsável, histórico e próxima ação.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#estrela" /></svg></span><h3>Campanhas em fases</h3><p>Do planejamento à análise de resultados, com meta, prazo, responsável por fase e o histórico do cliente respondendo o que funcionou antes.</p></article>
           <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#tela" /></svg></span><h3>Apresentação e telão</h3><p>Roteiro com holofote para reunião (tecla P) e modo telão que avança sozinho na parede da sala de operação (tecla T).</p></article>
-          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#busca" /></svg></span><h3>Paleta de comandos</h3><p>Ctrl K para ir a qualquer página, trocar o período, exportar ou abrir uma decisão sem tirar a mão do teclado.</p></article>
-          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#olho" /></svg></span><h3>Privacidade de tela</h3><p>Uma tecla oculta os nomes da equipe antes de compartilhar a tela ou gravar uma reunião.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#busca" /></svg></span><h3>Insights que se explicam</h3><p>Cada insight separa fato observado, hipótese e recomendação, mostra os números e a fonte — e só aparece quando há dados suficientes.</p></article>
+          <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#olho" /></svg></span><h3>Dados isolados por cliente</h3><p>Row Level Security no banco, papéis de acesso e tokens das plataformas cifrados no servidor. A comparação entre clientes é só para Admin.</p></article>
           <article class="recurso" data-entra><span class="ic"><svg class="i"><use href="#ok" /></svg></span><h3>Acessível de verdade</h3><p>Estado sempre com ícone e palavra, nunca só cor; navegação por teclado, foco visível e respeito a movimento reduzido.</p></article>
         </div>
 
@@ -753,24 +753,24 @@
             </ul>
           </div>
           <div class="janela">
-            <div class="janela-barra"><i></i><i></i><i></i><span>torre.app / dados e integrações</span></div>
+            <div class="janela-barra"><i></i><i></i><i></i><span>ops.app / dados e integrações</span></div>
             <div class="tela"><iframe src="index.html#/dados" title="Prévia da página de dados e integrações" tabindex="-1" loading="lazy"></iframe><a class="cobre" href="index.html#/dados" aria-label="Abrir dados e integrações"></a></div>
           </div>
         </div>
 
         <div class="vitrine inv" data-entra>
           <div class="texto">
-            <h3>Uma torre que é o próprio funil</h3>
-            <p>A visualização assinatura mostra a prontidão da rede como um prédio: cada andar é uma etapa, a largura é quantos chegaram lá.</p>
+            <h3>Do primeiro contato à conversão</h3>
+            <p>O Kanban de leads mostra cada oportunidade com origem, campanha e responsável — e quanto tempo ela está parada.</p>
             <ul>
-              <li><svg class="i"><use href="#ok" /></svg>Meta tracejada ao lado do andar que importa</li>
-              <li><svg class="i"><use href="#ok" /></svg>Divergências da fonte mostradas, nunca escondidas</li>
-              <li><svg class="i"><use href="#ok" /></svg>Pista até o Dia D com os marcos da operação</li>
+              <li><svg class="i"><use href="#ok" /></svg>Arraste o cartão entre etapas ou use a lista com busca</li>
+              <li><svg class="i"><use href="#ok" /></svg>Histórico de interações e próxima ação em cada lead</li>
+              <li><svg class="i"><use href="#ok" /></svg>Etapas configuráveis por cliente</li>
             </ul>
           </div>
           <div class="janela">
-            <div class="janela-barra"><i></i><i></i><i></i><span>torre.app / torre de prontidão</span></div>
-            <div class="tela"><iframe src="index.html#/visao-geral" title="Prévia da torre de prontidão" tabindex="-1" loading="lazy"></iframe><a class="cobre" href="index.html#/visao-geral" aria-label="Abrir a torre de prontidão"></a></div>
+            <div class="janela-barra"><i></i><i></i><i></i><span>ops.app / leads</span></div>
+            <div class="tela"><iframe src="index.html#/passageiros" title="Prévia do Kanban de leads" tabindex="-1" loading="lazy"></iframe><a class="cobre" href="index.html#/passageiros" aria-label="Abrir os leads"></a></div>
           </div>
         </div>
       </section>
@@ -781,18 +781,18 @@
           <h2>Do dado solto à decisão em três passos</h2>
         </div>
         <div class="passos">
-          <article class="passo" data-entra><h3>Conecte</h3><p>Banco de dados, WhatsApp, redes ou uma planilha. A Torre lê só agregados — nenhum dado pessoal sai da fonte.</p></article>
-          <article class="passo" data-entra><h3>Confira</h3><p>Um gerador tipado em TypeScript monta o livro de dados e uma conferência no GitHub Actions garante que todas as somas fecham.</p></article>
-          <article class="passo" data-entra><h3>Decida</h3><p>A visão executiva prioriza o que pede ação hoje. Exporte o relatório e leve para a reunião.</p></article>
+          <article class="passo" data-entra><h3>Conecte</h3><p>Instagram, Facebook, Kommo e WhatsApp por APIs oficiais e webhooks. Os tokens ficam cifrados no servidor, nunca no navegador.</p></article>
+          <article class="passo" data-entra><h3>Confira</h3><p>Cada número mostra a fonte, o período e a última atualização. Quando uma API não fornece a métrica, o painel diz isso — não inventa.</p></article>
+          <article class="passo" data-entra><h3>Decida</h3><p>Os insights apontam o canal, o conteúdo e o horário que mais rendem. Planeje a próxima campanha e leve o relatório para o cliente.</p></article>
         </div>
       </section>
 
       <section class="bloco wrap">
         <div class="numeros">
-          <div data-entra><b class="grad">12</b><span>páginas, do executivo ao detalhe</span></div>
-          <div data-entra><b class="grad">46</b><span>séries diárias conferidas a cada push</span></div>
-          <div data-entra><b class="grad">21</b><span>decisões ligadas ao dado de origem</span></div>
-          <div data-entra><b class="grad">0</b><span>dependências em produção</span></div>
+          <div data-entra><b class="grad">4</b><span>plataformas integradas por API oficial</span></div>
+          <div data-entra><b class="grad">6</b><span>gráficos interativos na Visão Executiva</span></div>
+          <div data-entra><b class="grad">7</b><span>fases por campanha, da ideia ao resultado</span></div>
+          <div data-entra><b class="grad">0</b><span>dependências no navegador</span></div>
         </div>
       </section>
 
@@ -805,9 +805,9 @@
           <article class="plano" data-entra>
             <h3>Starter</h3>
             <div class="preco">R$ 0 <small>/mês</small></div>
-            <p>Para validar o painel com uma planilha.</p>
+            <p>Para validar com uma planilha de um cliente.</p>
             <ul>
-              <li><svg class="i"><use href="#ok" /></svg>Visão executiva e filtros</li>
+              <li><svg class="i"><use href="#ok" /></svg>Visão Executiva e filtros</li>
               <li><svg class="i"><use href="#ok" /></svg>Importação CSV e Excel</li>
               <li><svg class="i"><use href="#ok" /></svg>Exportação em CSV</li>
             </ul>
@@ -816,35 +816,35 @@
           <article class="plano destaque" data-entra>
             <h3>Pro <em>MAIS ESCOLHIDO</em></h3>
             <div class="preco">R$ 149 <small>/mês por workspace</small></div>
-            <p>Para a operação que vive no WhatsApp e no banco.</p>
+            <p>Para agências e equipes com vários clientes.</p>
             <ul>
               <li><svg class="i"><use href="#ok" /></svg>Tudo do Starter</li>
-              <li><svg class="i"><use href="#ok" /></svg>Conectores PostgreSQL e WhatsApp Business</li>
-              <li><svg class="i"><use href="#ok" /></svg>Central de decisão e régua por capítulo</li>
-              <li><svg class="i"><use href="#ok" /></svg>Relatório em PDF e modo telão</li>
+              <li><svg class="i"><use href="#ok" /></svg>Instagram, Facebook, Kommo e WhatsApp</li>
+              <li><svg class="i"><use href="#ok" /></svg>Leads em Kanban e campanhas em fases</li>
+              <li><svg class="i"><use href="#ok" /></svg>Insights, relatório em PDF e modo telão</li>
             </ul>
             <a class="btn btn-p" href="index.html">Explorar o Pro na demo</a>
           </article>
           <article class="plano" data-entra>
             <h3>Enterprise</h3>
             <div class="preco">Sob consulta</div>
-            <p>Para várias equipes, fontes e regras de acesso.</p>
+            <p>Para redes de clientes com regras de acesso próprias.</p>
             <ul>
               <li><svg class="i"><use href="#ok" /></svg>Conectores sob medida via API</li>
-              <li><svg class="i"><use href="#ok" /></svg>Conferência de dados no seu CI</li>
+              <li><svg class="i"><use href="#ok" /></svg>Comparação entre clientes normalizada</li>
               <li><svg class="i"><use href="#ok" /></svg>Implantação acompanhada</li>
             </ul>
             <a class="btn btn-s" href="https://evi-dev.vercel.app" target="_blank" rel="noopener">Falar com a desenvolvedora</a>
           </article>
         </div>
-        <p class="aviso-preco">Preços ilustrativos: a Torre é um projeto de portfólio e não está à venda.</p>
+        <p class="aviso-preco">Preços ilustrativos: o OPS Intelligence é um projeto de portfólio e não está à venda.</p>
       </section>
 
       <section class="bloco wrap" id="tecnologia">
         <div class="cab" data-entra>
           <small>Tecnologia</small>
           <h2>Leve, tipado e conferido</h2>
-          <p>Sem framework e sem dependências de execução: abre do disco, carrega rápido e roda em qualquer navegador atual.</p>
+          <p>Interface sem framework e sem dependências; backend em funções serverless com banco isolado por cliente.</p>
         </div>
         <div class="stack" data-entra>
           <span><b>HTML</b> semântico</span>
@@ -852,7 +852,8 @@
           <span><b>JavaScript</b> puro, SVG desenhado à mão</span>
           <span><b>TypeScript</b> no gerador de dados</span>
           <span><b>GitHub Actions</b> typecheck + conferência</span>
-          <span><b>Vercel</b> deploy estático</span>
+          <span><b>Vercel</b> funções serverless</span>
+          <span><b>Supabase</b> PostgreSQL com RLS</span>
           <span><b>ZIP + DecompressionStream</b> para ler .xlsx</span>
         </div>
       </section>
@@ -862,16 +863,17 @@
           <small>Perguntas</small>
           <h2>Perguntas frequentes</h2>
         </div>
-        <details><summary>Os dados são reais?</summary><p>Não. O Clube Horizonte não existe: pessoas, equipes, lugares e números são fictícios e gerados por um script com semente fixa, para a demonstração ser reproduzível.</p></details>
+        <details><summary>Os dados da demo são reais?</summary><p>Não. A demo roda em modo demonstração, marcado como "Simulação" em toda a tela: os clientes e números são fictícios. No modo real, cada número vem das APIs dos clientes conectados.</p></details>
+        <details><summary>Os dados de um cliente podem aparecer para outro?</summary><p>Não. Cada tabela tem o cliente como chave e Row Level Security no banco; a API confere o acesso em cada rota, e os testes automatizados cobrem esse isolamento.</p></details>
         <details><summary>Posso testar com meus próprios números?</summary><p>Sim. Na página Dados e integrações, arraste um CSV ou .xlsx com uma coluna de data e colunas numéricas. Tudo acontece no seu navegador; nada é enviado para servidor.</p></details>
-        <details><summary>O que acontece quando eu filtro 14 dias?</summary><p>Todos os gráficos de série diária, em todas as páginas, passam a mostrar só os últimos 14 dias. Os KPIs comparam com os 14 dias anteriores e as exportações respeitam o mesmo recorte.</p></details>
-        <details><summary>Onde está o código?</summary><p>No GitHub, com o gerador de dados em TypeScript e a conferência automática a cada push: <a href="https://github.com/EVI-DEV1/centro-inteligencia-operacional" target="_blank" rel="noopener">EVI-DEV1/centro-inteligencia-operacional</a>.</p></details>
+        <details><summary>O que acontece quando eu filtro 7 dias?</summary><p>Cards, gráficos, rankings e insights passam a usar os últimos 7 dias e comparam com os 7 dias anteriores. O mesmo vale para plataforma, campanha e cliente.</p></details>
+        <details><summary>Onde está o código?</summary><p>No GitHub, com a API, o esquema do banco e os testes conferidos a cada push: <a href="https://github.com/EVI-DEV1/centro-inteligencia-operacional" target="_blank" rel="noopener">EVI-DEV1/centro-inteligencia-operacional</a>.</p></details>
       </section>
 
       <section class="wrap">
         <div class="final" data-entra>
-          <h2>Veja a Torre funcionando agora</h2>
-          <p>Abra a demo, aperte Ctrl K e experimente trocar o período, importar uma planilha ou gerar o relatório.</p>
+          <h2>Veja o OPS Intelligence funcionando agora</h2>
+          <p>Abra a demo, troque de cliente, filtre por plataforma e arraste um lead no Kanban.</p>
           <div class="ctas">
             <a class="btn btn-p" href="index.html">Abrir a demo <svg class="i"><use href="#seta" /></svg></a>
             <a class="btn btn-s" href="https://github.com/EVI-DEV1/centro-inteligencia-operacional" target="_blank" rel="noopener"><svg class="i"><use href="#git" /></svg> Ver o código</a>
@@ -882,8 +884,8 @@
 
     <footer>
       <div class="wrap">
-        <span>Torre Ops Intelligence · projeto de portfólio de <a href="https://evi-dev.vercel.app" target="_blank" rel="noopener">Eliane Vitoriano</a></span>
-        <span>Demonstração com dados fictícios · nenhuma empresa real envolvida</span>
+        <span>OPS Intelligence · projeto de portfólio de <a href="https://evi-dev.vercel.app" target="_blank" rel="noopener">Eliane Vitoriano</a></span>
+        <span>Demo em modo simulação · nenhuma empresa real envolvida</span>
       </div>
     </footer>
 

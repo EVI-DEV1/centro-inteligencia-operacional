@@ -1,73 +1,112 @@
-# Torre Ops Intelligence · Centro de Inteligência Operacional
+# OPS Intelligence
 
-Painel operacional com cara de produto SaaS, em HTML, CSS e JavaScript puros e com o gerador de dados em
-TypeScript — sem framework e sem dependências de execução. Junta bot de WhatsApp, banco de dados, redes e
-planilhas numa visão executiva com filtros globais, importação de CSV/Excel, exportação em PDF/CSV/JSON,
-uma central de decisões e três modos de uso (explorar, apresentar e telão).
+Plataforma **multicliente** de inteligência de marketing, leads e campanhas. Junta Instagram, Facebook, Kommo e
+WhatsApp Business de cada cliente numa Visão Executiva com filtros sincronizados, análise de conteúdo, funil de
+captação, Kanban de leads, campanhas em fases e insights que separam fato, hipótese e recomendação.
 
-- **Demo:** `index.html` (painel) · **Página do produto:** `produto.html`
+Interface em HTML, CSS e JavaScript puros (sem framework); backend em uma função serverless na Vercel com banco
+Supabase (PostgreSQL com Row Level Security).
 
-## O que tem
+- **Demo:** `index.html` (abre direto do disco, em modo demonstração) · **Página do produto:** `produto.html`
 
-| Recurso | Como funciona |
-|---|---|
-| Visão executiva | Seis KPIs com sparkline e variação contra o período anterior, cadastros por dia com média móvel, funil, projeção por cenário, relógio de cadastros, decisões do dia e saúde das fontes |
-| Filtros globais | 7, 14, 30 dias ou tudo. O recorte é aplicado na camada de gráficos (`src/nucleo/filtros.js`), então vale para todos os gráficos de série de todas as páginas e para as exportações |
-| Importar CSV/Excel | Arraste um `.csv` ou `.xlsx`: o painel acha a coluna de data, detecta as numéricas (inclusive `1.234,56`), sugere o mapeamento e substitui as séries. O `.xlsx` é lido sem biblioteca, com `DecompressionStream` (`src/nucleo/planilha.js`) |
-| Exportar | Relatório em PDF (folha de impressão própria), séries do período e decisões em CSV, livro em JSON e um botão CSV em cada gráfico com tabela |
-| Paleta de comandos | `Ctrl K` para ir a qualquer página, trocar o período, exportar ou abrir uma decisão |
-| Dados e integrações | Estado de cada conector, importador, exportações e o contrato de dados das séries |
-| Página do produto | `produto.html`: landing com prévias ao vivo do app, recursos, planos ilustrativos e FAQ |
+> Evolução do antigo *Torre de Controle / Centro de Inteligência Operacional*. Os nomes mudaram só na
+> interface: as rotas (`#/pilotos`, `#/passageiros`, `#/controladores`) e as chaves internas continuam as
+> mesmas para não quebrar links e dados salvos.
 
-> **Demonstração com dados fictícios.** O "Clube Horizonte" não existe. Pessoas, equipes, lugares, datas e
-> números foram inventados e gerados por `scripts/gerar-dados.ts`. Os controladores aparecem só com primeiro
-> nome e inicial. Qualquer semelhança com pessoas, organizações ou situações reais é coincidência.
+## Páginas
 
-## Como abrir
+| Página | Rota | O que responde |
+|---|---|---|
+| Visão Executiva | `#/` | 4 cards principais + todos os indicadores, evolução da audiência, origem dos leads, funil de captação, engajamento por plataforma, ranking de conteúdos, mapa de calor, campanhas ativas, evolução das conversões e insights |
+| Central | `#/central` | Atividades recentes, alertas, pendências, atendimentos e atalhos |
+| Análise de Conteúdo | `#/conteudo` | Ranking, formatos, temas, evolução do engajamento e conteúdos que geraram conversas ou leads |
+| Campanhas | `#/plano` | Criar campanha (objetivo, plataformas, público, datas, meta, orçamento, ações) e acompanhar as 7 fases; inteligência com o histórico do cliente e metas × resultados |
+| Leads | `#/passageiros` | Kanban (Novo, Em contato, Qualificado, Em negociação, Convertido, Perdido) e lista, com origem, campanha, responsável, histórico e próxima ação |
+| Pessoas | `#/pilotos` | Equipe do cliente, papéis, permissões e resultados |
+| Admin | `#/controladores` | Clientes, integrações, pessoas, permissões e relatórios |
+| Comparar clientes | `#/comparar` | Só para Admin: crescimento, leads, engajamento e conversão normalizados |
+| Dados e integrações | `#/dados` | Estado dos conectores, importação CSV/Excel e exportações |
 
-Baixe o repositório e abra `index.html` no Chrome, Edge ou Firefox. Não precisa de servidor nem de internet.
+**Filtros globais** (topo de todas as páginas): cliente, plataforma, período (hoje, 7, 30, 90 dias ou
+personalizado), campanha e indicador. Tudo se atualiza sem recarregar a página.
 
-Para gerar um arquivo único, com CSS, JavaScript e fontes embutidos:
+## Regras de dados
 
-```bash
-node scripts/build.mjs
+- Cada número mostra **fonte, período e última atualização**.
+- Métrica que a API não fornece aparece como **indisponível**, nunca como zero.
+- O funil sinaliza as etapas **estimadas** (as redes só dão números agregados, não pessoas).
+- Insights só aparecem com dados suficientes e trazem os números que os sustentam.
+- **Modo demonstração** separado e marcado como *Simulação* em toda a tela. Os clientes da demo (inclusive o
+  "Clube Horizonte") não existem.
+- Os dados de um cliente nunca se misturam com os de outro: `cliente_id` em toda tabela, RLS no banco e
+  conferência de acesso em cada rota da API.
+
+## Modo real: o que precisa para ligar
+
+O código das integrações está pronto; para funcionar com dados reais faltam contas e credenciais que só a
+dona do projeto pode criar:
+
+| O que | Onde | Para quê |
+|---|---|---|
+| Projeto Supabase | supabase.com → rode `supabase/schema.sql` no SQL Editor | Banco, login e isolamento por cliente |
+| Projeto na Vercel | importe este repositório | Hospeda a interface e a API (`api/ops.js`) |
+| App na Meta (Business) | developers.facebook.com, com revisão de permissões | Instagram e Facebook (`instagram_basic`, `instagram_manage_insights`, `pages_read_engagement`, `read_insights`) e WhatsApp |
+| Número no WhatsApp Business Cloud API | Meta Business → WhatsApp | Webhook de mensagens: novas conversas, 1ª resposta, leads do canal |
+| Integração privada na Kommo | Kommo → Configurações → Integrações | Token de longa duração para leads, etapas e conversas |
+| Chave da Anthropic (opcional) | console.anthropic.com | Texto dos insights; sem ela os insights continuam, gerados por regras |
+
+Variáveis de ambiente na Vercel (Settings → Environment Variables):
+
+```
+SUPABASE_URL                 SUPABASE_ANON_KEY            SUPABASE_SERVICE_ROLE_KEY
+OPS_CHAVE_CIFRA              # 32 bytes em base64: node -e "console.log(crypto.randomBytes(32).toString('base64'))"
+CRON_SECRET                  # protege a sincronização diária (vercel.json → crons)
+META_APP_SECRET              WHATSAPP_VERIFY_TOKEN        META_GRAPH_VERSION (padrão v23.0)
+ANTHROPIC_API_KEY            # opcional
+OPS_ORIGEM                   # opcional: domínio permitido no CORS
 ```
 
-O resultado sai em `dist/centro-inteligencia.html`.
+Depois: crie o primeiro usuário no Supabase Auth, dê a ele `papel = 'admin'` na tabela `perfis`, entre pelo
+botão **Usar dados reais** e cadastre clientes e integrações na página Admin. O webhook do WhatsApp fica em
+`/api/webhooks/whatsapp`. `GET /api/saude` diz o que ainda falta configurar.
 
-## A história que o painel conta
+Limitações das plataformas, já tratadas no código: a Meta descontinuou parte das métricas de página e de perfil,
+então só as atuais são lidas; a Kommo limita 7 requisições por segundo; respostas 429 são repetidas respeitando
+`Retry-After`; tokens ficam cifrados (AES-256-GCM) e nunca vão para o navegador.
 
-O Clube Horizonte, um programa de indicação de um clube de viagens, prepara o **Dia D · abertura da
-temporada**. *Pilotos* (embaixadores) indicam e cadastram *passageiros* pelo WhatsApp; *controladores*
-coordenam os pilotos. O livro de dados foi medido 22 dias antes do Dia D, e a tese do painel é que os números
-de hoje medem **prontidão, não resultado**: a base existe, a base pronta ainda não.
+## Arquitetura
 
-| Página | O que responde |
-|---|---|
-| Visão executiva | KPIs do período, tendência, funil, projeção, decisões do dia e saúde das fontes |
-| Torre de prontidão | A torre-funil, os três números (projetada, real, contabilizados), os cenários e a pista até o Dia D |
-| Pilotos | Quantos existem de verdade, como foram criados e quais produzem |
-| Passageiros | Ritmo diário, relógio dos cadastros, cenários e times |
-| Controladores | Quem carrega a rede, a rodada de expectativa e os pilotos sem dono |
-| Central Horizonte | Bot, chamados e a capacidade provada contra a exigida |
-| Operação | Material, estoque, entregas, campo, visitas e uso do sistema |
-| Atendimento | Tempo até a baixa, concentração, fila e assuntos |
-| Alcance | Redes, comentários, acervo — e a coleta que parou |
-| Caminho para o Dia D | Fases, marcos, provas e perguntas em aberto |
-| Central de Decisão | 21 decisões (agir hoje × atenção), cada uma ligada ao dado que a sustenta |
-| Dados e integrações | Conectores, importação de CSV/Excel, exportações e contrato de dados |
+```
+index.html · produto.html      interface (abre do disco no modo demonstração)
+src/ops/nucleo.js              cálculo único de indicadores, funil, origem, calor e insights (interface, API e testes)
+src/ops/demo.js                gerador do modo demonstração (determinístico, por cliente)
+src/ops/fonte.js               de onde vêm os dados: demo local ou API, com cache e estados de carregamento
+src/ops/graficos.js · ui.js    gráficos SVG interativos, barra de filtros, login, diálogos
+src/modulos/                   páginas (executiva, conteúdo, campanhas, leads, pessoas, admin, central, comparar…)
+api/ops.js · api/_lib/         API serverless: rotas, acesso por papel, conectores, sincronização incremental, webhooks
+supabase/schema.sql            tabelas por cliente, RLS em todas, papéis (admin, gestor, analista, atendimento, cliente)
+tests/ops.test.mjs             núcleo, demonstração, isolamento, permissões, webhooks e conectores
+scripts/                       gerador do livro do programa Horizonte (TypeScript) e build do arquivo único
+```
 
-Detalhes que valem a pena explorar:
+## Desenvolvimento
 
-- **Cada número abre um explicador**: o que é, por que importa, o que os dados mostram, o que ele *não* é e
-  a página do livro de onde saiu.
-- **Divergências não são escondidas**: quando o próprio livro traz dois valores para a mesma coisa, o painel
-  mostra os dois e sinaliza a conferência em vez de escolher um calado.
-- **Estado sempre com ícone e palavra** (agir, atenção, firme, não medido), nunca só cor.
-- **Modo apresentação** (tecla `P`) com roteiro e holofote; **telão** (tecla `T`) avança sozinho.
-- Atalhos: `Ctrl K` paleta de comandos · `0`–`9` páginas · `N` oculta nomes · `Esc` sai dos modos.
+```bash
+npm install
+npm run check      # tipos + contas do livro de demonstração + testes
+npm test           # só os testes do OPS
+node scripts/build.mjs   # arquivo único em dist/centro-inteligencia.html
+```
 
-## Os dados
+A cada push, o GitHub Actions confere tipos, contas, dados publicados, testes e o build.
+
+## Programa Horizonte (relatório de demonstração)
+
+No modo demonstração, o cliente **Clube Horizonte** traz também o relatório original do projeto (Operação,
+Atendimento, Alcance, Central de Decisão e os capítulos antigos dentro de Leads, Pessoas e Admin). Ele vem de um
+livro de dados fictício gerado por script.
+
+### O gerador do livro de demonstração
 
 Os dados ficam em `src/dados/livro.js` e `src/dados/series.js` e são gerados, não digitados:
 
@@ -100,35 +139,6 @@ remove os tipos ao executar e o `tsc` confere tudo antes (`npm install` e depois
 
 A cada push, o GitHub Actions (`.github/workflows/conferencia.yml`) confere os tipos, confere que todas as contas
 fecham, confere que os dados publicados são exatamente os que o gerador produz e monta o arquivo único.
-
-## Estrutura
-
-```
-index.html              o painel (carrega os módulos)
-produto.html           página do produto
-src/dados/              livro e séries gerados, adaptador (a única porta entre dados e telas), relações
-src/nucleo/             utilitários, estado, filtros globais, planilhas (CSV/XLSX), ícones, dicas
-src/graficos/           barras, linhas, barras horizontais e escalas em SVG, sem biblioteca
-src/componentes/        régua, medidores, seções
-src/cena/               a torre, a pista até o Dia D e as partículas
-src/modulos/            as páginas: painel executivo, torre, capítulos, decisões e dados
-src/estilo/             tokens, folhas de estilo e produto.css (moldura SaaS)
-scripts/                gerador de dados (TypeScript) e build do arquivo único
-assets/fontes/          Archivo e B612 Mono (woff2)
-```
-
-## Vocabulário do clube fictício
-
-| Termo | O que é |
-|---|---|
-| Piloto | Embaixador que indica e cadastra passageiros pelo WhatsApp |
-| Passageiro | Pessoa indicada e cadastrada por um piloto |
-| Controlador | Coordena um grupo de pilotos; tem login no painel |
-| Aspirante | Quem ainda pode virar piloto |
-| Plano | Meta do piloto (20, 40; 100 e 200 nas embaixadas) |
-| Projetada · Real · Contabilizados | Soma das metas · expectativa lançada pelos controladores · cadastros no banco |
-| Base pronta | Pilotos com dono, canal aberto, produção e atividade na semana |
-| Convite | Código de adesão enviado a cada passageiro para o Dia D |
 
 ## Créditos
 

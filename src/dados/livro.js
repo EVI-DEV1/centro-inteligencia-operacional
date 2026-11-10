@@ -16,12 +16,12 @@ window.TORRE_LIVRO = {
   "bancos": [
    {
     "id": "central",
-    "nome": "Central Horizonte",
-    "papel": "bot, pilotos, passageiros, chamados"
+    "nome": "Central",
+    "papel": "bot, pessoas, leads, chamados"
    },
    {
     "id": "operacao",
-    "nome": "Torre",
+    "nome": "OPS Intelligence",
     "papel": "material, estoque, refeição, visitas, atendimento"
    },
    {
@@ -51,11 +51,11 @@ window.TORRE_LIVRO = {
    "simuladoAte": "2026-11-27",
    "d7": "2026-11-29"
   },
-  "frase": "Nenhum número desta Torre mede resultado: todos medem prontidão. A temporada depende de duas respostas — em 29/11 existem de 700 a 1.300 pilotos com material na mão e canal aberto? E o sistema aguenta de 4,4 a 9 vezes o seu melhor dia, sete dias seguidos?",
+  "frase": "Nenhum número deste programa mede resultado: todos medem prontidão. A temporada depende de duas respostas — em 29/11 existem de 700 a 1.300 pessoas com material na mão e canal aberto? E o sistema aguenta de 4,4 a 9 vezes o seu melhor dia, sete dias seguidos?",
   "capa": [
    {
     "v": 9846,
-    "rotulo": "pessoas indicadas e cadastradas (passageiros)"
+    "rotulo": "pessoas indicadas e cadastradas (leads)"
    },
    {
     "v": 291,
@@ -63,11 +63,11 @@ window.TORRE_LIVRO = {
    },
    {
     "v": 131,
-    "rotulo": "pilotos prontos e vivos (funil aninhado)"
+    "rotulo": "pessoas prontas e vivos (funil aninhado)"
    },
    {
     "v": 1984,
-    "rotulo": "pilotos ativos cadastrados"
+    "rotulo": "pessoas ativas cadastrados"
    }
   ],
   "p": 1
@@ -75,34 +75,34 @@ window.TORRE_LIVRO = {
  "pares": [
   {
    "par": "Registrado · no mundo",
-   "significado": "Registrado quer dizer que existe uma linha no banco — é só isso que a Torre enxerga. No mundo quer dizer que aconteceu com alguém. Indicação que ficou fora do sistema não ganha convite nem lembrete."
+   "significado": "Registrado quer dizer que existe uma linha no banco — é só isso que o OPS Intelligence enxerga. No mundo quer dizer que aconteceu com alguém. Indicação que ficou fora do sistema não ganha convite nem lembrete."
   },
   {
-   "par": "Piloto · Passageiro · Controlador",
-   "significado": "Piloto é o embaixador que indica pelo WhatsApp, sem login. Passageiro é a pessoa indicada e cadastrada por um piloto (no banco, \"Indicado\"). Controlador coordena um grupo de pilotos e entra no painel com login."
+   "par": "Pessoa · Lead · Admin",
+   "significado": "Pessoa é o embaixador que indica pelo WhatsApp, sem login. Lead é a pessoa indicada e cadastrada por uma pessoa (no banco, \"Indicado\"). Admin coordena um grupo de pessoas e entra no painel com login."
   },
   {
    "par": "Projetada · Real · Contabilizados",
-   "significado": "Projetada é a soma dos planos dos pilotos ativos. Real é o que cada controlador lançou que os seus pilotos vão trazer (vale só com carimbo). Contabilizados são os passageiros já gravados no banco."
+   "significado": "Projetada é a soma dos planos das pessoas ativas. Real é o que cada admin lançou que as suas pessoas vão trazer (vale só com carimbo). Contabilizados são os leads já gravados no banco."
   }
  ],
  "coresDoLivro": "A série principal é azul e a referência é cinza. Vermelho aparece apenas onde há ação a tomar. Roxo sinaliza madrugada ou carga em lote; azul claro, o dia que ainda não terminou. Nenhuma cor vem sem uma palavra ao lado.",
  "glossario": [
   {
-   "termo": "Clube Horizonte / Central Horizonte",
-   "def": "Clube Horizonte é o nome que o público conhece; Central Horizonte é o sistema por trás dele (bot de WhatsApp, painel de pilotos e banco)."
+   "termo": "Clube Horizonte / Central",
+   "def": "Clube Horizonte é o nome que o público conhece; Central é o sistema por trás dele (bot de WhatsApp, painel de pessoas e banco)."
   },
   {
    "termo": "Plano · Anel · Patente",
-   "def": "Plano é quantos passageiros o piloto se propôs a trazer (20 ou 40; 100/200 nas embaixadas). Anel é o progresso da pessoa contra o próprio plano. Patente é a faixa por passageiros absolutos (40, 80, 120)."
+   "def": "Plano é quantos leads a pessoa se propôs a trazer (20 ou 40; 100/200 nas embaixadas). Anel é o progresso da pessoa contra o próprio plano. Patente é a faixa por leads absolutos (40, 80, 120)."
   },
   {
    "termo": "Aspirante",
-   "def": "Ficha de alguém que pode virar piloto, vinda de lista importada ou do formulário de visitas. Passar a piloto não dispara mensagem para ninguém."
+   "def": "Ficha de alguém que pode virar pessoa, vinda de lista importada ou do formulário de visitas. Passar a pessoa não dispara mensagem para ninguém."
   },
   {
    "termo": "Base pronta",
-   "def": "Pilotos que atravessam o funil aninhado inteiro: dono real → canal aberto → já cadastrou alguém → vivo na semana. Não se confunde com o total de ativos."
+   "def": "Pessoas que atravessam o funil aninhado inteiro: dono real → canal aberto → já cadastrou alguém → vivo na semana. Não se confunde com o total de ativos."
   },
   {
    "termo": "Captura",
@@ -110,15 +110,15 @@ window.TORRE_LIVRO = {
   },
   {
    "termo": "Convite",
-   "def": "Cartão ou mensagem com o código de adesão do Dia D, um por passageiro."
+   "def": "Cartão ou mensagem com o código de adesão do Dia D, um por lead."
   },
   {
    "termo": "Baixa",
-   "def": "Botão da Torre que encerra uma conversa com uma nota do motivo. O \"tempo de atendimento\" medido vai até esse clique, não até a primeira resposta."
+   "def": "Botão do OPS Intelligence que encerra uma conversa com uma nota do motivo. O \"tempo de atendimento\" medido vai até esse clique, não até a primeira resposta."
   },
   {
    "termo": "Kit",
-   "def": "Material físico do piloto, montado na base operacional. \"Recebeu kit\" é uma etiqueta marcada por decisão da coordenação e não guarda data."
+   "def": "Material físico da pessoa, montado na base operacional. \"Recebeu kit\" é uma etiqueta marcada por decisão da coordenação e não guarda data."
   },
   {
    "termo": "Sessão do bot · etapa",
@@ -130,12 +130,12 @@ window.TORRE_LIVRO = {
   },
   {
    "termo": "Fila de triagem",
-   "def": "Uma única controladora com 538 pilotos (a triagem da Rota 20), 3 deles com passageiro. Não é equipe: é fila parada."
+   "def": "Uma única controladora com 538 pessoas (a triagem da Rota 20), 3 deles com lead. Não é equipe: é fila parada."
   }
  ],
  "metodo": {
   "medido": [
-   "Leituras diretas nos bancos de produção em 14/11/2026, 14h–17h (Brasília): Central Horizonte, Torre e Redes.",
+   "Leituras diretas nos bancos de produção em 14/11/2026, 14h–17h (Brasília): Central, OPS Intelligence e Redes.",
    "Leitura somente, e somente de agregados. Nenhum nome, telefone ou endereço de pessoa indicada foi aberto. Grupo com menos de 5 pessoas fica de fora; nome de equipe aparece porque é equipe.",
    "Horários levados para Brasília antes de contar por dia: o banco grava em UTC, e sem a conversão o \"hoje\" começaria às 21h da véspera."
   ],
@@ -144,7 +144,7 @@ window.TORRE_LIVRO = {
    "Latência do bot: nenhuma mensagem tem carimbo de processamento.",
    "O ensaio de disparo de 26/10 em si: não ficou gravado.",
    "Conversão cadastro → adesão: parâmetro do gestor.",
-   "Quem abre qual tela da Torre: não existe registro de leitura.",
+   "Quem abre qual tela do OPS Intelligence: não existe registro de leitura.",
    "Operação de rua formal: tabelas zeradas; as 58–104 pessoas por dia em campo trabalham fora do sistema.",
    "Captura: pede um denominador que não está no sistema."
   ],
@@ -153,26 +153,26 @@ window.TORRE_LIVRO = {
  "tresNumeros": {
   "projetada": {
    "v": 84720,
-   "def": "Soma dos planos dos pilotos ativos.",
-   "leitura": "Conta fichas. Um piloto criado ontem numa carga entra com plano 40 e nenhum passageiro. Pela decomposição exclusiva, só 12.960 estão com quem já produz.",
+   "def": "Soma dos planos das pessoas ativas.",
+   "leitura": "Conta fichas. Uma pessoa criada ontem numa carga entra com plano 40 e nenhum lead. Pela decomposição exclusiva, só 12.960 estão com quem já produz.",
    "naoE": "não é previsão: nenhum desses planos foi combinado um a um"
   },
   "real": {
    "v": 12874,
-   "def": "O que os controladores lançaram na rodada de 10/11, só com carimbo.",
-   "leitura": "Mede a aposta de quem convive com os pilotos. Fica 31% acima do contabilizado: ninguém está contando com um salto.",
+   "def": "O que os admins lançaram na rodada de 10/11, só com carimbo.",
+   "leitura": "Mede a aposta de quem convive com as pessoas. Fica 31% acima do contabilizado: ninguém está contando com um salto.",
    "detalhe": "1.197 de 1.940 linhas com carimbo",
    "naoE": "não é contabilizado: é expectativa de quem convive"
   },
   "contabilizados": {
    "v": 9846,
-   "def": "Passageiros gravados no banco.",
-   "leitura": "É o único dos três que é fato. Mas é cadastro feito pelo piloto, sem confirmação com a pessoa: 9.862 das 9.865 fichas não têm status de confirmação.",
+   "def": "Leads gravados no banco.",
+   "leitura": "É o único dos três que é fato. Mas é cadastro feito pela pessoa, sem confirmação com a pessoa: 9.862 das 9.865 fichas não têm status de confirmação.",
    "naoE": "não é adesão: é cadastro gravado uma vez"
   },
   "metaDeclarada": {
    "v": 112000,
-   "conta": "2.800 pilotos × 40 passageiros",
+   "conta": "2.800 pessoas × 40 leads",
    "origem": "reunião de 02/09"
   },
   "metaDeQuemJaProduz": {
@@ -186,7 +186,7 @@ window.TORRE_LIVRO = {
   "decomposicao": [
    {
     "id": "orfaos",
-    "grupo": "Órfãos (sem controlador)",
+    "grupo": "Órfãos (sem admin)",
     "pilotos": 44,
     "comPassageiro": 4,
     "meta": 1920,
@@ -195,7 +195,7 @@ window.TORRE_LIVRO = {
    },
    {
     "id": "deposito",
-    "grupo": "Fila de triagem (1 controladora)",
+    "grupo": "Fila de triagem (1 admin)",
     "pilotos": 538,
     "comPassageiro": 3,
     "meta": 18640,
@@ -204,7 +204,7 @@ window.TORRE_LIVRO = {
    },
    {
     "id": "dobro",
-    "grupo": "É passageiro de outro piloto",
+    "grupo": "É lead de outra pessoa",
     "pilotos": 602,
     "comPassageiro": 161,
     "meta": 27480,
@@ -213,7 +213,7 @@ window.TORRE_LIVRO = {
    },
    {
     "id": "novos",
-    "grupo": "Criado há <7 dias, sem passageiro",
+    "grupo": "Criado há <7 dias, sem lead",
     "pilotos": 523,
     "comPassageiro": 0,
     "meta": 23100,
@@ -222,7 +222,7 @@ window.TORRE_LIVRO = {
    },
    {
     "id": "antigos",
-    "grupo": "Antigo, sem passageiro",
+    "grupo": "Antigo, sem lead",
     "pilotos": 171,
     "comPassageiro": 0,
     "meta": 8560,
@@ -242,7 +242,7 @@ window.TORRE_LIVRO = {
   "pisoHonesto": 12960,
   "tetoHonesto": 32500,
   "soFicha": 52220,
-  "leituraDecomposicao": "Só 12.960 de plano estão com quem já cadastrou alguém. Descontados órfãos, fila de triagem e fichas sem passageiro, restam 32.500 com dono e algum sinal. Os outros 52.220 são ficha. Piso honesto: 13 mil; teto honesto: 32,5 mil.",
+  "leituraDecomposicao": "Só 12.960 de plano estão com quem já cadastrou alguém. Descontados órfãos, fila de triagem e fichas sem lead, restam 32.500 com dono e algum sinal. Os outros 52.220 são ficha. Piso honesto: 13 mil; teto honesto: 32,5 mil.",
   "p": [
    3,
    26
@@ -269,7 +269,7 @@ window.TORRE_LIVRO = {
    "dias": 15,
    "objetivo": "Montar a base pronta e provar a capacidade. Cadastro nesta fase vale 20% do resultado.",
    "medir": [
-    "pilotos prontos",
+    "pessoas prontas",
     "kits conferidos",
     "canal aberto com o bot",
     "sem dono = 0",
@@ -286,7 +286,7 @@ window.TORRE_LIVRO = {
    "objetivo": "Só capturar: nada se constrói nestes dias. Tudo medido por hora.",
    "medir": [
     "cadastros/hora",
-    "pilotos vivos no dia",
+    "pessoas vivas no dia",
     "fila do bot em minutos",
     "falhas",
     "% com convite",
@@ -310,13 +310,13 @@ window.TORRE_LIVRO = {
  ],
  "pilotos": {
   "letra": "A",
-  "titulo": "Pilotos: quem entra, por onde e quando",
-  "pergunta": "Quantos pilotos existem de verdade, como foram criados e quais produzem.",
-  "frase": "Piloto criado não é piloto que produz. Em 34 dias o sistema registrou 2.036 fichas de piloto; 1.571 delas (77,2%) nasceram em quatro dias de carga em massa. No mesmo recorte, 131 pilotos cadastraram alguém na última semana. A base que trabalha é de centenas; a base que existe é de milhares.",
+  "titulo": "Pessoas: quem entra, por onde e quando",
+  "pergunta": "Quantas pessoas existem de verdade, como foram criados e quais produzem.",
+  "frase": "Pessoa criado não é pessoa que produz. Em 34 dias o sistema registrou 2.036 fichas de pessoa; 1.571 delas (77,2%) nasceram em quatro dias de carga em massa. No mesmo recorte, 131 pessoas cadastraram alguém na última semana. A base que trabalha é de centenas; a base que existe é de milhares.",
   "kpis": [
    {
     "v": 1984,
-    "rotulo": "pilotos ativos hoje"
+    "rotulo": "pessoas ativas hoje"
    },
    {
     "v": 1158,
@@ -324,7 +324,7 @@ window.TORRE_LIVRO = {
    },
    {
     "v": 2271,
-    "rotulo": "aspirantes que ainda não viraram piloto"
+    "rotulo": "aspirantes que ainda não viraram pessoa"
    },
    {
     "v": 131,
@@ -334,7 +334,7 @@ window.TORRE_LIVRO = {
   "funil": [
    {
     "id": "ativos",
-    "rotulo": "Pilotos ativos",
+    "rotulo": "Pessoas ativas",
     "v": 1984,
     "pct": 100,
     "meta": 84720,
@@ -359,7 +359,7 @@ window.TORRE_LIVRO = {
    },
    {
     "id": "produziu",
-    "rotulo": "já cadastraram ao menos 1 passageiro",
+    "rotulo": "já cadastraram ao menos 1 lead",
     "v": 247,
     "pct": 12.4,
     "meta": 12140,
@@ -387,7 +387,7 @@ window.TORRE_LIVRO = {
    700,
    1300
   ],
-  "funilLeitura": "Cada seta para baixo é uma peneira. O gargalo está entre \"tem dono\" e \"falou com o bot\": 741 pilotos têm controlador e nunca trocaram mensagem com o sistema. A base que responde a um comando hoje está entre 47 e 247 pilotos; a operacional é 131.",
+  "funilLeitura": "Cada seta para baixo é uma peneira. O gargalo está entre \"tem dono\" e \"falou com o bot\": 741 pessoas têm admin e nunca trocaram mensagem com o sistema. A base que responde a um comando hoje está entre 47 e 247 pessoas; a operacional é 131.",
   "semContatoComDono": 741,
   "totalFichas": 2036,
   "fichasDeCarga": 1571,
@@ -422,7 +422,7 @@ window.TORRE_LIVRO = {
     "daFila": true
    }
   ],
-  "horaLeitura": "Três horas concentram quase tudo — 14h (550), 15h (372) e 11h (358) — e mais uma à noite, 20h (284). Não é o horário em que as pessoas decidem virar piloto: é o horário em que alguém da equipe rodou a carga. Na madrugada inteira há 7 fichas em 34 dias.",
+  "horaLeitura": "Três horas concentram quase tudo — 14h (550), 15h (372) e 11h (358) — e mais uma à noite, 20h (284). Não é o horário em que as pessoas decidem virar pessoa: é o horário em que alguém da equipe rodou a carga. Na madrugada inteira há 7 fichas em 34 dias.",
   "celulasDeCarga": {
    "fichas": 1378,
    "pct": 67.7,
@@ -545,7 +545,7 @@ window.TORRE_LIVRO = {
     "aberta": true
    }
   ],
-  "coortesLeitura": "As duas semanas sem carga somam 151 pilotos e 5.732 passageiros; as três com carga somam 1.885 pilotos e 4.133 passageiros. A coorte diz em 24 horas o que vai render: quem não cadastra ninguém no primeiro dia quase nunca cadastra depois.",
+  "coortesLeitura": "As duas semanas sem carga somam 151 pessoas e 5.732 leads; as três com carga somam 1.885 pessoas e 4.133 leads. A coorte diz em 24 horas o que vai render: quem não cadastra ninguém no primeiro dia quase nunca cadastra depois.",
   "metas": [
    {
     "meta": 20,
@@ -617,7 +617,7 @@ window.TORRE_LIVRO = {
     "vazio": true
    }
   ],
-  "ultimaMensagemLeitura": "Em 1.633 das 1.984 fichas ativas (82,3%) o campo está vazio; só 113 pilotos falaram nos últimos 3 dias. Pelo campo da ficha sobram 351 pilotos com alguma mensagem; pelas sessões do bot, 661.",
+  "ultimaMensagemLeitura": "Em 1.633 das 1.984 fichas ativas (82,3%) o campo está vazio; só 113 pessoas falaram nos últimos 3 dias. Pelo campo da ficha sobram 351 pessoas com alguma mensagem; pelas sessões do bot, 661.",
   "whatsappProducao": [
    {
     "numero": "linha6",
@@ -671,12 +671,12 @@ window.TORRE_LIVRO = {
      "comControlador": 1866
     },
     {
-     "estado": "virou piloto",
+     "estado": "virou pessoa",
      "v": 1741,
      "comControlador": 1733
     },
     {
-     "estado": "virou passageiro",
+     "estado": "virou lead",
      "v": 123,
      "comControlador": 117
     }
@@ -743,17 +743,17 @@ window.TORRE_LIVRO = {
      "faixa": "vermelho"
     }
    ],
-   "leitura": "A fila não é base: é agenda. São 2.148 aspirantes esperando, 1.866 deles com controlador já definido. Divididos pelos 72 controladores, dão 30 contatos por pessoa até 06/12. Tratar a fila como lista de ligações a fazer, não como base a converter em lote.",
+   "leitura": "A fila não é base: é agenda. São 2.148 aspirantes esperando, 1.866 deles com admin já definido. Divididos pelos 72 admins, dão 30 contatos por pessoa até 06/12. Tratar a fila como lista de ligações a fazer, não como base a converter em lote.",
    "contatosPorControlador": 30
   },
   "muda": [
    {
-    "t": "Criar piloto em massa não rende — está medido, não é opinião.",
-    "d": "1.571 das 2.036 fichas (77,2%) nasceram em quatro dias de carga. A coorte de 09/11, com 1.146 pilotos, tem 24 que já cadastraram alguém — 2,1% — e 0,7 passageiro por ficha. Continuar convertendo a fila em lote adiciona linhas, não adesões."
+    "t": "Criar pessoa em massa não rende — está medido, não é opinião.",
+    "d": "1.571 das 2.036 fichas (77,2%) nasceram em quatro dias de carga. A coorte de 09/11, com 1.146 pessoas, tem 24 que já cadastraram alguém — 2,1% — e 0,7 lead por ficha. Continuar convertendo a fila em lote adiciona linhas, não adesões."
    },
    {
     "t": "Quem entra por vontade própria produz quatro a seis vezes mais.",
-    "d": "Aspirante que escreveu ao bot rende 34,9 passageiros e o QR rende 24,7, contra 5,8 da lista importada. A porta boa é a mais estreita — e é a que menos recebe atenção."
+    "d": "Aspirante que escreveu ao bot rende 34,9 leads e o QR rende 24,7, contra 5,8 da lista importada. A porta boa é a mais estreita — e é a que menos recebe atenção."
    },
    {
     "t": "A base nunca foi acesa.",
@@ -761,16 +761,16 @@ window.TORRE_LIVRO = {
    },
    {
     "t": "O estoque real são 2.148 aspirantes na fila, sem contato.",
-    "d": "Desses, 1.866 já têm controlador atribuído. Converter em lote já foi feito três vezes e não produziu. O que ainda não foi feito é falar com eles — e 22 dias dão para chamar 2.148 pessoas se houver escala humana."
+    "d": "Desses, 1.866 já têm admin atribuído. Converter em lote já foi feito três vezes e não produziu. O que ainda não foi feito é falar com eles — e 22 dias dão para chamar 2.148 pessoas se houver escala humana."
    },
    {
     "t": "A produção depende de dois números de WhatsApp.",
-    "d": "linha6 e linha5 concentram 89,6% dos 9.865 passageiros com ficha. Um bloqueio numa dessas contas derruba a maior parte do cadastro."
+    "d": "linha6 e linha5 concentram 89,6% dos 9.865 leads com ficha. Um bloqueio numa dessas contas derruba a maior parte do cadastro."
    }
   ],
   "naoMede": [
-   "Origem só existe para 297 de 2.036 pilotos (14,6%) — as fichas criadas pelo bot.",
-   "Não existe data de entrega do kit na ficha do piloto — só a marca de recebido. Sem a data, não dá para dizer que o kit causou produção.",
+   "Origem só existe para 297 de 2.036 pessoas (14,6%) — as fichas criadas pelo bot.",
+   "Não existe data de entrega do kit na ficha da pessoa — só a marca de recebido. Sem a data, não dá para dizer que o kit causou produção.",
    "A data da ficha não é a data do compromisso — para as 1.741 fichas convertidas, o sistema registra o dia da conversão.",
    "O número de WhatsApp é o atual, não o histórico.",
    "14/11 está incompleto e a coorte de 09/11 ainda não completou 7 dias: os dois só podem subir."
@@ -788,7 +788,7 @@ window.TORRE_LIVRO = {
      "status": "vermelho"
     },
     {
-     "metrica": "Passageiros por ficha da coorte",
+     "metrica": "Leads por ficha da coorte",
      "verde": "≥ 30",
      "amarelo": "10–30",
      "vermelho": "< 10",
@@ -796,7 +796,7 @@ window.TORRE_LIVRO = {
      "status": "vermelho"
     },
     {
-     "metrica": "Pilotos que cadastraram alguém na última semana",
+     "metrica": "Pessoas que cadastraram alguém na última semana",
      "verde": "≥ 247",
      "amarelo": "131–247",
      "vermelho": "< 131",
@@ -813,7 +813,7 @@ window.TORRE_LIVRO = {
      "status": "vermelho"
     },
     {
-     "metrica": "Fichas de piloto com porta de entrada registrada",
+     "metrica": "Fichas de pessoa com porta de entrada registrada",
      "verde": "≥ 50%",
      "amarelo": "15–50%",
      "vermelho": "< 15%",
@@ -829,13 +829,13 @@ window.TORRE_LIVRO = {
  },
  "passageiros": {
   "letra": "B",
-  "titulo": "Passageiros: cada indicação registrada, dia após dia",
+  "titulo": "Leads: cada indicação registrada, dia após dia",
   "pergunta": "Quanto entra por dia, em que horas as pessoas se cadastram e até onde a linha chega no Dia D.",
-  "frase": "A entrada estacionou: há um mês chegam perto de 291 indicações por dia, e cada piloto que cadastra no dia grava por volta de 9. Quem mexe no total não é a produtividade de quem já trabalha, é o número de pilotos diferentes cadastrando no mesmo dia — e esse número nunca passou de 49.",
+  "frase": "A entrada estacionou: há um mês chegam perto de 291 indicações por dia, e cada pessoa que cadastra no dia grava por volta de 9. Quem mexe no total não é a produtividade de quem já trabalha, é o número de pessoas diferentes cadastrando no mesmo dia — e esse número nunca passou de 49.",
   "kpis": [
    {
     "v": 9846,
-    "rotulo": "passageiros registrados até 14/11"
+    "rotulo": "leads registrados até 14/11"
    },
    {
     "v": 291,
@@ -847,7 +847,7 @@ window.TORRE_LIVRO = {
    },
    {
     "v": 118,
-    "rotulo": "pilotos que cadastraram alguém na última semana completa"
+    "rotulo": "pessoas que cadastraram alguém na última semana completa"
    }
   ],
   "origem": [
@@ -885,18 +885,18 @@ window.TORRE_LIVRO = {
   ],
   "quatroPalavras": [
    {
-    "palavra": "Passageiro",
-    "e": "pessoa indicada por um piloto e gravada uma única vez, com nome e telefone",
+    "palavra": "Lead",
+    "e": "pessoa indicada por uma pessoa e gravada uma única vez, com nome e telefone",
     "naoE": "não é adesão fechada nem interesse confirmado depois"
    },
    {
-    "palavra": "Piloto",
-    "e": "ficha de quem topou indicar passageiros para o clube",
+    "palavra": "Pessoa",
+    "e": "ficha de quem topou indicar leads para o clube",
     "naoE": "não é gente trabalhando: 1.710 fichas nunca cadastraram ninguém"
    },
    {
     "palavra": "Meta somada / Projetada",
-    "e": "a soma das metas anotadas em cada ficha de piloto",
+    "e": "a soma das metas anotadas em cada ficha de pessoa",
     "naoE": "não é previsão: nenhuma dessas metas foi combinada caso a caso"
    },
    {
@@ -1635,7 +1635,7 @@ window.TORRE_LIVRO = {
   "muda": [
    {
     "t": "Mede-se prontidão, não adesão.",
-    "d": "Os 9.846 cadastros foram gravados uma vez e ninguém os confirmou depois: só 3 das 9.865 fichas têm alguma resposta, e nenhuma diz de que aeroporto a pessoa sai. O total cresce com o número de pilotos diferentes cadastrando no mesmo dia, cujo recorde é 49 (13/11), 2,5% dos ativos."
+    "d": "Os 9.846 cadastros foram gravados uma vez e ninguém os confirmou depois: só 3 das 9.865 fichas têm alguma resposta, e nenhuma diz de que aeroporto a pessoa sai. O total cresce com o número de pessoas diferentes cadastrando no mesmo dia, cujo recorde é 49 (13/11), 2,5% dos ativos."
    },
    {
     "t": "Os 112.000 não cabem na conta que a própria equipe faz.",
@@ -1643,7 +1643,7 @@ window.TORRE_LIVRO = {
    },
    {
     "t": "34% dos cadastros vêm de 5% da rede.",
-    "d": "As Embaixadas somam 102 pilotos e 3.318 registros; a Rota 20 tem 280 fichas e 11 cadastros. Tratar a Rota 20 como rede disponível incha todos os denominadores."
+    "d": "As Embaixadas somam 102 pessoas e 3.318 registros; a Rota 20 tem 280 fichas e 11 cadastros. Tratar a Rota 20 como rede disponível incha todos os denominadores."
    },
    {
     "t": "Abrir ficha nova parou de dar retorno.",
@@ -1655,16 +1655,16 @@ window.TORRE_LIVRO = {
    }
   ],
   "naoMede": [
-   "De onde o passageiro embarca. A base guarda o telefone, não a cidade nem o aeroporto; o DDD só indica o chip.",
+   "De onde o lead embarca. A base guarda o telefone, não a cidade nem o aeroporto; o DDD só indica o chip.",
    "Se o cadastro vira adesão. 9.862 de 9.865 fichas não têm status; qualquer taxa de conversão seria chute.",
    "Captura. Não existe denominador no sistema; os 15%, 35% e 60% dos cenários são premissas.",
    "O 20/80. É hipótese do gestor, apoiada em 34 dias de histórico, sem a semana do surto e sem temporadas anteriores.",
-   "Quem cadastrou de fato. A linha de WhatsApp gravada é a atual do piloto, e 14/11 está incompleto."
+   "Quem cadastrou de fato. A linha de WhatsApp gravada é a atual da pessoa, e 14/11 está incompleto."
   ],
   "regua": {
    "linhas": [
     {
-     "metrica": "Passageiros por dia",
+     "metrica": "Leads por dia",
      "significado": "média dos últimos 7 dias fechados",
      "verde": "≥ 420",
      "amarelo": "270–419",
@@ -1673,8 +1673,8 @@ window.TORRE_LIVRO = {
      "status": "amarelo"
     },
     {
-     "metrica": "Pilotos vivos em 7 dias",
-     "significado": "pilotos distintos que cadastraram na semana",
+     "metrica": "Pessoas vivas em 7 dias",
+     "significado": "pessoas distintas que cadastraram na semana",
      "verde": "≥ 230",
      "amarelo": "140–229",
      "vermelho": "< 140",
@@ -1691,7 +1691,7 @@ window.TORRE_LIVRO = {
      "status": "vermelho"
     }
    ],
-   "nota": "Nenhuma das três métricas está no verde. A única que anda na direção certa é a de pilotos vivos — e mesmo ela ganhou 47 pessoas desde a semana de 12/10, com 3 semanas pela frente."
+   "nota": "Nenhuma das três métricas está no verde. A única que anda na direção certa é a de pessoas vivas — e mesmo ela ganhou 47 pessoas desde a semana de 12/10, com 3 semanas pela frente."
   },
   "p": [
    13,
@@ -1700,17 +1700,17 @@ window.TORRE_LIVRO = {
  },
  "controladores": {
   "letra": "C",
-  "titulo": "Controladores e expectativa: quem sustenta a rede",
+  "titulo": "Admin e expectativa: quem sustenta a rede",
   "pergunta": "Quem produz, quem lança expectativa e o que cabe dentro da Projetada.",
-  "frase": "A Projetada conta fichas: soma a meta de cada piloto ativo, com ou sem dono, conversa ou passageiro. A Real conta outra coisa — quanto a pessoa que coordena aquele piloto acredita que ele vai trazer. A primeira é 6,6 vezes a segunda, e essa distância não vem de otimismo: vem de cadastro que ninguém acompanha.",
+  "frase": "A Projetada conta fichas: soma a meta de cada pessoa ativa, com ou sem dono, conversa ou lead. A Real conta outra coisa — quanto a pessoa que coordena aquele pessoa acredita que ele vai trazer. A primeira é 6,6 vezes a segunda, e essa distância não vem de otimismo: vem de cadastro que ninguém acompanha.",
   "kpis": [
    {
     "v": 72,
-    "rotulo": "contas de controlador ativas (53 com ao menos um piloto)"
+    "rotulo": "contas de admin ativas (53 com ao menos uma pessoa)"
    },
    {
     "v": 84720,
-    "rotulo": "Projetada — soma das metas dos 1.984 pilotos ativos"
+    "rotulo": "Projetada — soma das metas das 1.984 pessoas ativas"
    },
    {
     "v": 12874,
@@ -1718,30 +1718,30 @@ window.TORRE_LIVRO = {
    },
    {
     "v": 9846,
-    "rotulo": "Contabilizados — passageiros no banco desde 12/10"
+    "rotulo": "Contabilizados — leads no banco desde 12/10"
    }
   ],
   "contasAtivas": 72,
   "comPiloto": 53,
-  "comoLerLancou": "Só conta a linha com carimbo de envio (lancadoEm). Zero carimbado é resposta — \"este piloto não vai trazer ninguém\". Linha sem carimbo não vale zero: quer dizer que ninguém respondeu.",
+  "comoLerLancou": "Só conta a linha com carimbo de envio (lancadoEm). Zero carimbado é resposta — \"esta pessoa não vai trazer ninguém\". Linha sem carimbo não vale zero: quer dizer que ninguém respondeu.",
   "carteiras": [
    {
-    "faixa": "1 a 9 pilotos",
+    "faixa": "1 a 9 pessoas",
     "carteiras": 14,
     "passageiros": 1052
    },
    {
-    "faixa": "10 a 29 pilotos",
+    "faixa": "10 a 29 pessoas",
     "carteiras": 6,
     "passageiros": 1286
    },
    {
-    "faixa": "30 a 39 pilotos",
+    "faixa": "30 a 39 pessoas",
     "carteiras": 23,
     "passageiros": 4498
    },
    {
-    "faixa": "40 a 99 pilotos",
+    "faixa": "40 a 99 pessoas",
     "carteiras": 9,
     "passageiros": 2831
    },
@@ -2254,8 +2254,8 @@ window.TORRE_LIVRO = {
      "pct": 100
     }
    ],
-   "coberturaNota": "Linhas respondidas sobre os pilotos que cada pessoa tem hoje. A rodada retrata 10/11; piloto que mudou de controlador depois continua pesando na conta de quem respondeu — por isso há quem passe de 100%.",
-   "leitura": "As carteiras de verdade responderam quase inteiras. Foge à regra justamente a maior conta: a da fila de triagem da Rota 20 tem 538 pilotos e respondeu 1 linha. Esses 538 carregam 18.640 de meta na Projetada sem ninguém cobrando."
+   "coberturaNota": "Linhas respondidas sobre as pessoas que cada pessoa tem hoje. A rodada retrata 10/11; pessoa que mudou de admin depois continua pesando na conta de quem respondeu — por isso há quem passe de 100%.",
+   "leitura": "As carteiras de verdade responderam quase inteiras. Foge à regra justamente a maior conta: a da fila de triagem da Rota 20 tem 538 pessoas e respondeu 1 linha. Esses 538 carregam 18.640 de meta na Projetada sem ninguém cobrando."
   },
   "semDono": {
    "total": 582,
@@ -2275,8 +2275,8 @@ window.TORRE_LIVRO = {
   },
   "muda": [
    {
-    "t": "582 pilotos estão sem dono de verdade — e ninguém cobra por eles.",
-    "d": "São 44 órfãos e 538 parados na conta de triagem da Rota 20. Somam 20.560 de meta projetada (24,3% da Projetada) e só 7 deles têm algum passageiro. Na rodada de 10/11 essa conta respondeu 1 linha de 538."
+    "t": "582 pessoas estão sem dono de verdade — e ninguém cobra por eles.",
+    "d": "São 44 órfãos e 538 parados na conta de triagem da Rota 20. Somam 20.560 de meta projetada (24,3% da Projetada) e só 7 deles têm algum lead. Na rodada de 10/11 essa conta respondeu 1 linha de 538."
    },
    {
     "t": "A rodada teve resposta — e a resposta mais comum foi zero.",
@@ -2284,30 +2284,30 @@ window.TORRE_LIVRO = {
    },
    {
     "t": "Dez carteiras sustentam mais da metade da rede.",
-    "d": "Os 10 maiores somam 5.425 dos 9.690 passageiros com controlador (56,0%). Na última semana, 10 carteiras fizeram 1.361 dos 1.843 cadastros; a maior delas, 582."
+    "d": "Os 10 maiores somam 5.425 dos 9.690 leads com admin (56,0%). Na última semana, 10 carteiras fizeram 1.361 dos 1.843 cadastros; a maior delas, 582."
    },
    {
     "t": "Responder a rodada não é o mesmo que produzir.",
-    "d": "13 controladores não lançaram linha nenhuma e ainda assim somam 1.303 passageiros. Outros 5, com 143 pilotos, responderam todas as linhas e não têm passageiro nenhum."
+    "d": "13 admins não lançaram linha nenhuma e ainda assim somam 1.303 leads. Outros 5, com 143 pessoas, responderam todas as linhas e não têm lead nenhum."
    },
    {
     "t": "Duas contas independentes param perto de 13 mil.",
-    "d": "A Real (12.874) fica a 0,7% da soma das metas dos 274 pilotos que já cadastraram alguém (12.960). Podem coincidir por acaso — mas ambas estão a mais de 70 mil da Projetada. A logística se planeja pela Real, não pela Projetada."
+    "d": "A Real (12.874) fica a 0,7% da soma das metas das 274 pessoas que já cadastraram alguém (12.960). Podem coincidir por acaso — mas ambas estão a mais de 70 mil da Projetada. A logística se planeja pela Real, não pela Projetada."
    }
   ],
   "naoMede": [
    "A Real não traz data: informa tamanho, não prazo. Nenhuma rodada perguntou \"quantos entre 30/11 e 06/12\".",
    "Com uma rodada só não existe série: não há como dizer se a expectativa subiu ou caiu.",
    "O zero tem dois sentidos: \"não traz ninguém\" e \"não sei\" chegam ao banco do mesmo jeito.",
-   "Cada piloto tem um único controlador: quando ele troca, o histórico sai do ranking de quem o cedeu.",
+   "Cada pessoa tem um único admin: quando ele troca, o histórico sai do ranking de quem o cedeu.",
    "Não há medida de esforço: carteira parada tanto pode ser gente parada quanto gente trabalhando sem registrar.",
-   "O carimbo não prova conversa: lancadoEm mostra que alguém respondeu no painel, não que falou com o piloto."
+   "O carimbo não prova conversa: lancadoEm mostra que alguém respondeu no painel, não que falou com a pessoa."
   ],
   "regua": {
    "nota": "Os limites verde/amarelo/vermelho são proposta deste capítulo para a pré-temporada, não medição. A coluna \"hoje\" é medida (14/11, dia incompleto).",
    "linhas": [
     {
-     "metrica": "Pilotos sem dono real (órfãos + fila de triagem)",
+     "metrica": "Pessoas sem dono real (órfãos + fila de triagem)",
      "verde": "até 40",
      "amarelo": "41 a 180",
      "vermelho": "mais de 180",
@@ -2323,7 +2323,7 @@ window.TORRE_LIVRO = {
      "status": "amarelo"
     },
     {
-     "metrica": "Controladores que cadastraram alguém na semana",
+     "metrica": "Admin que cadastraram alguém na semana",
      "verde": "38 ou mais",
      "amarelo": "22 a 37",
      "vermelho": "menos de 22",
@@ -2331,7 +2331,7 @@ window.TORRE_LIVRO = {
      "status": "verde"
     },
     {
-     "metrica": "Controladores com 10 ou mais cadastros na semana",
+     "metrica": "Admin com 10 ou mais cadastros na semana",
      "verde": "26 ou mais",
      "amarelo": "13 a 25",
      "vermelho": "menos de 13",
@@ -2339,7 +2339,7 @@ window.TORRE_LIVRO = {
      "status": "verde"
     },
     {
-     "metrica": "Pilotos com dono que nunca falaram com o bot",
+     "metrica": "Pessoas com dono que nunca falaram com o bot",
      "verde": "até 250",
      "amarelo": "251 a 500",
      "vermelho": "mais de 500",
@@ -2355,9 +2355,9 @@ window.TORRE_LIVRO = {
  },
  "central": {
   "letra": "D",
-  "titulo": "Central Horizonte: bot, chamados e capacidade",
+  "titulo": "Central: bot, chamados e capacidade",
   "pergunta": "Até onde o sistema aguenta — e em que ponto ele já transborda.",
-  "frase": "O gargalo não é o software: num único dia o bot recebeu 1.548 mensagens e não caiu. A Central esbarra em duas coisas que código nenhum resolve — gente para atender o que o bot não resolve e um número que responde por mais da metade dos passageiros e, pela verificação de 11/11, está bloqueado por pagamento (responde dentro da janela de 24 h, mas não abre conversa).",
+  "frase": "O gargalo não é o software: num único dia o bot recebeu 1.548 mensagens e não caiu. A Central esbarra em duas coisas que código nenhum resolve — gente para atender o que o bot não resolve e um número que responde por mais da metade dos leads e, pela verificação de 11/11, está bloqueado por pagamento (responde dentro da janela de 24 h, mas não abre conversa).",
   "kpis": [
    {
     "v": 4836,
@@ -2373,7 +2373,7 @@ window.TORRE_LIVRO = {
    },
    {
     "v": 5214,
-    "rotulo": "passageiros ligados ao número linha6 (52,9% do total)"
+    "rotulo": "leads ligados ao número linha6 (52,9% do total)"
    }
   ],
   "datasNota": "As mensagens recebidas só são guardadas desde 22/10; antes disso já havia conversa (sessões desde 12/10), mas nada ficava gravado. As falas só existem desde 07/11.",
@@ -2401,7 +2401,7 @@ window.TORRE_LIVRO = {
    },
    {
     "peca": "Chamado",
-    "e": "pedido de ajuda humana feito ao controlador",
+    "e": "pedido de ajuda humana feito ao admin",
     "naoE": "não é o atendimento em si, que acontece fora do sistema",
     "registrado": 163,
     "desde": "12/10"
@@ -2490,8 +2490,8 @@ window.TORRE_LIVRO = {
     "ativas7d": 4
    },
    {
-    "etapa": "PASSAGEIRO — dados",
-    "grupo": "passageiro",
+    "etapa": "LEAD — dados",
+    "grupo": "lead",
     "v": 33,
     "ativas7d": 9
    },
@@ -2529,7 +2529,7 @@ window.TORRE_LIVRO = {
   },
   "falasPorEtapa": [
    {
-    "etapa": "PASSAGEIRO — confirmação",
+    "etapa": "LEAD — confirmação",
     "v": 1632
    },
    {
@@ -2537,7 +2537,7 @@ window.TORRE_LIVRO = {
     "v": 875
    },
    {
-    "etapa": "PASSAGEIRO — dados",
+    "etapa": "LEAD — dados",
     "v": 195
    },
    {
@@ -2605,7 +2605,7 @@ window.TORRE_LIVRO = {
    }
   ],
   "conversasVivasSemana": 186,
-  "numerosCuidado": "O número ao lado do piloto é o que ele usa hoje, não o canal por onde o cadastro entrou. A leitura segura é \"o linha6 concentra a base viva\"; \"o linha6 produziu esses 5.214 cadastros\" é leitura errada.",
+  "numerosCuidado": "O número ao lado da pessoa é o que ele usa hoje, não o canal por onde o cadastro entrou. A leitura segura é \"o linha6 concentra a base viva\"; \"o linha6 produziu esses 5.214 cadastros\" é leitura errada.",
   "chamados": {
    "abertos34d": 163,
    "fechados": 134,
@@ -2649,7 +2649,7 @@ window.TORRE_LIVRO = {
      "abertosHoje": null
     },
     {
-     "tipo": "Controlador",
+     "tipo": "Admin",
      "estado": "fechado",
      "total": 53,
      "abertosHoje": null
@@ -2661,7 +2661,7 @@ window.TORRE_LIVRO = {
      "abertosHoje": 13
     },
     {
-     "tipo": "Controlador",
+     "tipo": "Admin",
      "estado": "aberto",
      "total": 11,
      "abertosHoje": 11
@@ -2699,7 +2699,7 @@ window.TORRE_LIVRO = {
    ],
    "elos": [
     {
-     "elo": "Passageiros registrados por dia",
+     "elo": "Leads registrados por dia",
      "teto": 655,
      "quando": "22/10",
      "exige": [
@@ -2711,7 +2711,7 @@ window.TORRE_LIVRO = {
      "abaixo": true
     },
     {
-     "elo": "Pilotos cadastrando no mesmo dia",
+     "elo": "Pessoas cadastrando no mesmo dia",
      "teto": 49,
      "quando": "13/11",
      "exige": [
@@ -2768,13 +2768,13 @@ window.TORRE_LIVRO = {
     "conversasNovas": 197,
     "chamados": 23
    },
-   "memoria": "Foram disparadas entre 1,1 e 1,2 mil mensagens; 287 pessoas responderam; 93 viraram piloto em 3 dias; 41 cadastraram alguém; o grupo reuniu 861 passageiros em 3 semanas.",
+   "memoria": "Foram disparadas entre 1,1 e 1,2 mil mensagens; 287 pessoas responderam; 93 viraram pessoa em 3 dias; 41 cadastraram alguém; o grupo reuniu 861 leads em 3 semanas.",
    "cuidado": "Nada liga as 197 conversas novas do dia aos destinatários do disparo: a data coincide, mas a prova não existe."
   },
   "muda": [
    {
-    "t": "O canal com mais da metade dos passageiros não consegue abrir conversa.",
-    "d": "O linha6 está ligado a 52,9% dos passageiros e reúne 118 das 186 conversas vivas da semana. A última verificação (11/11, sem conferência hoje) aponta bloqueio por pagamento. Resolver leva horas, não semanas, e libera o canal de maior volume."
+    "t": "O canal com mais da metade dos leads não consegue abrir conversa.",
+    "d": "O linha6 está ligado a 52,9% dos leads e reúne 118 das 186 conversas vivas da semana. A última verificação (11/11, sem conferência hoje) aponta bloqueio por pagamento. Resolver leva horas, não semanas, e libera o canal de maior volume."
    },
    {
     "t": "A Central nunca foi testada sob surto.",
@@ -2797,7 +2797,7 @@ window.TORRE_LIVRO = {
    },
    {
     "ordem": 2,
-    "acao": "Pôr um responsável nos 24 chamados abertos de demanda e de controlador.",
+    "acao": "Pôr um responsável nos 24 chamados abertos de demanda e de admin.",
     "porque": "Nenhum deles tem fluxo automático, e ao menos 25 dos 29 abertos passaram de 48 h."
    },
    {
@@ -2866,8 +2866,8 @@ window.TORRE_LIVRO = {
  "operacao": {
   "letra": "E",
   "titulo": "Operação: material, campo, visitas e sistema",
-  "pergunta": "Estoque, entregas, gente em campo, visitas, uso da Torre.",
-  "frase": "O balcão é rápido; o que trava é insumo e registro. Metade das entregas sai em menos de 2 horas, mas 1 em cada 14 leva mais de três dias. O estoque de caixa kraft e de Manual Piloto acaba antes de 29/11. E mais da metade dos pedidos foi arquivada sem nunca receber o carimbo de entrega — a operação anda mais rápido do que consegue provar.",
+  "pergunta": "Estoque, entregas, gente em campo, visitas, uso do OPS Intelligence.",
+  "frase": "O balcão é rápido; o que trava é insumo e registro. Metade das entregas sai em menos de 2 horas, mas 1 em cada 14 leva mais de três dias. O estoque de caixa kraft e de Manual Pessoa acaba antes de 29/11. E mais da metade dos pedidos foi arquivada sem nunca receber o carimbo de entrega — a operação anda mais rápido do que consegue provar.",
   "kpis": [
    {
     "v": 524,
@@ -2883,7 +2883,7 @@ window.TORRE_LIVRO = {
    },
    {
     "v": 0,
-    "rotulo": "dias de estoque do item mais curto: Guia do Controlador (saldo 0)",
+    "rotulo": "dias de estoque do item mais curto: Guia do Admin (saldo 0)",
     "formato": "dias"
    }
   ],
@@ -3015,7 +3015,7 @@ window.TORRE_LIVRO = {
     "pedidos": 1
    },
    {
-    "item": "Kit Piloto",
+    "item": "Kit Pessoa",
     "un": 2896,
     "pedidos": 702,
     "diario": true
@@ -3057,7 +3057,7 @@ window.TORRE_LIVRO = {
     "pedidos": 79
    },
    {
-    "item": "Kit Treinamento Piloto",
+    "item": "Kit Treinamento Pessoa",
     "un": 46,
     "pedidos": 13
    },
@@ -3077,7 +3077,7 @@ window.TORRE_LIVRO = {
     "pedidos": 8
    }
   ],
-  "itensLeitura": "Os três primeiros lugares são kits de parceiros e de feira e uma carta — 30.547 peças em 41 pedidos: encomendas grandes para eventos. O Kit Piloto é o oposto: 2.896 peças espalhadas em 702 pedidos, a operação de todo dia.",
+  "itensLeitura": "Os três primeiros lugares são kits de parceiros e de feira e uma carta — 30.547 peças em 41 pedidos: encomendas grandes para eventos. O Kit Pessoa é o oposto: 2.896 peças espalhadas em 702 pedidos, a operação de todo dia.",
   "tempoEntrega": {
    "faixas": [
     {
@@ -3136,7 +3136,7 @@ window.TORRE_LIVRO = {
    "zerados": 3,
    "itens": [
     {
-     "item": "Guia do Controlador",
+     "item": "Guia do Admin",
      "dias": 0,
      "saldo": 0
     },
@@ -3189,7 +3189,7 @@ window.TORRE_LIVRO = {
      "lote": true
     },
     {
-     "item": "Manual Piloto",
+     "item": "Manual Pessoa",
      "dias": 7.8,
      "saldo": 1043,
      "critico": true
@@ -3231,7 +3231,7 @@ window.TORRE_LIVRO = {
      "saldo": 408
     }
    ],
-   "leitura": "Dois pesam na operação diária: Caixa kraft grande — 618 peças, 3,6 dias — e Manual Piloto — 1.043 peças, 7,8 dias. Os convites impressos aparecem curtos por outro motivo: o saldo é enorme e o \"consumo de 23.245 por dia\" vem de cargas em lote, não do balcão. Comprar caixa kraft e reimprimir o Manual Piloto esta semana; para os convites, medir consumo sem os lotes antes de comprar.",
+   "leitura": "Dois pesam na operação diária: Caixa kraft grande — 618 peças, 3,6 dias — e Manual Pessoa — 1.043 peças, 7,8 dias. Os convites impressos aparecem curtos por outro motivo: o saldo é enorme e o \"consumo de 23.245 por dia\" vem de cargas em lote, não do balcão. Comprar caixa kraft e reimprimir o Manual Pessoa esta semana; para os convites, medir consumo sem os lotes antes de comprar.",
    "movimento": {
     "entradas": 4873216,
     "saidas": 1764905,
@@ -3372,7 +3372,7 @@ window.TORRE_LIVRO = {
      "refeicoes": 45
     },
     {
-     "area": "Controlador",
+     "area": "Admin",
      "pessoas": 8,
      "refeicoes": 60
     },
@@ -3825,8 +3825,8 @@ window.TORRE_LIVRO = {
     "d": "609 pedidos arquivados sem carimbo de entrega (51,8% de 1.176), 579 saíram sem dizer por onde e 1 kit foi conferido no recebimento em 2.212 etiquetas. O número de entregas está entre 537 e 1.146."
    },
    {
-    "t": "Caixa kraft e Manual Piloto acabam antes de 29/11.",
-    "d": "Caixa kraft grande: 618 peças e 3,6 dias; Manual Piloto: 1.043 peças e 7,8 dias. 3 itens já estão zerados e 9 dos 34 não chegam a 5 dias."
+    "t": "Caixa kraft e Manual Pessoa acabam antes de 29/11.",
+    "d": "Caixa kraft grande: 618 peças e 3,6 dias; Manual Pessoa: 1.043 peças e 7,8 dias. 3 itens já estão zerados e 9 dos 34 não chegam a 5 dias."
    },
    {
     "t": "A agenda da semana do Dia D está vazia.",
@@ -3934,7 +3934,7 @@ window.TORRE_LIVRO = {
   "letra": "F",
   "titulo": "Atendimento: quem responde",
   "pergunta": "Tempo até a baixa, concentração, fila e assuntos.",
-  "frase": "Uma pessoa responde por quase tudo: uma única conta deu 86,4% das 3.702 baixas dos últimos 30 dias, e só 5 das 214 contas da Torre já apertaram o botão.",
+  "frase": "Uma pessoa responde por quase tudo: uma única conta deu 86,4% das 3.702 baixas dos últimos 30 dias, e só 5 das 214 contas do OPS Intelligence já apertaram o botão.",
   "kpis": [
    {
     "v": 859,
@@ -4214,7 +4214,7 @@ window.TORRE_LIVRO = {
   "muda": [
    {
     "t": "Uma pessoa é 86,4% das baixas.",
-    "d": "3.199 de 3.702 baixas em 30 dias saíram de uma única conta, e só 5 das 214 contas da Torre já usaram o botão. Não se trata de elogiar ou cobrar alguém: é um ponto único de falha. Bastam alguns dias de ausência para a fila ficar sem dono."
+    "d": "3.199 de 3.702 baixas em 30 dias saíram de uma única conta, e só 5 das 214 contas do OPS Intelligence já usaram o botão. Não se trata de elogiar ou cobrar alguém: é um ponto único de falha. Bastam alguns dias de ausência para a fila ficar sem dono."
    },
    {
     "t": "Assistência em viagem é o assunto que pede pessoa — e é o que mais espera.",
@@ -4227,7 +4227,7 @@ window.TORRE_LIVRO = {
   ],
   "naoMede": [
    "A primeira resposta: o relógio só para no clique de baixa.",
-   "O que se responde pelo celular: mensagem enviada do aparelho de alguém da equipe não passa pela Torre.",
+   "O que se responde pelo celular: mensagem enviada do aparelho de alguém da equipe não passa pelo OPS Intelligence.",
    "A região da maior parte das conversas: 70,6% chegam sem região."
   ],
   "regua": {
@@ -4672,19 +4672,19 @@ window.TORRE_LIVRO = {
   "sintese": [
    {
     "t": "A base pronta é de centenas, não de milhares.",
-    "d": "Dos 1.984 pilotos ativos, 1.402 têm dono de verdade, 661 já falaram com o bot, 247 já cadastraram alguém e 131 cadastraram alguém na última semana. A meta da fase A é levar esse número para 700–1.300 até 29/11 — e o único caminho medido é ativar quem já está lá (os 124 que produziram e pararam, os 271 do R20_CAPITAL que nunca receberam disparo), não criar mais fichas."
+    "d": "Das 1.984 pessoas ativas, 1.402 têm dono de verdade, 661 já falaram com o bot, 247 já cadastraram alguém e 131 cadastraram alguém na última semana. A meta da fase A é levar esse número para 700–1.300 até 29/11 — e o único caminho medido é ativar quem já está lá (os 124 que produziram e pararam, os 271 do R20_CAPITAL que nunca receberam disparo), não criar mais fichas."
    },
    {
-    "t": "Criar piloto em massa nunca rendeu adesão.",
-    "d": "Quatro dias de carga criaram 1.571 das 2.036 fichas (77,2%). A safra de 09/11 ativou 2,1% e rende 0,7 passageiro por ficha, contra 41,7 da safra de 12/10. A Projetada de 84,7 mil é soma de fichas: só 13,0 mil de meta pertencem a quem já produz, e 582 pilotos sem dono real carregam 20,6 mil dela sem ninguém cobrar."
+    "t": "Criar pessoa em massa nunca rendeu adesão.",
+    "d": "Quatro dias de carga criaram 1.571 das 2.036 fichas (77,2%). A safra de 09/11 ativou 2,1% e rende 0,7 lead por ficha, contra 41,7 da safra de 12/10. A Projetada de 84,7 mil é soma de fichas: só 13,0 mil de meta pertencem a quem já produz, e 582 pessoas sem dono real carregam 20,6 mil dela sem ninguém cobrar."
    },
    {
     "t": "O ritmo é estável e o sistema nunca viu um surto.",
-    "d": "~291 passageiros por dia há um mês; melhor dia 655 (22/10); recorde de pilotos no mesmo dia: 49 (13/11). A última semana pede 2.857/dia só para 25 mil; quatro dos cinco elos da Central ficam abaixo dessa exigência e só o papel aguenta. Mesmo com captura de 100%, a conta dá 85.980 — a meta de 112.000 não cabe na conta da própria equipe."
+    "d": "~291 leads por dia há um mês; melhor dia 655 (22/10); recorde de pessoas no mesmo dia: 49 (13/11). A última semana pede 2.857/dia só para 25 mil; quatro dos cinco elos da Central ficam abaixo dessa exigência e só o papel aguenta. Mesmo com captura de 100%, a conta dá 85.980 — a meta de 112.000 não cabe na conta da própria equipe."
    },
    {
     "t": "A operação corre mais rápido do que consegue provar.",
-    "d": "Entrega em 1,6 h de mediana (p90 61 h), mas 609 dos 1.176 pedidos foram arquivados sem carimbo, há 1 conferência de recebimento em 2.212 etiquetas e \"pilotos com kit\" dá 48, 286 ou 497 conforme a fonte. Caixa kraft (3,6 dias) e Manual do Piloto (7,8 dias) acabam antes de 29/11. A agenda da semana do Dia D (30/11–06/12) está vazia."
+    "d": "Entrega em 1,6 h de mediana (p90 61 h), mas 609 dos 1.176 pedidos foram arquivados sem carimbo, há 1 conferência de recebimento em 2.212 etiquetas e \"pessoas com kit\" dá 48, 286 ou 497 conforme a fonte. Caixa kraft (3,6 dias) e Manual do Pessoa (7,8 dias) acabam antes de 29/11. A agenda da semana do Dia D (30/11–06/12) está vazia."
    },
    {
     "t": "Uma pessoa responde por 86,4% das baixas — e o clube entrou na pré-temporada sem instrumento de alcance.",
@@ -4698,10 +4698,10 @@ window.TORRE_LIVRO = {
    },
    {
     "t": "Os times de embaixada",
-    "d": "102 pilotos, 5,1% da rede, 33,7% dos registros"
+    "d": "102 pessoas, 5,1% da rede, 33,7% dos registros"
    },
    {
-    "t": "Os 10 maiores controladores",
+    "t": "Os 10 maiores admins",
     "d": "56,0% do acumulado e 73,8% da última semana"
    },
    {
@@ -4710,17 +4710,17 @@ window.TORRE_LIVRO = {
    },
    {
     "t": "A rede orgânica está viva",
-    "d": "13/11 teve o recorde de pilotos cadastrando no mesmo dia (49)"
+    "d": "13/11 teve o recorde de pessoas cadastrando no mesmo dia (49)"
    },
    {
     "t": "O acervo",
     "d": "8.735 fotos novas em 30 dias; Facebook +41,9% em 63 dias"
    }
   ],
-  "acrescimos": "Na única rodada de expectativa (10/11), 1.197 das 1.940 linhas têm carimbo e 790 vieram com zero — a Real de 12.874 sai de 407 linhas; 13 controladores que nunca lançaram produziram 1.303 passageiros. A linha6 concentra 118 das 186 conversas vivas e consta como bloqueada por pagamento (verificação de 11/11). 298 das 761 conversas do bot pararam na lista de convidados. O DDD 41 domina a base: só 225 passageiros têm telefone de outro estado — e a temporada só vale para saídas do aeroporto-base. O Ponto 11 fez 39,8% das etiquetas e cinco pontos estão parados. Na Torre, 36,8% das tentativas de login falharam.",
+  "acrescimos": "Na única rodada de expectativa (10/11), 1.197 das 1.940 linhas têm carimbo e 790 vieram com zero — a Real de 12.874 sai de 407 linhas; 13 admins que nunca lançaram produziram 1.303 leads. A linha6 concentra 118 das 186 conversas vivas e consta como bloqueada por pagamento (verificação de 11/11). 298 das 761 conversas do bot pararam na lista de convidados. O DDD 41 domina a base: só 225 leads têm telefone de outro estado — e a temporada só vale para saídas do aeroporto-base. O Ponto 11 fez 39,8% das etiquetas e cinco pontos estão parados. Na OPS Intelligence, 36,8% das tentativas de login falharam.",
   "metricasFaseA": [
    {
-    "metrica": "Pilotos prontos (funil aninhado: dono, canal, produziu, vivo 7 d)",
+    "metrica": "Pessoas prontas (funil aninhado: dono, canal, produziu, vivo 7 d)",
     "hoje": "131",
     "hojeV": 131,
     "meta": "700–1.300",
@@ -4738,7 +4738,7 @@ window.TORRE_LIVRO = {
     "nucleo": "operacao"
    },
    {
-    "metrica": "Pilotos que já falaram com a Central",
+    "metrica": "Pessoas que já falaram com a Central",
     "hoje": "661",
     "hojeV": 661,
     "meta": "≥1.300",
@@ -4747,7 +4747,7 @@ window.TORRE_LIVRO = {
     "nucleo": "central"
    },
    {
-    "metrica": "Pilotos sem dono (órfãos + fila de triagem)",
+    "metrica": "Pessoas sem dono (órfãos + fila de triagem)",
     "hoje": "582",
     "hojeV": 582,
     "meta": "0",
@@ -4756,7 +4756,7 @@ window.TORRE_LIVRO = {
     "nucleo": "controladores"
    },
    {
-    "metrica": "Criados nos últimos 7 dias que já têm ≥1 passageiro",
+    "metrica": "Criados nos últimos 7 dias que já têm ≥1 lead",
     "hoje": "2,1%",
     "hojeV": 2.1,
     "meta": "≥25%",
@@ -4765,7 +4765,7 @@ window.TORRE_LIVRO = {
     "nucleo": "pilotos"
    },
    {
-    "metrica": "Pilotos que já produziram e pararam há 7+ dias",
+    "metrica": "Pessoas que já produziram e pararam há 7+ dias",
     "hoje": "124",
     "hojeV": 124,
     "meta": "≤45",
@@ -4792,7 +4792,7 @@ window.TORRE_LIVRO = {
     "nucleo": "central"
    },
    {
-    "metrica": "Passageiros novos por dia (média 7 d)",
+    "metrica": "Leads novos por dia (média 7 d)",
     "hoje": "~291",
     "hojeV": 291,
     "meta": "—",
@@ -4803,11 +4803,11 @@ window.TORRE_LIVRO = {
   ],
   "metricasFaseB": [
    {
-    "metrica": "Passageiros registrados por hora",
+    "metrica": "Leads registrados por hora",
     "regua": "● >240 · ▲ 110–240 · ■ <110"
    },
    {
-    "metrica": "Pilotos vivos no dia (≥1 cadastro nas últimas 24 h)",
+    "metrica": "Pessoas vivas no dia (≥1 cadastro nas últimas 24 h)",
     "regua": "● >440 · ▲ 180–440 · ■ <180"
    },
    {
@@ -4829,7 +4829,7 @@ window.TORRE_LIVRO = {
   ],
   "metricasFaseC": [
    {
-    "metrica": "% dos passageiros com lembrete e código entregues até 10h",
+    "metrica": "% dos leads com lembrete e código entregues até 10h",
     "regua": "● ≥97% · ▲ 90–96% · ■ <90%"
    },
    {
@@ -4851,7 +4851,7 @@ window.TORRE_LIVRO = {
      "indicações em dobro marcadas",
      "disparo-teste nos 271 do R20_CAPITAL",
      "coleta das redes religada",
-     "compra de caixa kraft e Manual do Piloto assinada",
+     "compra de caixa kraft e Manual do Pessoa assinada",
      "3 pessoas treinadas no botão de baixa",
      "conta da linha6 regularizada"
     ],
@@ -4875,7 +4875,7 @@ window.TORRE_LIVRO = {
     "rotulo": "26/11",
     "diaSemana": "quinta",
     "oque": [
-     "Kit na mão de ≥700 pilotos, conferido",
+     "Kit na mão de ≥700 pessoas, conferido",
      "rodada de expectativa refeita com a pergunta \"quanto entre 30/11 e 06/12\"",
      "plano de visitas para 30/11–02/12 no papel",
      "escala de plantão 22h–8h e fim de semana 05–06/12",
@@ -4883,7 +4883,7 @@ window.TORRE_LIVRO = {
     ],
     "prova": [
      "Tabela de conferência com ≥700 linhas (hoje: 1)",
-     "≥54 dos 72 controladores lançaram",
+     "≥54 dos 72 admins lançaram",
      "bairros nomeados por dia com responsável",
      "escala publicada"
     ],
@@ -4899,10 +4899,10 @@ window.TORRE_LIVRO = {
     "diaSemana": "terça ou quarta (24 ou 25/11)",
     "simulado": true,
     "oque": [
-     "Simulado de surto: 560 pilotos em dois grupos (370 que já falaram com o bot, 190 que nunca), às 18h30, pelas linhas linha1, linha2 e linha5, gravado no sistema"
+     "Simulado de surto: 560 pessoas em dois grupos (370 que já falaram com o bot, 190 que nunca), às 18h30, pelas linhas linha1, linha2 e linha5, gravado no sistema"
     ],
     "prova": [
-     "Os 5 números do dia seguinte, contra o teto provado: mensagens/dia (1.548) · passageiros registrados (655) · pilotos distintos (49) · chamados humanos abertos (23) · fatia 22h–8h (13,6%)"
+     "Os 5 números do dia seguinte, contra o teto provado: mensagens/dia (1.548) · leads registrados (655) · pessoas distintas (49) · chamados humanos abertos (23) · fatia 22h–8h (13,6%)"
     ],
     "nucleos": [
      "central",
@@ -4915,7 +4915,7 @@ window.TORRE_LIVRO = {
     "rotulo": "29/11",
     "diaSemana": "domingo · D-7",
     "oque": [
-     "Material pré-posicionado com os 10 maiores pilotos e os 72 controladores",
+     "Material pré-posicionado com as 10 maiores pessoas e os 72 admins",
      "painel da fase B pronto (uma tela, atualização por hora)",
      "congelamento: nada entra em produção de 30/11 a 06/12, exceto correção de falha do surto"
     ],
@@ -4931,7 +4931,7 @@ window.TORRE_LIVRO = {
     ]
    }
   ],
-  "avisoSimulado": "O simulado gasta material de verdade, ocupa a atendente que faz 86% das baixas e consome crédito com pilotos que serão necessários de novo em 30/11. Por isso: uma vez só, com os 560 avisados de que é um ensaio, e nunca depois de 27/11. E ele mede capacidade (registros por hora), não captura.",
+  "avisoSimulado": "O simulado gasta material de verdade, ocupa a atendente que faz 86% das baixas e consome crédito com pessoas que serão necessários de novo em 30/11. Por isso: uma vez só, com os 560 avisados de que é um ensaio, e nunca depois de 27/11. E ele mede capacidade (registros por hora), não captura.",
   "perguntas": [
    {
     "q": "Nas temporadas anteriores, o 80/20 era por pessoa ou por canal?",
@@ -4963,17 +4963,17 @@ window.TORRE_LIVRO = {
     "como": "Decidir a fonte (carimbo de conferência) e usar só ela."
    },
    {
-    "dado": "Confirmação do passageiro",
+    "dado": "Confirmação do lead",
     "porque": "Indicação nunca confirmada com a pessoa. É o único número que vira adesão.",
-    "como": "Mensagem de confirmação ao passageiro, com cuidado de privacidade."
+    "como": "Mensagem de confirmação ao lead, com cuidado de privacidade."
    },
    {
-    "dado": "Origem do piloto para 100%",
+    "dado": "Origem da pessoa para 100%",
     "porque": "Só 15% têm origem gravada (os criados pelo bot).",
     "como": "Gravar origem em toda criação (tela, importação, evento)."
    },
    {
-    "dado": "Cidade/UF do passageiro",
+    "dado": "Cidade/UF do lead",
     "porque": "A temporada só vale para saídas do aeroporto-base. Hoje a checagem é pelo DDD — e é fraca.",
     "como": "Perguntar a cidade no cadastro."
    },
@@ -4990,7 +4990,7 @@ window.TORRE_LIVRO = {
    {
     "dado": "Um denominador para a captura",
     "porque": "Sem ele, o simulado mede só capacidade e os cenários ficam sem chão.",
-    "como": "Convites entregues × cadastros; pergunta aos controladores sobre indicações fora do sistema."
+    "como": "Convites entregues × cadastros; pergunta aos admins sobre indicações fora do sistema."
    }
   ],
   "errata": "Uma auditoria externa apontou erros verificáveis e rótulos imprecisos; tudo foi remedido em 14/11 e incorporado: a \"base pronta\" virou funil aninhado (131 vivos, 47 com kit; antes 139 e 48) · os 673 \"duplicados\" viraram 602 indicações em dobro, 161 produzem · a Projetada ganhou decomposição exclusiva (13,0 mil a 32,5 mil) · \"95% pelo bot\" virou 93% dos eventos, com 307 exclusões · a ativação em 24 h é 69% entre quem ativa e 9,6% sobre todos · a entrega em \"1,2 h\" tem p90 de 61 h · o 279.836 dos nove bairros era o dobro (≈140 mil moradores) · o simulado mede capacidade, não captura.",
@@ -5003,14 +5003,14 @@ window.TORRE_LIVRO = {
   {
    "id": "melhor-dia",
    "onde": "Cap. B p. 13–14 × Cap. D p. 32",
-   "achado": "Melhor dia de passageiros aparece como 652 (série diária) e 655 (auditoria, janela de corte algumas horas diferente).",
-   "efeito": "Diferença de três registros; a Torre usa 652 na série e 655 onde o livro usa o teto provado."
+   "achado": "Melhor dia de leads aparece como 652 (série diária) e 655 (auditoria, janela de corte algumas horas diferente).",
+   "efeito": "Diferença de três registros; o OPS Intelligence usa 652 na série e 655 onde o livro usa o teto provado."
   },
   {
    "id": "total-passageiros",
    "onde": "Cap. A–C",
-   "achado": "Total de passageiros aparece como 9.846 (eventos menos exclusões), 9.865 (fichas), 9.845 (tabela de times) e 9.862 sem status.",
-   "efeito": "Janelas de medição diferentes; a Torre usa 9.846 como número de capa."
+   "achado": "Total de leads aparece como 9.846 (eventos menos exclusões), 9.865 (fichas), 9.845 (tabela de times) e 9.862 sem status.",
+   "efeito": "Janelas de medição diferentes; o OPS Intelligence usa 9.846 como número de capa."
   },
   {
    "id": "kit-producao",
@@ -5021,13 +5021,13 @@ window.TORRE_LIVRO = {
   {
    "id": "pilotos-vivos",
    "onde": "Cap. A × Cap. B",
-   "achado": "\"Pilotos vivos na semana\" aparece como 131 (funil aninhado, 7 dias até 14/11), 118 (última semana completa, 02/11) e 136 (semana de 09/11 com seis dias).",
-   "efeito": "Três recortes legítimos; a Torre rotula cada um."
+   "achado": "\"Pessoas vivas na semana\" aparece como 131 (funil aninhado, 7 dias até 14/11), 118 (última semana completa, 02/11) e 136 (semana de 09/11 com seis dias).",
+   "efeito": "Três recortes legítimos; o OPS Intelligence rotula cada um."
   },
   {
    "id": "pilotos-com-kit",
    "onde": "Fechamento p. 52",
-   "achado": "\"Pilotos com kit\" dá 47 (funil), 48 (métrica da Fase A), 286 ou 497 conforme a fonte.",
+   "achado": "\"Pessoas com kit\" dá 47 (funil), 48 (métrica da Fase A), 286 ou 497 conforme a fonte.",
    "efeito": "Não há fonte única — o próprio livro pede decidir uma."
   }
  ]

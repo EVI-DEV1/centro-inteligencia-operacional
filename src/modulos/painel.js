@@ -75,9 +75,9 @@
     return T.h(
       'div',
       { class: 'kpis', id: 'kpis' },
-      kpi({ rotulo: 'Passageiros no período', icone: 'passageiros', valor: f.n(px.atual), atual: px.atual, anterior: px.anterior, sub: `${f.n(L.passageiros.cenarios.registrado)} registrados no total`, serie: px.serie, cor: 'var(--eletrico)', rota: 'passageiros' }),
+      kpi({ rotulo: 'Leads no período', icone: 'passageiros', valor: f.n(px.atual), atual: px.atual, anterior: px.anterior, sub: `${f.n(L.passageiros.cenarios.registrado)} registrados no total`, serie: px.serie, cor: 'var(--eletrico)', rota: 'passageiros' }),
       kpi({ rotulo: 'Ritmo diário', icone: 'tendencia', valor: f.n(ritmo.atual), atual: ritmo.atual, anterior: ritmo.anterior, sub: 'média de cadastros por dia completo', serie: completos(ritmo.serie), cor: 'var(--ciano)', rota: 'passageiros' }),
-      kpi({ rotulo: 'Pilotos produzindo', icone: 'pilotos', valor: f.n(pl.atual, 0), atual: pl.atual, anterior: pl.anterior, sub: 'pilotos distintos cadastrando por dia', serie: completos(pl.serie), cor: 'var(--violeta)', rota: 'pilotos' }),
+      kpi({ rotulo: 'Pessoas produzindo', icone: 'pilotos', valor: f.n(pl.atual, 0), atual: pl.atual, anterior: pl.anterior, sub: 'pessoas distintas cadastrando por dia', serie: completos(pl.serie), cor: 'var(--violeta)', rota: 'pilotos' }),
       kpi({ rotulo: 'Conversas novas', icone: 'central', valor: f.n(conv.atual), atual: conv.atual, anterior: conv.anterior, sub: 'iniciadas com o bot no WhatsApp', serie: conv.serie, cor: 'var(--rosa)', rota: 'central' }),
       kpi({ rotulo: 'Chamados fechados', icone: 'atendimento', valor: f.n(fe.atual), atual: fe.atual, anterior: fe.anterior, sub: `${f.n(ab.atual)} abertos no período · fila ${saldo > 0 ? `cresceu ${f.n(saldo)}` : saldo < 0 ? `diminuiu ${f.n(-saldo)}` : 'estável'}`, serie: fe.serie, cor: 'var(--firme)', rota: 'central' }),
       kpi({ rotulo: 'Entregas de kit', icone: 'operacao', valor: f.n(ent.atual), atual: ent.atual, anterior: ent.anterior, sub: 'kits entregues no período', serie: ent.serie, cor: 'var(--atencao)', rota: 'operacao' })
@@ -100,7 +100,7 @@
     G.barrasDia(corpo, {
       serie,
       altura: 380,
-      nome: 'passageiros',
+      nome: 'leads',
       linhas: [{ nome: 'média de 7 dias', pontos: mm7, cor: 'var(--ciano)', largura: 2.4 }],
       cor: () => 'var(--eletrico)',
       margemEsq: 46,
@@ -108,12 +108,12 @@
     });
     const exportar = T.h(
       'button',
-      { class: 'botao-fantasma', type: 'button', onclick: () => T.planilha.baixarCSV([['data', 'passageiros', 'media_7_dias'], ...T.filtro.recortar(serie).map((p) => [p.d, p.v, (mm7.find((m) => m.d === p.d) || {}).v ?? ''])], 'torre-passageiros-por-dia.csv') },
+      { class: 'botao-fantasma', type: 'button', onclick: () => T.planilha.baixarCSV([['data', 'leads', 'media_7_dias'], ...T.filtro.recortar(serie).map((p) => [p.d, p.v, (mm7.find((m) => m.d === p.d) || {}).v ?? ''])], 'ops-leads-por-dia.csv') },
       T.icone('download'),
       'CSV'
     );
     return cartao(
-      { id: 'principal', classe: 'cartao-largo', titulo: 'Passageiros cadastrados por dia', sub: `${T.filtro.rotulo()} · barras = cadastros, linha = média móvel de 7 dias`, acao: exportar },
+      { id: 'principal', classe: 'cartao-largo', titulo: 'Leads cadastrados por dia', sub: `${T.filtro.rotulo()} · barras = cadastros, linha = média móvel de 7 dias`, acao: exportar },
       corpo,
       G.legenda([
         { rotulo: 'cadastros no dia', cor: 'var(--eletrico)' },
@@ -141,7 +141,7 @@
         );
       })
     );
-    return cartao({ id: 'funil', titulo: 'Funil de prontidão dos pilotos', sub: 'de quem existe a quem produziu na última semana', acao: T.h('a', { class: 'botao-fantasma', href: '#/visao-geral' }, 'Ver a torre', T.icone('seta')) }, lista);
+    return cartao({ id: 'funil', titulo: 'Funil de prontidão das pessoas', sub: 'de quem existe a quem produziu na última semana', acao: T.h('a', { class: 'botao-fantasma', href: '#/pilotos?alvo=funil' }, 'Ver o funil', T.icone('seta')) }, lista);
   }
 
   function cenarios() {
@@ -161,7 +161,7 @@
         )
       )
     );
-    return cartao({ id: 'cenarios', titulo: 'Projeção para o Dia D', sub: `meta declarada: ${f.n(meta)} passageiros em ${f.data(L.meta.diaD)}`, acao: T.h('a', { class: 'botao-fantasma', href: '#/passageiros?alvo=cenarios' }, 'Detalhar', T.icone('seta')) }, corpo);
+    return cartao({ id: 'cenarios', titulo: 'Projeção para o Dia D', sub: `meta declarada: ${f.n(meta)} leads em ${f.data(L.meta.diaD)}`, acao: T.h('a', { class: 'botao-fantasma', href: '#/passageiros?alvo=cenarios' }, 'Detalhar', T.icone('seta')) }, corpo);
   }
 
   function relogio() {
@@ -228,7 +228,7 @@
             null,
             T.h('p', { class: 'sobretitulo' }, T.h('span', { class: 'pulso' }), 'Clube Horizonte · Temporada 2026'),
             T.h('h1', { class: 'painel-h1' }, 'Visão executiva'),
-            T.h('p', { class: 'painel-lead' }, T.h('b', null, f.n(n.vivos)), ` de ${f.n(n.ativos)} pilotos estão prontos e faltam `, T.h('b', null, `${Math.max(0, faltam)} dias`), ` para o Dia D. ${T.alertas.filter((a) => a.nivel === 'agir').length} decisões pedem ação hoje.`)
+            T.h('p', { class: 'painel-lead' }, T.h('b', null, f.n(n.vivos)), ` de ${f.n(n.ativos)} pessoas estão prontas e faltam `, T.h('b', null, `${Math.max(0, faltam)} dias`), ` para o Dia D. ${T.alertas.filter((a) => a.nivel === 'agir').length} decisões pedem ação hoje.`)
           ),
           T.h(
             'div',

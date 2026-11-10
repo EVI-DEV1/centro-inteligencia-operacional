@@ -106,7 +106,7 @@
             'div',
             { class: 'concentracao-numero' },
             T.h('b', { class: 'num' }, f.pct(topo.pct)),
-            T.h('span', null, `numa única conta — e só ${f.n(A.contasQueDeramBaixa)} de ${f.n(A.contasTorre)} contas da Torre já usaram o botão`)
+            T.h('span', null, `numa única conta — e só ${f.n(A.contasQueDeramBaixa)} de ${f.n(A.contasTorre)} contas do OPS Intelligence já usaram o botão`)
           )
         );
         G.faixa(el, { nome: 'baixas por pessoa', alta: true, segmentos: p.map((x, i) => ({ rotulo: T.nomeTexto(x.nome), v: x.v, cor: i === 0 ? 'var(--eletrico)' : 'var(--referencia)', curto: i === 0 ? f.n(x.v) : '' })), legenda: false });

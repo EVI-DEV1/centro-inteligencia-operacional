@@ -5,15 +5,15 @@ import { arred, pct, somarDias } from './util.ts';
 export const ORG = {
   nome: 'Clube Horizonte',
   descricao: 'programa de indicação de um clube de viagens fictício',
-  sistema: 'Central Horizonte', // bot de WhatsApp, painel de pilotos e cadastro
-  operacao: 'Torre', // painel da operação: material, estoque, refeição, visitas, atendimento
+  sistema: 'Central', // bot de WhatsApp, painel de pilotos e cadastro
+  operacao: 'OPS Intelligence', // painel da operação: material, estoque, refeição, visitas, atendimento
   redes: 'Redes',
   relatorio: 'Pré-Temporada — o livro dos dados',
   diaD: 'Dia D · abertura da temporada',
   encerramento: '18h', // as adesões do Dia D fecham às 18h
   bancos: [
-    { id: 'central', nome: 'Central Horizonte', papel: 'bot, pilotos, passageiros, chamados' },
-    { id: 'operacao', nome: 'Torre', papel: 'material, estoque, refeição, visitas, atendimento' },
+    { id: 'central', nome: 'Central', papel: 'bot, pessoas, leads, chamados' },
+    { id: 'operacao', nome: 'OPS Intelligence', papel: 'material, estoque, refeição, visitas, atendimento' },
     { id: 'redes', nome: 'Redes', papel: 'seguidores, alcance, comentários' },
   ],
 };
@@ -69,17 +69,17 @@ export const TRES = {
   real: 12874,
   contabilizados: 9846,
   metaDeclarada: 112000, // 2.800 pilotos × 40
-  metaConta: '2.800 pilotos × 40 passageiros',
+  metaConta: '2.800 pessoas × 40 leads',
   metaOrigem: 'reunião de 02/09',
   razaoProjetadaReal: arred(84720 / 12874, 1),
   realSobreProjetadaPct: pct(12874, 84720),
   registradoSobreMetaPct: pct(9846, 112000),
   decomposicao: [
-    { id: 'orfaos', grupo: 'Órfãos (sem controlador)', pilotos: 44, comPassageiro: 4, meta: 1920, natureza: 'ficha' },
-    { id: 'deposito', grupo: 'Fila de triagem (1 controladora)', pilotos: 538, comPassageiro: 3, meta: 18640, natureza: 'ficha' },
-    { id: 'dobro', grupo: 'É passageiro de outro piloto', pilotos: 602, comPassageiro: 161, meta: 27480, natureza: 'sinal' },
-    { id: 'novos', grupo: 'Criado há <7 dias, sem passageiro', pilotos: 523, comPassageiro: 0, meta: 23100, natureza: 'ficha' },
-    { id: 'antigos', grupo: 'Antigo, sem passageiro', pilotos: 171, comPassageiro: 0, meta: 8560, natureza: 'ficha' },
+    { id: 'orfaos', grupo: 'Órfãos (sem admin)', pilotos: 44, comPassageiro: 4, meta: 1920, natureza: 'ficha' },
+    { id: 'deposito', grupo: 'Fila de triagem (1 admin)', pilotos: 538, comPassageiro: 3, meta: 18640, natureza: 'ficha' },
+    { id: 'dobro', grupo: 'É lead de outra pessoa', pilotos: 602, comPassageiro: 161, meta: 27480, natureza: 'sinal' },
+    { id: 'novos', grupo: 'Criado há <7 dias, sem lead', pilotos: 523, comPassageiro: 0, meta: 23100, natureza: 'ficha' },
+    { id: 'antigos', grupo: 'Antigo, sem lead', pilotos: 171, comPassageiro: 0, meta: 8560, natureza: 'ficha' },
     { id: 'produz', grupo: 'Produz (demais)', pilotos: 106, comPassageiro: 106, meta: 5020, natureza: 'sinal' },
   ].map((g) => ({ ...g, pct: pct(g.meta, 84720) })),
   metaDeQuemJaProduz: { v: 12960, pilotos: 274 },
@@ -141,8 +141,8 @@ export const CENTRAL = {
   capacidade: {
     cenarios: ['25 mil', '50 mil', '90 mil'], // exigência diária da última semana = resultado × 0,8 ÷ 7
     elos: [
-      { elo: 'Passageiros registrados por dia', teto: 655, quando: '2026-10-22', exige: [2857, 5714, 10286] },
-      { elo: 'Pilotos cadastrando no mesmo dia', teto: 49, quando: '2026-11-13', exige: [301, 601, 1083] },
+      { elo: 'Leads registrados por dia', teto: 655, quando: '2026-10-22', exige: [2857, 5714, 10286] },
+      { elo: 'Pessoas cadastrando no mesmo dia', teto: 49, quando: '2026-11-13', exige: [301, 601, 1083] },
       { elo: 'Mensagens recebidas por dia', teto: 1548, quando: '2026-10-26', exige: [4300, 8600, 15500] },
       { elo: 'Chamados humanos abertos no dia', teto: 23, quando: '2026-10-26', exige: [29, 57, 103] },
       { elo: 'Convites impressos em estoque (1 por cadastro)', teto: 742310, quando: '2026-11-14', exige: [25000, 50000, 90000] },

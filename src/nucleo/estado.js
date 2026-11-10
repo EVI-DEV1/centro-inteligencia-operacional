@@ -34,7 +34,7 @@
   };
 
   T.estado = {
-    rota: 'visao-geral',
+    rota: 'painel',
     fase: faseDeHoje(),
     faseDeHoje: faseDeHoje(),
     modo: 'explorar',

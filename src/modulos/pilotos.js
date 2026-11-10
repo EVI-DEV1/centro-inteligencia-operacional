@@ -16,7 +16,7 @@
     const max = P.funil[0].v;
     const maiorPerda = Math.max(...P.funil.slice(1).map((d, i) => P.funil[i].v - d.v));
     const vivo = degrau('vivo');
-    const prontos = ((L.fechamento && L.fechamento.metricasFaseA) || []).find((m) => /^Pilotos prontos/.test(m.metrica));
+    const prontos = ((L.fechamento && L.fechamento.metricasFaseA) || []).find((m) => /^(?:Pilotos|Pessoas) pront[oa]s/.test(m.metrica));
     const faixa = faixaFaseA();
     const d7 = L.meta && L.meta.d7;
     const cargas = P.diasDeCarga.length;
@@ -52,7 +52,7 @@
     return T.h(
       'section',
       { class: 'painel painel-3 funil-painel', id: 'funil', 'data-revela': '' },
-      T.h('header', { class: 'painel-topo' }, T.h('h3', { class: 'painel-titulo' }, 'Da ficha ao piloto que trabalha'), vivo ? T.carimbo(prontos ? prontos.status : 'nao-medido', faixa ? `${f.n(vivo.v)} de ${f.n(faixa[0])} no mínimo` : f.n(vivo.v)) : null),
+      T.h('header', { class: 'painel-topo' }, T.h('h3', { class: 'painel-titulo' }, 'Da ficha à pessoa que trabalha'), vivo ? T.carimbo(prontos ? prontos.status : 'nao-medido', faixa ? `${f.n(vivo.v)} de ${f.n(faixa[0])} no mínimo` : f.n(vivo.v)) : null),
       T.h('p', { class: 'painel-como' }, `Funil aninhado: cada degrau está contido no anterior. A barra é proporcional aos ${f.n(max)} ativos; a faixa tracejada é a meta da Fase A. Clique num degrau para a explicação.`),
       lista,
       T.h(
@@ -85,7 +85,7 @@
     return G.painel({
       id: 'cargas',
       titulo: `Como a base cresceu: ${cargas} degraus, ${cargas} cargas`,
-      comoLer: `Fichas de piloto criadas por dia. Lilás = dia de carga em lote (conversão de fila).${parcial ? ` Lilás claro = ${f.data(parcial.d)}, incompleto.` : ''}`,
+      comoLer: `Fichas de pessoa criadas por dia. Lilás = dia de carga em lote (conversão de fila).${parcial ? ` Lilás claro = ${f.data(parcial.d)}, incompleto.` : ''}`,
       largura: 2,
       grafico: (el) => {
         const topo = T.h('div');
@@ -99,7 +99,7 @@
           rotuloSe: (p) => p.carga,
         });
         G.linhas(baixo, {
-          nome: 'acumulado de pilotos',
+          nome: 'acumulado de pessoas',
           altura: 170,
           x0: serie.length ? serie[0].d : L.meta.periodo.inicio,
           x1: acum.length ? acum[acum.length - 1].d : T.dados.diaMedido(),
@@ -126,7 +126,7 @@
       : '';
     return G.painel({
       titulo: `Os ${extenso(P.diasDeCarga.length)} dias de carga: conversão de fila, não recrutamento`,
-      comoLer: 'Quando pilotos criados e aspirantes convertidos no mesmo dia batem, a carga foi conversão de fila.',
+      comoLer: 'Quando pessoas criadas e aspirantes convertidos no mesmo dia batem, a carga foi conversão de fila.',
       largura: 1,
       grafico: (el) => {
         el.appendChild(
@@ -146,7 +146,7 @@
           )
         );
       },
-      leitura: `${excecao}A data da ficha é o dia da conversão, não o dia em que a pessoa aceitou ser piloto.`,
+      leitura: `${excecao}A data da ficha é o dia da conversão, não o dia em que a pessoa aceitou ser pessoa.`,
       p: 6,
     });
   }
@@ -154,11 +154,11 @@
   function portas() {
     return G.painel({
       titulo: 'Por onde entram: quem se ofereceu produz',
-      comoLer: `Só para as ${f.n(T.soma(P.portas, (p) => p.fichas))} fichas com origem gravada e mais de 7 dias de casa. Barra = passageiros por ficha; à direita, a fatia que já ativou.`,
+      comoLer: `Só para as ${f.n(T.soma(P.portas, (p) => p.fichas))} fichas com origem gravada e mais de 7 dias de casa. Barra = leads por ficha; à direita, a fatia que já ativou.`,
       largura: 1,
       grafico: (el) =>
         G.barrasH(el, {
-          itens: P.portas.map((p) => ({ rotulo: p.porta, sub: `${f.n(p.fichas)} fichas · ${f.n(p.passageiros)} passageiros`, v: p.passageirosPorFicha, texto: `${f.nFlex(p.passageirosPorFicha)} · ${f.pct(p.ativaramPct)} ativaram`, cor: p.id === 'lista' ? 'var(--referencia)' : 'var(--eletrico)' })),
+          itens: P.portas.map((p) => ({ rotulo: p.porta, sub: `${f.n(p.fichas)} fichas · ${f.n(p.passageiros)} leads`, v: p.passageirosPorFicha, texto: `${f.nFlex(p.passageirosPorFicha)} · ${f.pct(p.ativaramPct)} ativaram`, cor: p.id === 'lista' ? 'var(--referencia)' : 'var(--eletrico)' })),
           dica: (it) => T.dica.bloco([{ valor: it.texto, rotulo: it.sub, cor: it.cor, forma: 'barra' }], it.rotulo),
         }),
       leitura: P.portasLeitura,
@@ -176,13 +176,13 @@
         const tabela = T.h(
           'div',
           { class: 'coortes' },
-          T.h('div', { class: 'coortes-cab leitura' }, T.h('span', null, 'Semana'), T.h('span', null, 'Pilotos'), T.h('span', null, 'Ativação em 1 e 7 dias (0–100%)'), T.h('span', null, 'Passageiros por ficha')),
+          T.h('div', { class: 'coortes-cab leitura' }, T.h('span', null, 'Semana'), T.h('span', null, 'Pessoas'), T.h('span', null, 'Ativação em 1 e 7 dias (0–100%)'), T.h('span', null, 'Leads por ficha')),
           P.coortes.map((c) =>
             T.h(
               'div',
               { class: ['coorte', c.carga ? 'carga' : null], tabindex: 0 },
               T.h('span', { class: 'coorte-semana' }, f.data(c.semana), c.aberta ? T.h('small', null, 'aberta') : null),
-              T.h('span', { class: 'coorte-pilotos tab' }, f.n(c.pilotos)),
+              T.h('span', { class: 'coorte-pessoas tab' }, f.n(c.pilotos)),
               T.h(
                 'span',
                 { class: 'coorte-trilho' },
@@ -204,7 +204,7 @@
                 { valor: f.pct(c.em1d), rotulo: 'ativaram em 1 dia', cor: 'var(--eletrico-claro)', forma: 'ponto' },
                 { valor: f.pct(c.em7d), rotulo: 'ativaram em 7 dias', cor: 'var(--eletrico)', forma: 'ponto' },
                 { valor: `${f.n(c.ativaram)} (${f.pct(c.ativaramPct)})`, rotulo: 'ativaram a qualquer momento', cor: 'var(--tinta-3)', forma: 'ponto' },
-                { valor: f.n(c.passageiros), rotulo: 'passageiros da coorte', cor: 'var(--tinta-3)', forma: 'ponto' },
+                { valor: f.n(c.passageiros), rotulo: 'leads da coorte', cor: 'var(--tinta-3)', forma: 'ponto' },
               ],
               `Semana de ${f.data(c.semana)}${c.carga ? ' · com carga' : ''}`
             )
@@ -213,7 +213,7 @@
       },
       leitura: P.coortesLeitura,
       p: 9,
-      tabela: { colunas: ['Semana', 'Pilotos', 'Ativaram', 'Em 1 d', 'Em 7 d', 'Passageiros', 'Por ficha'], linhas: P.coortes.map((c) => [f.data(c.semana), f.n(c.pilotos), `${f.n(c.ativaram)} (${f.pct(c.ativaramPct)})`, f.pct(c.em1d), f.pct(c.em7d), f.n(c.passageiros), f.nFlex(c.porFicha)]) },
+      tabela: { colunas: ['Semana', 'Pessoas', 'Ativaram', 'Em 1 d', 'Em 7 d', 'Leads', 'Por ficha'], linhas: P.coortes.map((c) => [f.data(c.semana), f.n(c.pilotos), `${f.n(c.ativaram)} (${f.pct(c.ativaramPct)})`, f.pct(c.em1d), f.pct(c.em7d), f.n(c.passageiros), f.nFlex(c.porFicha)]) },
     });
   }
 
@@ -256,8 +256,8 @@
       .filter(Boolean)
       .join(' ');
     return G.painel({
-      titulo: 'A ficha do piloto: quem falou com essa pessoa?',
-      comoLer: ativos ? `Sobre os ${f.n(ativos.v)} pilotos ativos.` : null,
+      titulo: 'A ficha da pessoa: quem falou com essa pessoa?',
+      comoLer: ativos ? `Sobre as ${f.n(ativos.v)} pessoas ativas.` : null,
       largura: 1,
       grafico: (el) => {
         el.appendChild(T.h('div', { class: 'medidores' }, P.ficha.map((c) => T.comp.medidor({ v: c.v, max: maxFicha, rotulo: c.campo, formato: (v) => `${f.n(v)} · ${f.pct(c.pct)}`, cor: 'var(--eletrico)' }))));
@@ -297,15 +297,15 @@
     const pctDois = total ? (T.soma(dois, (w) => w.passageiros) / total) * 100 : 0;
     const bloq = dois.map((w) => alertaDe(w.numero)).find(Boolean);
     const leitura = dois.length
-      ? `${dois.map((w) => w.numero).join(' e ')} concentram ${f.pct(pctDois)} dos passageiros. Um bloqueio numa dessas contas derruba a maior parte do cadastro${bloq ? ` — e a ${bloq.numero} consta como ${bloq.alerta}` : ''}.`
+      ? `${dois.map((w) => w.numero).join(' e ')} concentram ${f.pct(pctDois)} dos leads. Um bloqueio numa dessas contas derruba a maior parte do cadastro${bloq ? ` — e a ${bloq.numero} consta como ${bloq.alerta}` : ''}.`
       : '';
     return G.painel({
       titulo: `A produção passa por ${extenso(dois.length)} números de WhatsApp`,
-      comoLer: 'Passageiros agrupados pelo número atual do piloto — não pelo número de cada mensagem.',
+      comoLer: 'Leads agrupados pelo número atual da pessoa — não pelo número de cada mensagem.',
       largura: 1,
       grafico: (el) =>
         G.barrasH(el, {
-          itens: P.whatsappProducao.map((w) => ({ rotulo: w.numero, sub: `${f.n(w.pilotos)} pilotos`, v: w.passageiros, texto: `${f.n(w.passageiros)} · ${f.pct(w.pct)}`, cor: bloqueado(w.numero) ? 'var(--agir)' : 'var(--eletrico)', palavra: bloqueado(w.numero) ? { estado: 'vermelho', texto: 'bloqueada?' } : null })),
+          itens: P.whatsappProducao.map((w) => ({ rotulo: w.numero, sub: `${f.n(w.pilotos)} pessoas`, v: w.passageiros, texto: `${f.n(w.passageiros)} · ${f.pct(w.pct)}`, cor: bloqueado(w.numero) ? 'var(--agir)' : 'var(--eletrico)', palavra: bloqueado(w.numero) ? { estado: 'vermelho', texto: 'bloqueada?' } : null })),
         }),
       leitura,
       p: [10, 12],
@@ -334,14 +334,14 @@
         el.appendChild(grade);
         G.faixa(esq, {
           nome: 'estado das fichas de aspirante',
-          segmentos: pp.estados.map((e) => ({ rotulo: `${e.estado} · ${f.n(e.comControlador)} com controlador`, v: e.v, cor: e.estado === 'na fila' ? 'var(--atencao)' : e.estado === 'virou piloto' ? 'var(--eletrico)' : 'var(--rosa)' })),
+          segmentos: pp.estados.map((e) => ({ rotulo: `${e.estado} · ${f.n(e.comControlador)} com admin`, v: e.v, cor: e.estado === 'na fila' ? 'var(--atencao)' : e.estado === 'virou pessoa' ? 'var(--eletrico)' : 'var(--rosa)' })),
         });
         esq.appendChild(T.h('p', { class: 'sub-titulo leitura' }, 'Criadas (barras) e convertidas por dia — em gráficos separados, na mesma escala'));
         const a = T.h('div');
         const b = T.h('div');
         esq.append(a, b);
         G.barrasDia(a, { serie: criadas, altura: 130, nome: 'criadas', yMax, cor: (p) => (p.v > limiarCor ? 'var(--atencao)' : 'var(--referencia)'), rotuloSe: (p) => p.v > limiarRotulo, divisoes: 2 });
-        G.barrasDia(b, { serie: convertidas, altura: 130, nome: 'convertidas em piloto', yMax, cor: () => 'var(--violeta)', rotuloSe: (p) => p.v > limiarCor, divisoes: 2 });
+        G.barrasDia(b, { serie: convertidas, altura: 130, nome: 'convertidas em pessoa', yMax, cor: () => 'var(--violeta)', rotuloSe: (p) => p.v > limiarCor, divisoes: 2 });
         G.barrasH(dir, {
           itens: pp.fontes.map((fo) => {
             const taxa = fo.viraramPiloto / fo.fichas;
@@ -350,7 +350,7 @@
               v: fo.fichas,
               texto: `${f.n(fo.fichas)} · ${f.n(fo.viraramPiloto)} viraram`,
               cor: 'var(--referencia)',
-              marcas: [{ v: fo.viraramPiloto, cor: taxa >= 0.9 ? 'var(--eletrico)' : taxa >= 0.3 ? 'var(--atencao)' : 'var(--agir)', rotulo: 'viraram piloto' }],
+              marcas: [{ v: fo.viraramPiloto, cor: taxa >= 0.9 ? 'var(--eletrico)' : taxa >= 0.3 ? 'var(--atencao)' : 'var(--agir)', rotulo: 'viraram pessoa' }],
               palavra: { estado: taxa >= 0.9 ? 'verde' : taxa >= 0.3 ? 'amarelo' : 'vermelho', texto: f.pct(taxa * 100, 0) },
             };
           }),
@@ -363,7 +363,7 @@
   }
 
   T.modulos.pilotos = {
-    titulo: 'Pilotos',
+    titulo: 'Pessoas',
     render(main) {
       main.append(
         T.pag.abertura(P, 'pilotos', 'pilotos', { regua: P.regua.linhas, explicas: ['funil-ativos', null, null, 'funil-vivo'] }),

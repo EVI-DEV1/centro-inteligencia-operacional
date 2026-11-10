@@ -201,7 +201,7 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
     { etapa: 'LISTA — compromisso', grupo: 'lista', v: 153, ativas7d: 3 },
     { etapa: 'LISTA — contatos', grupo: 'lista', v: 91, ativas7d: 2 },
     { etapa: 'LISTA — formato', grupo: 'lista', v: 54, ativas7d: 4 },
-    { etapa: 'PASSAGEIRO — dados', grupo: 'passageiro', v: 33, ativas7d: 9 },
+    { etapa: 'LEAD — dados', grupo: 'lead', v: 33, ativas7d: 9 },
     { etapa: 'CADASTRO — nome', grupo: 'cadastro', v: 26, ativas7d: 3 },
     { etapa: 'CADASTRO — compromisso', grupo: 'cadastro', v: 16, ativas7d: 2 },
     { etapa: 'CADASTRO — interesse', grupo: 'cadastro', v: 9, ativas7d: 1 },
@@ -212,7 +212,7 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
   const descanso = somaGrupo('descanso');
   const etapasResumo = { comEtapa, descanso, noMeio: comEtapa - descanso, naLista: somaGrupo('lista'), ativas7d: soma(etapas, (e) => e.ativas7d) };
 
-  const nomesFalas = ['PASSAGEIRO — confirmação', 'MENU — descanso', 'PASSAGEIRO — dados', 'sem etapa registrada', 'MATERIAL — para quem', 'MATERIAL — kit', 'outras 8 etapas'];
+  const nomesFalas = ['LEAD — confirmação', 'MENU — descanso', 'LEAD — dados', 'sem etapa registrada', 'MATERIAL — para quem', 'MATERIAL — kit', 'outras 8 etapas'];
   const partesFalas = distribuir(totalFalas, [55.2, 29.6, 6.6, 1.4, 0.9, 0.7, 5.6]);
   const falasPorEtapa = nomesFalas.map((etapa, i) => ({ etapa, v: partesFalas[i] }));
   const falasConfirmacaoPct = pct(partesFalas[0], totalFalas);
@@ -253,14 +253,14 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
   ];
   const tipos = [
     { tipo: 'Material', estado: 'fechado', total: 75, abertosHoje: null },
-    { tipo: 'Controlador', estado: 'fechado', total: 53, abertosHoje: null },
+    { tipo: 'Admin', estado: 'fechado', total: 53, abertosHoje: null },
     { tipo: 'Demanda', estado: 'aberto', total: 13, abertosHoje: 13 },
-    { tipo: 'Controlador', estado: 'aberto', total: 11, abertosHoje: 11 },
+    { tipo: 'Admin', estado: 'aberto', total: 11, abertosHoje: 11 },
     { tipo: 'Demanda', estado: 'fechado', total: 6, abertosHoje: null },
     { tipo: 'Endereço', estado: 'aberto', total: 3, abertosHoje: 3 },
     { tipo: 'Material', estado: 'aberto', total: 2, abertosHoje: 2 },
   ];
-  const semDonoAutomatico = soma(tipos.filter((t) => t.estado === 'aberto' && /^(demanda|controlador)$/i.test(t.tipo)), (t) => t.total);
+  const semDonoAutomatico = soma(tipos.filter((t) => t.estado === 'aberto' && /^(demanda|controlador|admin)$/i.test(t.tipo)), (t) => t.total);
   const abertosAgora = CENTRAL.chamadosAbertosAgora;
   const parados = CENTRAL.chamadosParados48h;
 
@@ -311,21 +311,21 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
   const livro = {
     central: {
       letra: 'D',
-      titulo: 'Central Horizonte: bot, chamados e capacidade',
+      titulo: 'Central: bot, chamados e capacidade',
       pergunta: 'Até onde o sistema aguenta — e em que ponto ele já transborda.',
-      frase: `O gargalo não é o software: num único dia o bot recebeu ${fmt.n(eloMsg.teto)} mensagens e não caiu. A Central esbarra em duas coisas que código nenhum resolve — gente para atender o que o bot não resolve e um número que responde por mais da metade dos passageiros e, pela verificação de ${dataVerificacao}, está bloqueado por pagamento (responde dentro da janela de 24 h, mas não abre conversa).`,
+      frase: `O gargalo não é o software: num único dia o bot recebeu ${fmt.n(eloMsg.teto)} mensagens e não caiu. A Central esbarra em duas coisas que código nenhum resolve — gente para atender o que o bot não resolve e um número que responde por mais da metade dos leads e, pela verificação de ${dataVerificacao}, está bloqueado por pagamento (responde dentro da janela de 24 h, mas não abre conversa).`,
       kpis: [
         { v: msg7, rotulo: `mensagens recebidas nos 7 dias completos (${fmt.data(semana7[0]).slice(0, 2)} a ${fmt.data(semana7[6])})` },
         { v: conv7, rotulo: 'conversas novas no bot nos mesmos 7 dias' },
         { v: abertosAgora, rotulo: 'chamados humanos abertos agora, esperando alguém' },
-        { v: linhaBloqueada.passageiros, rotulo: `passageiros ligados ao número ${linhaBloqueada.numero} (${fmt.pct(pctLinha6)} do total)` },
+        { v: linhaBloqueada.passageiros, rotulo: `leads ligados ao número ${linhaBloqueada.numero} (${fmt.pct(pctLinha6)} do total)` },
       ],
       datasNota: `As mensagens recebidas só são guardadas desde ${fmt.data(INICIO_MSG)}; antes disso já havia conversa (sessões desde ${fmt.data(INICIO)}), mas nada ficava gravado. As falas só existem desde ${fmt.data(INICIO_FALAS)}.`,
       pecas: [
         { peca: 'Mensagem recebida', e: 'cada mensagem que a Meta entrega à Central', naoE: 'não inclui as respostas do bot, que não são guardadas', registrado: totalMensagens, desde: fmt.data(INICIO_MSG) },
         { peca: 'Conversa (sessão)', e: 'um telefone falando com um número, parado numa etapa do roteiro', naoE: 'não é uma pessoa: o mesmo telefone em outro número abre outra conversa', registrado: totalConversas, desde: fmt.data(INICIO) },
         { peca: 'Fala', e: 'o texto escrito pela pessoa, junto da etapa em que ela estava', naoE: `não existe antes de ${fmt.data(INICIO_FALAS)}`, registrado: totalFalas, desde: fmt.data(INICIO_FALAS) },
-        { peca: 'Chamado', e: 'pedido de ajuda humana feito ao controlador', naoE: 'não é o atendimento em si, que acontece fora do sistema', registrado: abertos34d, desde: fmt.data(INICIO) },
+        { peca: 'Chamado', e: 'pedido de ajuda humana feito ao admin', naoE: 'não é o atendimento em si, que acontece fora do sistema', registrado: abertos34d, desde: fmt.data(INICIO) },
       ],
       pilotoFalouBot,
       mensagens: { mediana24dias: medianaMsg, mediaUltimaSemana: Math.round(msg7 / 7), pico: { v: eloMsg.teto, dia: DIA_DISPARO } },
@@ -340,7 +340,7 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
       falasConfirmacaoPct,
       numeros,
       conversasVivasSemana: CENTRAL.conversasVivasSemana,
-      numerosCuidado: `O número ao lado do piloto é o que ele usa hoje, não o canal por onde o cadastro entrou. A leitura segura é "o ${linhaBloqueada.numero} concentra a base viva"; "o ${linhaBloqueada.numero} produziu esses ${fmt.n(linhaBloqueada.passageiros)} cadastros" é leitura errada.`,
+      numerosCuidado: `O número ao lado da pessoa é o que ele usa hoje, não o canal por onde o cadastro entrou. A leitura segura é "o ${linhaBloqueada.numero} concentra a base viva"; "o ${linhaBloqueada.numero} produziu esses ${fmt.n(linhaBloqueada.passageiros)} cadastros" é leitura errada.`,
       chamados: {
         abertos34d,
         fechados: fechadosTotal,
@@ -357,13 +357,13 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
       capacidade,
       ensaioDisparo: {
         medido: { mensagens: eloMsg.teto, conversasNovas: convDisparo, chamados: eloCham.teto },
-        memoria: 'Foram disparadas entre 1,1 e 1,2 mil mensagens; 287 pessoas responderam; 93 viraram piloto em 3 dias; 41 cadastraram alguém; o grupo reuniu 861 passageiros em 3 semanas.',
+        memoria: 'Foram disparadas entre 1,1 e 1,2 mil mensagens; 287 pessoas responderam; 93 viraram pessoa em 3 dias; 41 cadastraram alguém; o grupo reuniu 861 leads em 3 semanas.',
         cuidado: `Nada liga as ${fmt.n(convDisparo)} conversas novas do dia aos destinatários do disparo: a data coincide, mas a prova não existe.`,
       },
       muda: [
         {
-          t: 'O canal com mais da metade dos passageiros não consegue abrir conversa.',
-          d: `O ${linhaBloqueada.numero} está ligado a ${fmt.pct(pctLinha6)} dos passageiros e reúne ${fmt.n(CENTRAL.conversasVivasLinha6)} das ${fmt.n(CENTRAL.conversasVivasSemana)} conversas vivas da semana. A última verificação (${dataVerificacao}, sem conferência hoje) aponta bloqueio por pagamento. Resolver leva horas, não semanas, e libera o canal de maior volume.`,
+          t: 'O canal com mais da metade dos leads não consegue abrir conversa.',
+          d: `O ${linhaBloqueada.numero} está ligado a ${fmt.pct(pctLinha6)} dos leads e reúne ${fmt.n(CENTRAL.conversasVivasLinha6)} das ${fmt.n(CENTRAL.conversasVivasSemana)} conversas vivas da semana. A última verificação (${dataVerificacao}, sem conferência hoje) aponta bloqueio por pagamento. Resolver leva horas, não semanas, e libera o canal de maior volume.`,
         },
         {
           t: 'A Central nunca foi testada sob surto.',
@@ -380,7 +380,7 @@ export function gerar({ rng, A, U, capitulos = {} }: Contexto): SaidaCapitulo {
       ],
       acoes: [
         { ordem: 1, acao: `Abrir hoje o painel da Meta e conferir a situação das contas ${linhaBloqueada.numero} e ${linhaSelo.numero}.`, porque: `A informação disponível é da verificação de ${dataVerificacao}. Se o bloqueio for real, é o problema mais caro da lista e o mais barato de resolver.` },
-        { ordem: 2, acao: `Pôr um responsável nos ${fmt.n(semDonoAutomatico)} chamados abertos de demanda e de controlador.`, porque: `Nenhum deles tem fluxo automático, e ao menos ${fmt.n(parados)} dos ${fmt.n(abertosAgora)} abertos passaram de 48 h.` },
+        { ordem: 2, acao: `Pôr um responsável nos ${fmt.n(semDonoAutomatico)} chamados abertos de demanda e de admin.`, porque: `Nenhum deles tem fluxo automático, e ao menos ${fmt.n(parados)} dos ${fmt.n(abertosAgora)} abertos passaram de 48 h.` },
         { ordem: 3, acao: 'Encurtar a etapa da lista de convidados.', porque: `${fmt.n(etapasResumo.naLista)} conversas travaram ali — mais do que todas as outras etapas do meio do caminho somadas.` },
         { ordem: 4, acao: 'Ligar os carimbos da régua da Fase B antes de subir o volume.', porque: 'Para enxergar a Central engasgando antes do Dia D, e não durante.' },
       ],
@@ -454,7 +454,7 @@ export function verificar(saida: SaidaCapitulo, { A, U, capitulos = {} }: Contex
   checar(soma(C.falasPorEtapa, (e) => e.v) === C.falas.total, 'falasPorEtapa não soma o total de falas');
   checar(C.falasConfirmacaoPct === pct(C.falasPorEtapa[0].v, C.falas.total), 'falasConfirmacaoPct não bate');
   const pRec = S.falas_dia.find((p) => p.d === A.PASSAGEIROS.recordePilotosDia.dia);
-  checar(pRec && pRec.v === C.falas.diaRecordePilotos.v, 'diaRecordePilotos ≠ falas do dia do recorde de pilotos');
+  checar(pRec && pRec.v === C.falas.diaRecordePilotos.v, 'diaRecordePilotos ≠ falas do dia do recorde de pessoas');
 
   // KPIs
   const semana7 = intervalo(somarDias(DATAS.fim, -7), somarDias(DATAS.fim, -1));
@@ -474,7 +474,7 @@ export function verificar(saida: SaidaCapitulo, { A, U, capitulos = {} }: Contex
   checar(n6 && n6.ativas7d === CENTRAL.conversasVivasLinha6 && n6.alerta === l6.alerta, 'linha6: ativas ou alerta ≠ âncora');
   for (const l of CENTRAL.linhas) {
     const n = C.numeros.find((x) => x.numero === (l.numero === '(nenhuma)' ? 'sem número registrado' : l.numero));
-    checar(n && n.passageiros === l.passageiros && (n.alerta || null) === (l.alerta || null), `número ${l.numero}: passageiros ou alerta ≠ âncora`);
+    checar(n && n.passageiros === l.passageiros && (n.alerta || null) === (l.alerta || null), `número ${l.numero}: leads ou alerta ≠ âncora`);
   }
 
   // etapas
@@ -497,7 +497,7 @@ export function verificar(saida: SaidaCapitulo, { A, U, capitulos = {} }: Contex
   checar(soma(ch.tempoAteFechar, (x) => x.v) === ch.fechados, 'tempoAteFechar não soma os fechados');
   checar(soma(ch.tipos, (t) => t.total) === ch.abertos34d, 'tipos não somam abertos34d');
   checar(soma(ch.tipos.filter((t) => t.estado === 'aberto'), (t) => t.abertosHoje) === ch.abertosAgora, 'tipos abertos não somam abertos agora');
-  checar(soma(ch.tipos.filter((t) => t.estado === 'aberto' && /^(demanda|controlador)$/i.test(t.tipo)), (t) => t.total) === ch.semDonoAutomatico, 'semDonoAutomatico não bate');
+  checar(soma(ch.tipos.filter((t) => t.estado === 'aberto' && /^(demanda|controlador|admin)$/i.test(t.tipo)), (t) => t.total) === ch.semDonoAutomatico, 'semDonoAutomatico não bate');
   let acA = 0;
   let acF = 0;
   S.chamados_abertos_dia.forEach((p, i) => {
@@ -527,17 +527,17 @@ export function verificar(saida: SaidaCapitulo, { A, U, capitulos = {} }: Contex
     checar(b && b.elo === a.elo && b.teto === a.teto && b.quando === fmt.data(a.quando) && JSON.stringify(b.exige) === JSON.stringify(a.exige), `elo ${a.elo} ≠ âncora`);
     checar(b && b.abaixo === a.teto < a.exige[0], `elo ${a.elo}: abaixo errado`);
   });
-  [25000, 50000, 90000].forEach((r, i) => checar(elos[0].exige[i] === Math.round((r * 0.8) / 7), `exigência de passageiros do cenário ${i} ≠ resultado × 0,8 ÷ 7`));
+  [25000, 50000, 90000].forEach((r, i) => checar(elos[0].exige[i] === Math.round((r * 0.8) / 7), `exigência de leads do cenário ${i} ≠ resultado × 0,8 ÷ 7`));
   checar(!/100 mil|100\.000/.test(JSON.stringify(C)), 'texto ainda fala de 100 mil');
   const r0 = C.reguaFaseB.linhas[0];
   checar(r0.metrica === 'Registros por hora (pico)' && r0.verde === `≥ ${fmt.n(Math.round(elos[0].exige[0] / 10))}/h`, 'régua: alvo por hora ≠ 2.857 ÷ 10');
 
   // pilotos × bot
   const ativos = PILOTOS.funil.find((d) => d.id === 'ativos').v;
-  checar(soma(C.pilotoFalouBot, (x) => x.v) === ativos, 'pilotoFalouBot não soma os pilotos ativos');
+  checar(soma(C.pilotoFalouBot, (x) => x.v) === ativos, 'pilotoFalouBot não soma as pessoas ativas');
   const um = capitulos.pilotos && capitulos.pilotos.ultimaMensagem;
   if (Array.isArray(um) && um.length) {
-    checar(um.length === C.pilotoFalouBot.length && um.every((x, i) => x.v === C.pilotoFalouBot[i].v), 'pilotoFalouBot ≠ pilotos.ultimaMensagem');
+    checar(um.length === C.pilotoFalouBot.length && um.every((x, i) => x.v === C.pilotoFalouBot[i].v), 'pilotoFalouBot ≠ pessoas.ultimaMensagem');
   }
   return erros;
 }
