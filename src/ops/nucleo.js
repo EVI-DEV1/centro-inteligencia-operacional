@@ -125,7 +125,7 @@
     const est = new Map((conjunto.conectores || []).map((c) => [c.canal, c]));
     return canaisDoFiltro(plataforma).filter((id) => {
       const c = est.get(id);
-      return c && (c.estado === 'ativo' || c.estado === 'atrasado');
+      return c && (c.estado === 'ativo' || c.estado === 'atrasado' || !!c.planilha);
     });
   }
 
@@ -247,7 +247,7 @@
     const ativos = canaisAtivos(conjunto, plataforma).filter((c) => canaisMetrica.includes(c));
     return ativos.map((c) => {
       const con = (conjunto.conectores || []).find((x) => x.canal === c) || {};
-      return { canal: c, nome: canal(c).nome, ultimaSync: con.ultimaSync || null };
+      return { canal: c, nome: con.planilha ? `${canal(c).nome} (planilha)` : canal(c).nome, ultimaSync: con.ultimaSync || null };
     });
   }
 
@@ -286,8 +286,6 @@
         e.abandono = 100 - e.passagem;
         if (!maiorAbandono || e.abandono > maiorAbandono.abandono) maiorAbandono = { de: e.id, para: prox.id, abandono: e.abandono };
       }
-      // estágios vêm de fontes diferentes e não identificam pessoas: o funil pode "subir"
-      if (e.v !== null && prox.v !== null && prox.v > e.v) e.inconsistente = true;
     });
     return { etapas, maiorAbandono, temEstimativa: etapas.some((e) => e.estimado && e.v !== null) };
   }

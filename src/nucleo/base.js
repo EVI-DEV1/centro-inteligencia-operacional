@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   const T = (window.T = window.T || {});
+  T.modulos = {};
   const SVGNS = 'http://www.w3.org/2000/svg';
 
   function aplicar(el, attrs, svg) {
@@ -90,22 +91,7 @@
   fmt.dataMes = (iso) => `${Number(iso.slice(8, 10))} ${MESES[Number(iso.slice(5, 7)) - 1]}`;
   fmt.diaSemana = (iso) => DIAS[new Date(`${iso}T12:00:00Z`).getUTCDay()];
 
-  T.isoSomar = (iso, dias) => {
-    const d = new Date(`${iso}T12:00:00Z`);
-    d.setUTCDate(d.getUTCDate() + dias);
-    return d.toISOString().slice(0, 10);
-  };
   T.diasEntre = (a, b) => Math.round((new Date(`${b}T12:00:00Z`) - new Date(`${a}T12:00:00Z`)) / 864e5);
-  T.intervalo = (a, b) => {
-    const out = [];
-    for (let d = a; d <= b; d = T.isoSomar(d, 1)) out.push(d);
-    return out;
-  };
-  T.hojeBrasilia = () => {
-    const m = (window.TORRE_LIVRO && window.TORRE_LIVRO.meta) || {};
-    const iso = m.hojeDemo || m.medidoEm;
-    return { iso, hora: 15, minuto: 0 };
-  };
 
   const NUM_SEP = /\d[\d.,]*[.,]\d+/g;
   T.numerosNaLeitura = function (raiz) {
@@ -133,21 +119,4 @@
     }
   };
 
-  const registro = new Map();
-  T.registrarNomes = (lista) => lista.forEach((n) => T.nome(n));
-  T.nome = function (nome) {
-    if (!registro.has(nome)) registro.set(nome, `Equipe ${String(registro.size + 1).padStart(2, '0')}`);
-    return T.h('span', { class: 'nome', title: null }, T.h('span', { class: 'nome-real' }, nome), T.h('span', { class: 'nome-codigo' }, registro.get(nome)));
-  };
-  T.nomeTexto = (nome) => {
-    if (document.documentElement.dataset.nomes !== 'ocultos') return nome;
-    if (!registro.has(nome)) registro.set(nome, `Equipe ${String(registro.size + 1).padStart(2, '0')}`);
-    return registro.get(nome);
-  };
-  T.mesmoNome = (a, b) => {
-    const pa = String(a || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
-    const pb = String(b || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
-    const [curto, longo] = pa.length <= pb.length ? [pa, pb] : [pb, pa];
-    return curto.length > 0 && curto.every((p, i) => p === longo[i]);
-  };
 })();

@@ -48,8 +48,3 @@ export async function usuarioDoToken(token) {
 
 /** Monta filtros PostgREST com valores escapados. */
 export const eq = (v) => `eq.${encodeURIComponent(v)}`;
-export const q = (obj) =>
-  Object.entries(obj)
-    .filter(([, v]) => v !== undefined && v !== null)
-    .map(([k, v]) => `${encodeURIComponent(k)}=${v}`)
-    .join('&');

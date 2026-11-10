@@ -1,7 +1,6 @@
 // Junta o OPS Intelligence num único HTML autônomo: CSS e JS embutidos, fontes em data URI.
 // uso (na raiz do projeto):
-//   node scripts/build.mjs   → dist/centro-inteligencia.html (retrato fixo com dados fictícios: abre do disco)
-// Antes do build, os dados precisam existir: node scripts/gerar-dados.ts
+//   node scripts/build.mjs   → dist/centro-inteligencia.html (modo demonstração: abre do disco)
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -42,7 +41,6 @@ html = html.replace(/<script src="([^"]+)"><\/script>/g, (_, src) => {
 
 if (faltando.length) {
   console.error('Arquivos referenciados que não existem:', faltando.join(', '));
-  if (faltando.some((f) => f.startsWith('src/dados/'))) console.error('Rode antes: node scripts/gerar-dados.ts');
   process.exit(1);
 }
 
@@ -52,8 +50,7 @@ const provas = [
   ['nenhum <script src> sobrou', !/<script src=/.test(html)],
   ['nenhuma fonte por caminho relativo', !/url\('\.\.\//.test(html)],
   ['fontes embutidas', html.includes('data:font/woff2;base64,')],
-  ['livro e séries embutidos', html.includes('data-origem="src/dados/livro.js"') && html.includes('data-origem="src/dados/series.js"')],
-  ['retrato fixo (vivo.js sem busca de rede)', html.includes('data-origem="src/dados/vivo.js"') && !/fetch\(/.test(ler('src/dados/vivo.js'))],
+  ['núcleo e demonstração embutidos', html.includes('data-origem="src/ops/nucleo.js"') && html.includes('data-origem="src/ops/demo.js"')],
   ['selo de simulação no modo demonstração', html.includes("'Simulação')")],
 ];
 const falhas = provas.filter(([, ok]) => !ok);

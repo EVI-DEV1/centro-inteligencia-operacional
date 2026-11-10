@@ -1,4 +1,4 @@
-// Baixa as fontes da Torre (subset latin, woff2) para assets/fontes/ — roda uma vez.
+// Baixa as fontes do OPS Intelligence (subset latin, woff2) para assets/fontes/ — roda uma vez.
 // Archivo (variável: largura 62–125, peso 100–900) = títulos, números grandes e texto.
 // B612 Mono = leituras de instrumento; foi desenhada pela Airbus para telas de cockpit.
 // O build embute os arquivos em base64: o HTML final abre sem internet.

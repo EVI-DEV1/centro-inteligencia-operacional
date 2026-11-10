@@ -1,6 +1,4 @@
-/* Páginas evoluídas do OPS Intelligence: Campanhas (ex-Fases/Caminho), Leads (lista + Kanban), Central,
-   Pessoas e Admin. Cada uma monta primeiro a experiência nova (multicliente) e, só no cliente de
-   demonstração Clube Horizonte, oferece o relatório antigo do programa num bloco recolhível — sem perder nada. */
+/* Páginas do OPS Intelligence: Campanhas, Leads (lista + Kanban), Central, Pessoas e Admin. */
 (function () {
   'use strict';
   const T = window.T;
@@ -9,43 +7,9 @@
   const N = O.nucleo;
   const U = O.ui;
 
-  /** Envolve um módulo antigo: conteúdo novo + relatório do programa (só Clube Horizonte, sob demanda). */
-  function hibrida(id, titulo, montarNovo) {
-    const antigo = T.modulos[id];
-    T.modulos[id] = {
-      titulo,
-      render(raiz) {
-        U.pagina(raiz, (host, cj) => {
-          montarNovo(host, cj);
-          if (!O.ehProgramaHorizonte() || !antigo) return;
-          const alvo = T.h('div', { class: 'ops-relatorio-corpo' });
-          const det = T.h(
-            'details',
-            { class: 'ops-relatorio', id: `relatorio-${id}` },
-            T.h('summary', null, T.icone('livro'), T.h('span', null, T.h('b', null, 'Relatório do programa Clube Horizonte'), T.h('small', null, 'Capítulo original com os dados do livro de demonstração')), T.icone('expandir')),
-            alvo
-          );
-          let montado = false;
-          det.addEventListener('toggle', () => {
-            if (!det.open || montado) return;
-            montado = true;
-            antigo.render(alvo);
-            T.numerosNaLeitura(alvo);
-            T.mov && T.mov.revelar && T.mov.revelar(alvo);
-          });
-          host.appendChild(det);
-          // links profundos para seções antigas (?alvo=) abrem o relatório
-          const { alvo: alvoHash } = T.lerHash();
-          if (alvoHash && !document.getElementById(alvoHash)) {
-            det.open = true;
-            setTimeout(() => {
-              const el = document.getElementById(alvoHash);
-              el && el.scrollIntoView({ block: 'start' });
-            }, 200);
-          }
-        });
-      },
-    };
+  /** Registra uma página do OPS: monta o conteúdo com o conjunto de dados do cliente atual. */
+  function pagina(id, titulo, montar) {
+    T.modulos[id] = { titulo, render: (raiz) => U.pagina(raiz, montar) };
   }
 
   const ETAPA_COR = { novo: 'var(--tinta-3)', em_contato: 'var(--ciano)', qualificado: 'var(--eletrico-claro)', negociacao: 'var(--violeta)', convertido: 'var(--firme)', perdido: 'var(--agir)' };
@@ -243,7 +207,7 @@
   }
 
   let visaoLeads = 'kanban';
-  hibrida('passageiros', 'Leads', (host, cj) => {
+  pagina('passageiros', 'Leads', (host, cj) => {
     const fl = O.f();
     let busca = '';
     const area = T.h('div');
@@ -277,7 +241,7 @@
   });
 
   // =====================================================================
-  // CAMPANHAS (antiga seção Fases / Caminho para o Dia D)
+  // CAMPANHAS
   // =====================================================================
   function formCampanha(cj, aoSalvar) {
     const hoje = O.hoje();
@@ -444,7 +408,7 @@
     );
   }
 
-  hibrida('plano', 'Campanhas', (host, cj) => {
+  pagina('plano', 'Campanhas', (host, cj) => {
     const fl = O.f();
     const area = T.h('div', { class: 'ops-campanhas' });
     const hoje = O.hoje();
@@ -475,7 +439,7 @@
   // =====================================================================
   // CENTRAL
   // =====================================================================
-  hibrida('central', 'Central', (host, cj) => {
+  pagina('central', 'Central', (host, cj) => {
     const fl = O.f();
     const hoje = O.hoje();
     const ind = N.indicadores(cj, fl);
@@ -577,7 +541,7 @@
     });
   }
 
-  hibrida('pilotos', 'Pessoas', (host, cj) => {
+  pagina('pilotos', 'Pessoas', (host, cj) => {
     const fl = O.f();
     const area = T.h('div');
     const pintar = () => {
@@ -686,7 +650,7 @@
     });
   }
 
-  hibrida('controladores', 'Admin', (host, cj) => {
+  pagina('controladores', 'Admin', (host, cj) => {
     const ESTADO = { ativo: ['firme', 'Ativa'], atrasado: ['atencao', 'Atrasada'], erro: ['agir', 'Erro'], sem_permissao: ['agir', 'Sem permissão'], pendente: ['atencao', 'Pendente'], nao_configurado: ['nao-medido', 'Não configurada'] };
     const integracoes = T.h(
       'div',

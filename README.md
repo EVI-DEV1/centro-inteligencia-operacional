@@ -9,9 +9,8 @@ Supabase (PostgreSQL com Row Level Security).
 
 - **Demo:** `index.html` (abre direto do disco, em modo demonstração) · **Página do produto:** `produto.html`
 
-> Evolução do antigo *Torre de Controle / Centro de Inteligência Operacional*. Os nomes mudaram só na
-> interface: as rotas (`#/pilotos`, `#/passageiros`, `#/controladores`) e as chaves internas continuam as
-> mesmas para não quebrar links e dados salvos.
+> Evolução do antigo *Torre de Controle / Centro de Inteligência Operacional*. As rotas antigas
+> (`#/pilotos`, `#/passageiros`, `#/controladores`, `#/plano`) continuam as mesmas para não quebrar links salvos.
 
 ## Páginas
 
@@ -25,7 +24,7 @@ Supabase (PostgreSQL com Row Level Security).
 | Pessoas | `#/pilotos` | Equipe do cliente, papéis, permissões e resultados |
 | Admin | `#/controladores` | Clientes, integrações, pessoas, permissões e relatórios |
 | Comparar clientes | `#/comparar` | Só para Admin: crescimento, leads, engajamento e conversão normalizados |
-| Dados e integrações | `#/dados` | Estado dos conectores, importação CSV/Excel e exportações |
+| Dados e integrações | `#/dados` | Estado das integrações do cliente, importação de métricas por CSV/Excel e exportações |
 
 **Filtros globais** (topo de todas as páginas): cliente, plataforma, período (hoje, 7, 30, 90 dias ou
 personalizado), campanha e indicador. Tudo se atualiza sem recarregar a página.
@@ -36,8 +35,10 @@ personalizado), campanha e indicador. Tudo se atualiza sem recarregar a página.
 - Métrica que a API não fornece aparece como **indisponível**, nunca como zero.
 - O funil sinaliza as etapas **estimadas** (as redes só dão números agregados, não pessoas).
 - Insights só aparecem com dados suficientes e trazem os números que os sustentam.
-- **Modo demonstração** separado e marcado como *Simulação* em toda a tela. Os clientes da demo (inclusive o
-  "Clube Horizonte") não existem.
+- **Modo demonstração** separado e marcado como *Simulação* em toda a tela. Os clientes da demo (Clube
+  Horizonte, Studio Aurora e Clínica Vértice) não existem.
+- **Planilha importada** (CSV ou .xlsx) vira métricas diárias do cliente, fica só no navegador e aparece como
+  "planilha" na fonte de cada número.
 - Os dados de um cliente nunca se misturam com os de outro: `cliente_id` em toda tabela, RLS no banco e
   conferência de acesso em cada rota da API.
 
@@ -82,63 +83,25 @@ src/ops/nucleo.js              cálculo único de indicadores, funil, origem, ca
 src/ops/demo.js                gerador do modo demonstração (determinístico, por cliente)
 src/ops/fonte.js               de onde vêm os dados: demo local ou API, com cache e estados de carregamento
 src/ops/graficos.js · ui.js    gráficos SVG interativos, barra de filtros, login, diálogos
-src/modulos/                   páginas (executiva, conteúdo, campanhas, leads, pessoas, admin, central, comparar…)
+src/modulos/                   páginas (executiva, conteúdo, ops-paginas: campanhas/leads/central/pessoas/admin, comparar, dados)
+src/nucleo/ · src/graficos/    utilitários da interface: DOM, eventos, ícones, tooltip, animação, leitura de CSV/.xlsx
 api/ops.js · api/_lib/         API serverless: rotas, acesso por papel, conectores, sincronização incremental, webhooks
 supabase/schema.sql            tabelas por cliente, RLS em todas, papéis (admin, gestor, analista, atendimento, cliente)
 tests/ops.test.mjs             núcleo, demonstração, isolamento, permissões, webhooks e conectores
-scripts/                       gerador do livro do programa Horizonte (TypeScript) e build do arquivo único
+scripts/                       build do arquivo único e download das fontes
 ```
 
 ## Desenvolvimento
 
+Sem dependências para instalar: basta Node 20 ou mais novo.
+
 ```bash
-npm install
-npm run check      # tipos + contas do livro de demonstração + testes
-npm test           # só os testes do OPS
+npm test                 # núcleo, demonstração, isolamento, permissões, webhooks e conectores
+npm run check            # testes + arquivo único
 node scripts/build.mjs   # arquivo único em dist/centro-inteligencia.html
 ```
 
-A cada push, o GitHub Actions confere tipos, contas, dados publicados, testes e o build.
-
-## Programa Horizonte (relatório de demonstração)
-
-No modo demonstração, o cliente **Clube Horizonte** traz também o relatório original do projeto (Operação,
-Atendimento, Alcance, Central de Decisão e os capítulos antigos dentro de Leads, Pessoas e Admin). Ele vem de um
-livro de dados fictício gerado por script.
-
-### O gerador do livro de demonstração
-
-Os dados ficam em `src/dados/livro.js` e `src/dados/series.js` e são gerados, não digitados:
-
-```bash
-node scripts/gerar-dados.ts              # semente padrão
-node scripts/gerar-dados.ts outra-seed   # outro conjunto fictício com as mesmas âncoras
-node scripts/gerar-dados.ts --so central # confere um capítulo sem gravar
-node scripts/gerar-dados.ts --conferir   # confere todos os capítulos sem gravar
-```
-
-O gerador é escrito em **TypeScript** e roda direto no Node 22.18 ou mais novo, sem etapa de compilação: o Node
-remove os tipos ao executar e o `tsc` confere tudo antes (`npm install` e depois `npm run typecheck`).
-
-- `scripts/gerar/ancoras.ts` guarda, uma vez só, os números que aparecem em mais de um capítulo.
-- Cada capítulo (`scripts/gerar/cap-*.ts`) gera primeiro as séries e deriva delas os números do texto.
-- Cada capítulo tem um `verificar()`: somas, percentuais, picos e médias precisam fechar com o que a tela diz.
-  **Se alguma conta não fechar, nada é gravado.**
-
-### TypeScript
-
-- `scripts/gerar/tipos.ts` é o contrato do gerador: `Ponto` e `Serie` (séries diárias), `Rng` (sorteio com
-  semente), `StatusRegua` (só `verde`, `amarelo`, `vermelho` ou `nao-medido`) e a forma de cada capítulo
-  (`gerar(ctx: Contexto): SaidaCapitulo` e `verificar(...)`).
-- O núcleo (`gerar-dados.ts`, `util.ts`, `ancoras.ts`, `tipos.ts`) está em modo `strict` completo
-  (`tsconfig.json`).
-- Os capítulos estão em **tipagem gradual** (`tsconfig.capitulos.json`): o contrato de entrada e saída é
-  conferido, e o formato interno do livro de cada capítulo ainda aceita `any`. O próximo passo é tipar o livro
-  capítulo a capítulo e ligar `noImplicitAny` e `strictNullChecks` também ali.
-- A migração não mudou nenhum número: o gerador produz exatamente os mesmos `livro.js` e `series.js` de antes.
-
-A cada push, o GitHub Actions (`.github/workflows/conferencia.yml`) confere os tipos, confere que todas as contas
-fecham, confere que os dados publicados são exatamente os que o gerador produz e monta o arquivo único.
+A cada push, o GitHub Actions roda os testes e monta o arquivo único.
 
 ## Créditos
 
