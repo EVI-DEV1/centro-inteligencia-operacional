@@ -46,6 +46,14 @@ test('integração ativa sem a métrica explica que a API não devolveu', () => 
   assert.match(N.indisponivel(c, 'contatos_unicos', 'facebook'), /não é uma métrica de Facebook/);
 });
 
+test('planilha importada conta como fonte e aparece marcada como planilha', () => {
+  const c = { conectores: [{ canal: 'instagram', estado: 'nao_configurado', planilha: 'metricas.csv' }], diario: [{ d: HOJE, canal: 'instagram', metrica: 'alcance', v: 42, fonte: 'planilha' }], leads: [] };
+  assert.equal(N.indisponivel(c, 'alcance', 'instagram'), null);
+  const ind = N.indicadores(c, filtro('7'));
+  assert.equal(ind.alcance.atual, 42);
+  assert.ok(ind.alcance.fontes.some((x) => x.nome === 'Instagram (planilha)'));
+});
+
 test('série: dias sem dado ficam null e a soma ignora nulls', () => {
   const c = { conectores: [{ canal: 'instagram', estado: 'ativo' }], diario: [{ d: '2026-11-08', canal: 'instagram', metrica: 'alcance', v: 5 }, { d: '2026-11-09', canal: 'instagram', metrica: 'alcance', v: 7 }] };
   const s = N.serie(c, 'alcance', 'todas', N.janela('7', HOJE));

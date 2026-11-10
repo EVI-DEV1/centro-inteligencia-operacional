@@ -1,133 +1,139 @@
-/* Dados e integrações: conectores, importação de CSV/Excel, contrato de dados e exportações. */
+/* Dados e integrações: estado das integrações do cliente, importação de CSV/Excel e exportações.
+   A planilha importada vira métricas diárias do cliente (o mesmo formato que os conectores gravam),
+   então a Visão Executiva e os demais gráficos passam a usá-la — marcada como "planilha" nas fontes. */
 (function () {
   'use strict';
   const T = window.T;
-  const G = T.graf;
   const f = T.fmt;
-  const L = T.dados.livro;
-  const S = window.TORRE_SERIES;
+  const O = T.ops;
+  const N = O.nucleo;
+  const U = O.ui;
 
-  // Séries que uma planilha pode substituir, com palavras que ajudam no mapeamento automático.
-  const ALVOS = [
-    { id: 'passageiros_dia', nome: 'Leads por dia', chaves: ['passageiro', 'cadastro', 'indicac', 'lead'] },
-    { id: 'pilotos_distintos_dia', nome: 'Pessoas distintos por dia', chaves: ['piloto', 'embaixador', 'vendedor'] },
-    { id: 'conversas_novas_dia', nome: 'Conversas novas por dia', chaves: ['conversa', 'whatsapp', 'mensage'] },
-    { id: 'chamados_abertos_dia', nome: 'Chamados abertos por dia', chaves: ['aberto', 'ticket', 'chamado'] },
-    { id: 'chamados_fechados_dia', nome: 'Chamados fechados por dia', chaves: ['fechado', 'resolvido'] },
-    { id: 'entregas_dia', nome: 'Entregas por dia', chaves: ['entrega', 'kit'] },
-    { id: 'pedidos_dia', nome: 'Pedidos por dia', chaves: ['pedido', 'venda', 'order'] },
-    { id: 'baixas_dia', nome: 'Baixas de atendimento por dia', chaves: ['baixa', 'atendiment'] },
-  ];
-  const CHAVE = 'torre:importacao';
-  const originais = {};
+  // ---------- destinos possíveis de uma coluna: canal × métrica diária ----------
+  const CANAIS_IMPORTAVEIS = ['instagram', 'facebook', 'kommo', 'whatsapp'];
+  const ALVOS = CANAIS_IMPORTAVEIS.flatMap((canal) =>
+    Object.entries(N.METRICAS)
+      .filter(([, def]) => def.canais.includes(canal))
+      .map(([metrica, def]) => ({ id: `${canal}:${metrica}`, canal, metrica, nome: `${N.canal(canal).nome} · ${def.nome}` }))
+  );
+  const PALAVRAS_CANAL = { instagram: ['instagram', 'insta', 'ig'], facebook: ['facebook', 'fb'], kommo: ['kommo', 'crm'], whatsapp: ['whatsapp', 'whats', 'zap', 'wa'] };
+  const PALAVRAS_METRICA = {
+    visitas_perfil: ['visita'],
+    alcance: ['alcance', 'reach'],
+    visualizacoes: ['visualiza', 'views', 'impress'],
+    novos_seguidores: ['seguidor', 'follower'],
+    interacoes: ['interac', 'engaj'],
+    conversas_iniciadas: ['conversa', 'mensage'],
+    contatos_unicos: ['contato'],
+    tempo_primeira_resposta: ['resposta', 'tempo'],
+  };
 
-  const autoMapear = (coluna) => {
+  function autoMapear(coluna) {
     const s = T.planilha.slug(coluna).replace(/-/g, '_');
-    const exato = ALVOS.find((a) => a.id === s);
+    const exato = ALVOS.find((a) => s === `${a.canal}_${a.metrica}`);
     if (exato) return exato.id;
-    const por = ALVOS.find((a) => a.chaves.some((k) => s.includes(k)));
-    return por ? por.id : '';
+    const metrica = Object.keys(PALAVRAS_METRICA).find((m) => PALAVRAS_METRICA[m].some((p) => s.includes(p)));
+    if (!metrica) return '';
+    const canais = N.METRICAS[metrica].canais;
+    const canal = canais.find((c) => PALAVRAS_CANAL[c].some((p) => s.split('_').includes(p) || s.includes(p.length > 3 ? p : `${p}_`))) || (canais.length === 1 ? canais[0] : null);
+    return canal ? `${canal}:${metrica}` : '';
+  }
+
+  // ---------- importação (uma por cliente e modo, guardada no navegador) ----------
+  const chave = () => `ops:importacao:${O.estado.modo}:${O.estado.cliente}`;
+  const ler = () => {
+    try {
+      return JSON.parse(localStorage.getItem(chave()) || 'null');
+    } catch (e) {
+      return null;
+    }
+  };
+  const recarregar = () => {
+    O.invalidar();
+    T.emit('dados-importados');
+    T.emit('ops:filtro', {});
   };
 
-  // ---------- estado da importação ----------
-  const imp = (T.importacao = {
-    atual: null,
-    ativa: () => imp.atual,
-    aplicar(pacote, { silencioso = false } = {}) {
-      imp.restaurar({ silencioso: true });
-      for (const [col, alvo] of Object.entries(pacote.mapa)) {
-        if (!alvo) continue;
-        if (!(alvo in originais)) originais[alvo] = S[alvo];
-        S[alvo] = pacote.registros.map((r) => ({ d: r.d, v: r.valores[col] }));
-      }
-      imp.atual = pacote;
+  O.importacao = {
+    atual: ler,
+    ativa: () => !!ler(),
+    aplicar(pacote) {
       try {
-        localStorage.setItem(CHAVE, JSON.stringify(pacote));
-      } catch (e) {}
-      if (!silencioso) T.aviso(`${pacote.arquivo}: ${f.n(pacote.linhas)} linhas aplicadas ao painel`, 'firme');
-      T.emit('dados-importados', pacote);
-    },
-    restaurar({ silencioso = false } = {}) {
-      for (const [k, v] of Object.entries(originais)) {
-        S[k] = v;
-        delete originais[k];
+        localStorage.setItem(chave(), JSON.stringify(pacote));
+      } catch (e) {
+        T.aviso('Não foi possível guardar a planilha neste navegador.', 'agir');
+        return;
       }
-      const tinha = !!imp.atual;
-      imp.atual = null;
+      T.aviso(`${pacote.arquivo}: ${f.n(pacote.linhas)} linhas aplicadas a ${O.clienteAtual().nome}`, 'firme');
+      recarregar();
+    },
+    remover() {
       try {
-        localStorage.removeItem(CHAVE);
+        localStorage.removeItem(chave());
       } catch (e) {}
-      if (tinha && !silencioso) {
-        T.aviso('Importação removida: o painel voltou aos dados de demonstração', 'info');
-        T.emit('dados-importados', null);
+      T.aviso('Importação removida: o painel voltou aos dados das integrações', 'info');
+      recarregar();
+    },
+    /** Sobrepõe as colunas mapeadas às métricas diárias do conjunto (chamado pela fonte ao carregar). */
+    aplicarEm(cj) {
+      const p = ler();
+      if (!p || !cj) return cj;
+      const destinos = Object.entries(p.mapa).filter(([, alvo]) => alvo);
+      if (!destinos.length) return cj;
+      const trocar = new Set();
+      const novos = [];
+      for (const [col, alvo] of destinos) {
+        const [canal, metrica] = alvo.split(':');
+        for (const r of p.registros) {
+          trocar.add(`${r.d}|${canal}|${metrica}`);
+          novos.push({ d: r.d, canal, metrica, v: r.valores[col], fonte: 'planilha' });
+        }
+        const con = (cj.conectores || []).find((c) => c.canal === canal);
+        if (con) con.planilha = p.arquivo;
+        else (cj.conectores = cj.conectores || []).push({ canal, estado: 'nao_configurado', planilha: p.arquivo, fornece: ['metricas'] });
       }
-    },
-  });
-
-  try {
-    const salvo = JSON.parse(localStorage.getItem(CHAVE) || 'null');
-    if (salvo && salvo.registros) imp.aplicar(salvo, { silencioso: true });
-  } catch (e) {}
-
-  // Com uma planilha ativa, "hoje" para o filtro de período é o último dia da planilha.
-  const ultimoOriginal = T.filtro.ultimoDia;
-  T.filtro.ultimoDia = () => (imp.atual && imp.atual.registros.length ? imp.atual.registros.at(-1).d : ultimoOriginal());
-
-  // ---------- exportações ----------
-  T.exportar = {
-    series() {
-      const linhas = [['serie', 'data', 'valor', 'observacao']];
-      for (const [nome, s] of Object.entries(S)) {
-        if (!Array.isArray(s) || !s.length || typeof s[0] !== 'object' || !('d' in s[0])) continue;
-        for (const p of T.filtro.recortar(s)) linhas.push([nome, p.d, p.v ?? p.h, p.parcial ? 'dia incompleto' : p.carga ? 'carga em lote' : '']);
-      }
-      T.planilha.baixarCSV(linhas, `torre-series-${T.filtro.periodo}.csv`);
-    },
-    decisoes() {
-      const linhas = [['nivel', 'area', 'decisao', 'metrica', 'unidade', 'acao', 'paginas_do_livro']];
-      for (const a of T.alertas) linhas.push([a.nivel === 'agir' ? 'agir hoje' : 'atenção', a.area, a.titulo, a.metrica.v, a.metrica.u, a.acao, [].concat(a.p || []).join(', ')]);
-      T.planilha.baixarCSV(linhas, 'torre-decisoes.csv');
-    },
-    livro() {
-      T.planilha.baixar(JSON.stringify({ livro: L, series: S }, null, 2), 'torre-livro-de-dados.json', 'application/json');
-    },
-    modelo() {
-      const cols = ['passageiros_dia', 'pilotos_distintos_dia', 'conversas_novas_dia', 'entregas_dia'];
-      const base = S.passageiros_dia;
-      const linhas = [['data', ...cols], ...base.map((p) => [p.d, ...cols.map((c) => ((S[c].find((q) => q.d === p.d) || {}).v ?? 0))])];
-      T.planilha.baixarCSV(linhas, 'torre-modelo-importacao.csv');
+      cj.diario = (cj.diario || []).filter((x) => !trocar.has(`${x.d}|${x.canal}|${x.metrica}`)).concat(novos);
+      return cj;
     },
   };
 
-  // ---------- página ----------
-  function conectores() {
-    const sens = Object.fromEntries(T.dados.sensores({ soFontes: true }).map((s) => [s.id, s]));
-    const EST = { atualizado: ['ok', 'Sincronizado'], atrasado: ['parado', 'Coleta parada'] };
-    const est = (id, padrao) => (sens[id] ? EST[sens[id].estado] || ['ok', 'Conectado'] : padrao);
-    const lista = [
-      { nome: 'PostgreSQL · Central', tipo: 'Banco de dados', icone: 'dados', e: est('central', ['ok', 'Conectado']), det: 'bot, pessoas, leads e chamados · leitura de agregados' },
-      { nome: 'WhatsApp Business Cloud API', tipo: 'Mensageria', icone: 'central', e: ['ok', 'Webhook ativo'], det: 'conversas, etapas do bot e status das linhas' },
-      { nome: 'OPS Intelligence · operação', tipo: 'Banco de dados', icone: 'operacao', e: est('operacao', ['ok', 'Conectado']), det: 'material, estoque, refeição, visitas e atendimento' },
-      { nome: 'Instagram e Facebook Graph', tipo: 'Redes sociais', icone: 'alcance', e: est('redes', ['parado', 'Coleta parada']), det: sens.redes ? sens.redes.detalhe : 'seguidores, alcance e comentários' },
-      { nome: 'Planilha CSV / Excel', tipo: 'Arquivo', icone: 'planilha', e: imp.atual ? ['ok', 'Planilha ativa'] : ['livre', 'Pronto para importar'], det: imp.atual ? `${imp.atual.arquivo} · ${f.n(imp.atual.linhas)} linhas` : 'arraste um .csv ou .xlsx logo abaixo', acao: '#importar' },
-      { nome: 'API REST / JSON', tipo: 'Integração', icone: 'conector', e: ['livre', 'Contrato publicado'], det: 'qualquer sistema que entregue o formato de série abaixo', acao: '#contrato' },
-    ];
-    return T.h(
-      'div',
-      { class: 'conectores' },
-      lista.map((c) =>
-        T.h(
-          c.acao ? 'a' : 'article',
-          { class: 'conector', href: c.acao || null, 'data-estado': c.e[0], 'data-revela': '' },
-          T.h('span', { class: 'conector-icone' }, T.icone(c.icone)),
-          T.h('span', { class: 'conector-corpo' }, T.h('small', null, c.tipo), T.h('b', null, c.nome), T.h('span', { class: 'conector-det' }, c.det)),
-          T.h('span', { class: 'conector-estado' }, T.h('i'), c.e[1])
-        )
+  // ---------- integrações ----------
+  const ESTADO = { ativo: ['firme', 'Sincronizada'], atrasado: ['atencao', 'Atrasada'], erro: ['agir', 'Erro'], sem_permissao: ['agir', 'Sem permissão'], pendente: ['atencao', 'Pendente'], nao_configurado: ['nao-medido', 'Não configurada'] };
+  const FORNECE = { metricas: 'métricas diárias', conteudos: 'publicações', leads: 'leads', conversas: 'conversas' };
+
+  function integracoes(cj) {
+    const p = ler();
+    const cartoes = (cj.conectores || []).map((c) => {
+      const [s, t] = ESTADO[c.estado] || ESTADO.nao_configurado;
+      const canal = N.canal(c.canal);
+      return T.h(
+        'article',
+        { class: 'ops-integracao', style: { '--c': canal.cor } },
+        T.h('header', null, T.h('i'), T.h('b', null, canal.nome), T.h('span', { class: 'ops-estado', 'data-s': s }, t)),
+        T.h('p', null, `Fornece ${(c.fornece || []).map((x) => FORNECE[x] || x).join(', ') || '—'}`),
+        T.h('small', null, c.ultimaSync ? `Última sincronização: ${U.dataHora(c.ultimaSync)}` : 'Ainda não sincronizou'),
+        c.mensagem ? T.h('p', { class: 'ops-integracao-msg' }, c.mensagem) : null,
+        c.planilha ? T.h('small', null, `Complementada pela planilha ${c.planilha}`) : null
+      );
+    });
+    cartoes.push(
+      T.h(
+        'article',
+        { class: 'ops-integracao', style: { '--c': 'var(--violeta)' } },
+        T.h('header', null, T.h('i'), T.h('b', null, 'Planilha CSV / Excel'), T.h('span', { class: 'ops-estado', 'data-s': p ? 'firme' : 'nao-medido' }, p ? 'Ativa' : 'Pronta')),
+        T.h('p', null, p ? `${p.arquivo} · ${f.n(p.linhas)} linhas` : 'Traga métricas diárias que as integrações não cobrem.'),
+        T.h('small', null, p ? `Importada em ${U.dataHora(p.em)}` : 'Use o importador logo abaixo')
       )
+    );
+    return U.cartao(
+      { id: 'dados-integracoes', titulo: `Integrações de ${cj.cliente.nome}`, sub: 'De onde vêm os números deste cliente', classe: 'largo', rodape: null, acao: O.ehAdmin() ? T.h('a', { class: 'botao-secundario', href: '#/controladores?alvo=admin-integracoes' }, T.icone('conector'), O.ehDemo() ? 'Ver no Admin' : 'Conectar ou reconectar') : null },
+      T.h('div', { class: 'ops-integracoes' }, cartoes),
+      O.ehDemo() ? T.h('p', { class: 'ops-nota' }, T.icone('info'), 'Na demonstração os estados das integrações são simulados.') : null
     );
   }
 
-  function importador() {
+  // ---------- importador ----------
+  function importador(cj) {
     const resultado = T.h('div', { class: 'importar-resultado', 'aria-live': 'polite' });
     const entrada = T.h('input', { type: 'file', accept: '.csv,.txt,.tsv,.xlsx', class: 'visualmente-oculto', id: 'arquivo-importar' });
     const zona = T.h(
@@ -138,10 +144,7 @@
       T.h('span', null, 'CSV (vírgula, ponto e vírgula ou tab) ou Excel .xlsx · uma coluna de data e colunas numéricas'),
       entrada
     );
-
-    const erro = (msg) => {
-      T.limpar(resultado).appendChild(T.h('p', { class: 'importar-erro' }, T.icone('agir'), msg));
-    };
+    const erro = (msg) => T.limpar(resultado).appendChild(T.h('p', { class: 'importar-erro' }, T.icone('agir'), msg));
 
     async function processar(arquivo) {
       if (!arquivo) return;
@@ -159,12 +162,7 @@
           'label',
           { class: 'mapa-linha' },
           T.h('span', null, T.h('b', null, c), T.h('small', null, `total ${f.n(T.soma(est.registros, (r) => r.valores[c]))}`)),
-          T.h(
-            'select',
-            { onchange: (e) => (mapa[c] = e.target.value) },
-            T.h('option', { value: '' }, 'Só analisar (não substituir)'),
-            ALVOS.map((a) => T.h('option', { value: a.id, selected: mapa[c] === a.id }, `Substituir: ${a.nome}`))
-          )
+          T.h('select', { onchange: (e) => (mapa[c] = e.target.value) }, T.h('option', { value: '' }, 'Ignorar esta coluna'), ALVOS.map((a) => T.h('option', { value: a.id, selected: mapa[c] === a.id }, a.nome)))
         )
       );
       const previa = T.h(
@@ -174,16 +172,11 @@
           'table',
           null,
           T.h('thead', null, T.h('tr', null, T.h('th', null, est.colunaData), est.colunas.map((c) => T.h('th', null, c)))),
-          T.h('tbody', null, est.registros.slice(0, 6).map((r) => T.h('tr', null, T.h('th', null, f.data(r.d) + '/' + r.d.slice(0, 4)), est.colunas.map((c) => T.h('td', { class: 'tab' }, f.nFlex(r.valores[c], 2))))))
+          T.h('tbody', null, est.registros.slice(0, 6).map((r) => T.h('tr', null, T.h('th', null, `${f.data(r.d)}/${r.d.slice(0, 4)}`), est.colunas.map((c) => T.h('td', { class: 'tab' }, f.nFlex(r.valores[c], 2))))))
         )
       );
       T.limpar(resultado).append(
-        T.h(
-          'div',
-          { class: 'importar-cab' },
-          T.icone('firme'),
-          T.h('span', null, T.h('b', null, arquivo.name), ` · ${f.n(est.registros.length)} linhas · ${f.data(est.registros[0].d)} a ${f.data(est.registros.at(-1).d)} · ${est.colunas.length} ${est.colunas.length > 1 ? 'colunas numéricas' : 'coluna numérica'}`)
-        ),
+        T.h('div', { class: 'importar-cab' }, T.icone('firme'), T.h('span', null, T.h('b', null, arquivo.name), ` · ${f.n(est.registros.length)} linhas · ${f.data(est.registros[0].d)} a ${f.data(est.registros.at(-1).d)} · ${est.colunas.length} ${est.colunas.length > 1 ? 'colunas numéricas' : 'coluna numérica'}`)),
         previa,
         T.h('h3', { class: 'mapa-titulo' }, 'Para onde vai cada coluna'),
         T.h('div', { class: 'mapa' }, seletores),
@@ -196,13 +189,14 @@
               class: 'botao-primario',
               type: 'button',
               onclick: () => {
-                imp.aplicar({ arquivo: arquivo.name, linhas: est.registros.length, colunaData: est.colunaData, colunas: est.colunas, registros: est.registros, mapa });
+                if (!Object.values(mapa).some(Boolean)) return erro('Escolha o destino de pelo menos uma coluna.');
+                O.importacao.aplicar({ arquivo: arquivo.name, linhas: est.registros.length, colunaData: est.colunaData, colunas: est.colunas, registros: est.registros, mapa, em: new Date().toISOString() });
               },
             },
             T.icone('raio'),
-            'Aplicar ao painel'
+            `Aplicar a ${cj.cliente.nome}`
           ),
-          T.h('span', { class: 'importar-nota' }, 'As séries mapeadas passam a alimentar todos os gráficos e o filtro de período. Os números consolidados do livro continuam do retrato.')
+          T.h('span', { class: 'importar-nota' }, 'Cada coluna substitui a métrica escolhida nos dias da planilha. Fica guardada só neste navegador e aparece como "planilha" nas fontes.')
         )
       );
     }
@@ -220,108 +214,56 @@
       processar(e.dataTransfer.files[0]);
     });
 
-    return T.h(
-      'section',
-      { class: 'cartao cartao-largo', id: 'importar', 'data-revela': '' },
-      T.h(
-        'header',
-        { class: 'cartao-topo' },
-        T.h('div', null, T.h('h2', { class: 'cartao-titulo' }, 'Importar planilha'), T.h('p', { class: 'cartao-sub' }, 'Traga seus próprios números: o painel reconhece a coluna de data, detecta as numéricas e sugere o mapeamento.')),
-        T.h('button', { class: 'botao-fantasma', type: 'button', onclick: T.exportar.modelo }, T.icone('download'), 'Baixar modelo')
-      ),
-      zona,
-      resultado
-    );
+    return U.cartao({ id: 'importar', titulo: 'Importar planilha', sub: 'O painel reconhece a coluna de data, detecta as numéricas e sugere o destino de cada uma.', classe: 'largo', rodape: null, acao: T.h('button', { class: 'botao-secundario', type: 'button', onclick: baixarModelo }, T.icone('download'), 'Baixar modelo') }, zona, resultado);
   }
 
-  function seusDados() {
-    const p = imp.atual;
+  function baixarModelo() {
+    const cols = ['instagram_alcance', 'instagram_visitas_perfil', 'facebook_alcance', 'whatsapp_conversas_iniciadas'];
+    const hoje = O.hoje();
+    const linhas = [['data', ...cols]];
+    for (let i = 6; i >= 0; i--) linhas.push([N.somarDias(hoje, -i), ...cols.map(() => '')]);
+    T.planilha.baixarCSV(linhas, 'ops-modelo-importacao.csv');
+  }
+
+  function importacaoAtiva() {
+    const p = ler();
     if (!p) return null;
-    const cores = ['var(--eletrico)', 'var(--ciano)', 'var(--violeta)', 'var(--rosa)', 'var(--atencao)', 'var(--firme)'];
-    const regs = T.filtro.recortar(p.registros);
-    const cards = p.colunas.slice(0, 6).map((c, i) => {
-      const tot = T.soma(regs, (r) => r.valores[c]);
-      return T.h(
-        'article',
-        { class: 'kpi', style: { '--kpi-cor': cores[i % cores.length] } },
-        T.h('header', { class: 'kpi-topo' }, T.h('span', { class: 'kpi-icone' }, T.icone('planilha')), T.h('span', { class: 'kpi-rotulo' }, c), p.mapa[c] ? T.h('span', { class: 'kpi-tag' }, 'no painel') : null),
-        T.h('div', { class: 'kpi-linha' }, T.h('b', { class: 'kpi-valor tab' }, f.compacto(tot))),
-        T.h('p', { class: 'kpi-sub' }, `média ${f.nFlex(tot / regs.length, 1)} por dia · pico ${f.nFlex(Math.max(...regs.map((r) => r.valores[c])), 1)}`)
-      );
-    });
-    const corpo = T.h('div', { class: 'cartao-grafico' });
-    const series = p.colunas.slice(0, 6).map((c, i) => ({ nome: c, pontos: p.registros.map((r) => ({ d: r.d, v: r.valores[c] })), cor: cores[i % cores.length], rotuloFim: true }));
-    G.linhas(corpo, { nome: 'seus dados', altura: 280, x0: p.registros[0].d, x1: p.registros.at(-1).d, series, margemDir: 110, formatoEixo: f.compacto, formatoDica: (v) => f.nFlex(v, 2) });
-    return T.h(
-      'section',
-      { class: 'cartao cartao-largo', id: 'seus-dados', 'data-revela': '' },
-      T.h(
-        'header',
-        { class: 'cartao-topo' },
-        T.h('div', null, T.h('h2', { class: 'cartao-titulo' }, `Seus dados · ${p.arquivo}`), T.h('p', { class: 'cartao-sub' }, `${T.filtro.rotulo()} · ${f.n(p.linhas)} linhas importadas`)),
-        T.h('button', { class: 'botao-perigo', type: 'button', onclick: () => imp.restaurar() }, T.icone('lixo'), 'Remover importação')
-      ),
-      T.h('div', { class: 'kpis kpis-compactos' }, cards),
-      corpo
+    const linhas = Object.entries(p.mapa)
+      .filter(([, alvo]) => alvo)
+      .map(([col, alvo]) => [col, (ALVOS.find((a) => a.id === alvo) || { nome: alvo }).nome, f.n(T.soma(p.registros, (r) => r.valores[col]))]);
+    return U.cartao(
+      { id: 'seus-dados', titulo: `Planilha ativa · ${p.arquivo}`, sub: `${f.n(p.linhas)} dias, de ${f.data(p.registros[0].d)} a ${f.data(p.registros.at(-1).d)}`, classe: 'largo', rodape: null, acao: T.h('button', { class: 'botao-perigo', type: 'button', onclick: () => O.importacao.remover() }, T.icone('lixo'), 'Remover importação') },
+      T.h('div', { class: 'ops-tabela-rola' }, T.h('table', { class: 'ops-tabela' }, T.h('thead', null, T.h('tr', null, ['Coluna', 'Vira', 'Total importado'].map((c) => T.h('th', { scope: 'col' }, c)))), T.h('tbody', null, linhas.map((l) => T.h('tr', null, l.map((c) => T.h('td', null, c))))))),
+      T.h('p', { class: 'ops-nota' }, T.icone('info'), 'Os números já estão na ', T.h('a', { href: '#/' }, 'Visão Executiva'), ' e nos demais gráficos, com a fonte marcada como planilha.')
     );
   }
 
-  function contrato() {
-    const exemplo = `GET /api/v1/series/leads_dia?de=2026-10-12&ate=2026-11-14
-
-{
-  "serie": "leads_dia",
-  "unidade": "cadastros",
-  "fuso": "America/Sao_Paulo",
-  "pontos": [
-    { "d": "2026-11-12", "v": 298 },
-    { "d": "2026-11-13", "v": 301 },
-    { "d": "2026-11-14", "v": 114, "parcial": true }
-  ]
-}`;
-    return T.h(
-      'section',
-      { class: 'cartao cartao-inteiro', id: 'contrato', 'data-revela': '' },
-      T.h('header', { class: 'cartao-topo' }, T.h('div', null, T.h('h2', { class: 'cartao-titulo' }, 'Contrato de dados'), T.h('p', { class: 'cartao-sub' }, 'O mesmo formato que o gerador TypeScript produz — tipado em scripts/gerar/tipos.ts.'))),
-      T.h('div', { class: 'contrato-corpo' }, T.h('pre', { class: 'codigo' }, T.h('code', null, exemplo)),
-      T.h('ul', { class: 'contrato-regras' }, T.h('li', null, T.h('b', null, 'd'), ' data ISO no fuso de Brasília'), T.h('li', null, T.h('b', null, 'v'), ' valor numérico do dia'), T.h('li', null, T.h('b', null, 'parcial'), ' dia ainda aberto (desenhado em lilás claro)'), T.h('li', null, T.h('b', null, 'carga'), ' entrada em lote, separada do ritmo orgânico'), T.h('li', null, 'CSV e Excel seguem a mesma ideia: uma coluna de data e uma coluna por série.')))
-    );
-  }
-
+  // ---------- exportações ----------
   function exportacoes() {
     const item = (icone, titulo, desc, fn) => T.h('button', { class: 'exportacao', type: 'button', onclick: fn }, T.h('span', { class: 'exportacao-icone' }, T.icone(icone)), T.h('span', null, T.h('b', null, titulo), T.h('small', null, desc)), T.icone('download'));
-    return T.h(
-      'section',
-      { class: 'cartao', id: 'exportar', 'data-revela': '' },
-      T.h('header', { class: 'cartao-topo' }, T.h('div', null, T.h('h2', { class: 'cartao-titulo' }, 'Exportar'), T.h('p', { class: 'cartao-sub' }, `Respeita o filtro atual: ${T.filtro.rotulo().toLowerCase()}.`))),
+    return U.cartao(
+      { id: 'exportar', titulo: 'Exportar', sub: `Respeita o filtro atual: ${U.periodoTexto(O.f().janela)}.`, rodape: null },
       T.h(
         'div',
         { class: 'exportacoes' },
         item('pdf', 'Relatório em PDF', 'a página atual, pronta para imprimir ou anexar', () => T.exportarRelatorio()),
-        item('planilha', 'Todas as séries (CSV)', `${Object.keys(S).length} séries diárias em formato longo`, T.exportar.series),
-        item('decisao', 'Decisões (CSV)', `${T.alertas.length} decisões com métrica, ação e página`, T.exportar.decisoes),
-        item('dados', 'Livro de dados (JSON)', 'livro e séries completos, para outra ferramenta', T.exportar.livro)
+        item('planilha', 'Leads do período (CSV)', 'origem, campanha, responsável, etapa e próxima ação', () => O.exportarLeads()),
+        item('dados', 'Conjunto do cliente (JSON)', 'métricas, leads, conteúdos e campanhas, para outra ferramenta', () => O.exportarConjunto())
       )
     );
   }
 
   T.modulos.dados = {
-    render(raiz) {
-      raiz.append(
-        T.h(
-          'header',
-          { class: 'painel-cabeca', 'data-revela': '' },
-          T.h(
-            'div',
-            null,
-            T.h('p', { class: 'sobretitulo' }, T.icone('conector'), 'Workspace'),
-            T.h('h1', { class: 'painel-h1' }, 'Dados e integrações'),
-            T.h('p', { class: 'painel-lead' }, 'De onde vêm os números, como trazer os seus e como levá-los para outro lugar.')
-          )
-        ),
-        conectores(),
-        T.h('div', { class: 'painel-grade' }, seusDados(), importador(), exportacoes(), contrato())
-      );
-    },
+    render: (raiz) =>
+      U.pagina(raiz, (host, cj) => {
+        host.append(
+          ...[
+            U.cabecalho({ sobretitulo: [T.icone('conector'), 'Workspace'], titulo: 'Dados e integrações', lead: `De onde vêm os números de ${cj.cliente.nome}, como trazer os seus e como levá-los para outro lugar.` }),
+            integracoes(cj),
+            importacaoAtiva(),
+            T.h('div', { class: 'ops-linha l-2-1' }, importador(cj), exportacoes()),
+          ].filter(Boolean)
+        );
+      }),
   };
 })();

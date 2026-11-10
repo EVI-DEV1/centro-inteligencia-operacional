@@ -10,9 +10,6 @@
   const N = O.nucleo;
   const U = O.ui;
 
-  // o painel antigo do Clube Horizonte continua acessível como relatório do programa
-  T.modulos.relatorio = T.modulos.painel;
-
   const COR_KPI = { visitas_perfil: '#d55181', leads_novos: '#7c6cff', conversas_iniciadas: '#14a3b8', leads_convertidos: '#c98500' };
 
   function kpisPrincipais(ind, j) {
@@ -298,5 +295,4 @@
       U.pagina(raiz, montar);
     },
   };
-  T.ops.montarExecutiva = montar;
 })();

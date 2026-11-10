@@ -1,7 +1,6 @@
 :root {
   color-scheme: dark;
 
-  --noite-0: #060608;
   --noite-1: #0a0a0d;
   --noite-2: #111116;
   --noite-3: #17171e;
@@ -22,28 +21,17 @@
   --ciano: #22d3ee;
   --ciano-fundo: rgba(34, 211, 238, 0.1);
   --violeta: #c084fc;
-  --violeta-fundo: rgba(192, 132, 252, 0.13);
-  --rosa: #f472b6;
-  --parcial: #c7c2ff;
-  --referencia: #7a7a86;
 
   --firme: #34d399;
   --atencao: #fbbf24;
   --agir: #fb7185;
-  --nao-medido: #84848f;
   --agir-fundo: rgba(251, 113, 133, 0.1);
   --atencao-fundo: rgba(251, 191, 36, 0.09);
   --firme-fundo: rgba(52, 211, 153, 0.1);
 
-  --cen-1: #5b4fd6;
-  --cen-2: #7c6cff;
-  --cen-3: #22d3ee;
-
   --f-texto: 'Archivo', 'Segoe UI', system-ui, sans-serif;
   --f-leitura: 'Archivo', 'Segoe UI', system-ui, sans-serif;
-  --f-mono: 'B612 Mono', 'Cascadia Mono', Consolas, ui-monospace, monospace;
   --gradiente: linear-gradient(135deg, #7c6cff 0%, #22d3ee 100%);
-  --vidro: rgba(23, 23, 30, 0.62);
   --sombra-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 32px -18px rgba(0, 0, 0, 0.8);
 
   --t-11: clamp(10.5px, 0.18vw + 8.4px, 12px);
@@ -52,18 +40,12 @@
   --t-15: clamp(14px, 0.26vw + 11.2px, 17px);
   --t-17: clamp(15.5px, 0.3vw + 12.2px, 19px);
   --t-20: clamp(18px, 0.4vw + 13.4px, 23px);
-  --t-26: clamp(21px, 0.62vw + 13.4px, 30px);
-  --t-34: clamp(26px, 0.95vw + 13px, 42px);
-  --t-48: clamp(34px, 1.5vw + 14px, 60px);
-  --t-72: clamp(46px, 2.6vw + 12px, 92px);
 
-  --e-1: 4px;
   --e-2: 8px;
   --e-3: 12px;
   --e-4: 16px;
   --e-5: 24px;
   --e-6: 32px;
-  --e-7: 48px;
   --e-8: 72px;
 
   --raio-1: 6px;
@@ -77,21 +59,8 @@
   --dur-1: 160ms;
   --dur-2: 320ms;
   --dur-3: 620ms;
-  --dur-4: 1100ms;
 
   --horizonte-1: #15122e;
   --horizonte-2: rgba(124, 108, 255, 0.12);
   --horizonte-3: rgba(34, 211, 238, 0.06);
-}
-
-[data-fase='B'] {
-  --horizonte-1: #1d1840;
-  --horizonte-2: rgba(124, 108, 255, 0.24);
-  --horizonte-3: rgba(192, 132, 252, 0.2);
-}
-
-[data-fase='C'] {
-  --horizonte-1: #241d55;
-  --horizonte-2: rgba(34, 211, 238, 0.22);
-  --horizonte-3: rgba(192, 132, 252, 0.3);
 }

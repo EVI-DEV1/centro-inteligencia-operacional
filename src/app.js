@@ -1,46 +1,24 @@
 (function () {
   'use strict';
   const T = window.T;
-  const L = T.dados.livro;
-  const f = T.fmt;
-
-  const janelaCurta = () => String(L.meta.janela || '').replace(/\s*\(.*\)\s*$/, '');
-
   const O = T.ops;
-  const leituraTrilho = () => {
-    if (!O.ehProgramaHorizonte()) return {};
-    const n = T.numerosChave();
-    return {
-      operacao: [f.d(n.kraftDias), 'de caixa'],
-      atendimento: [f.pct(n.concentracao), 'uma conta'],
-      alcance: [f.d(n.coletaParada, 0), 'sem coleta'],
-      decisao: [String(T.alertas.filter((a) => a.nivel === 'agir').length), 'para agir hoje'],
-    };
-  };
 
-  let painelIntegridade = null;
-  let integridadeBtn = null;
+  // Navegação. `so: 'admin'` = só administradores. Os ids de rota antigos (pilotos, passageiros,
+  // controladores, plano) foram mantidos para não quebrar links e atalhos já usados.
+  T.paginas = [
+    { id: 'painel', nome: 'Visão Executiva', icone: 'painel', grupo: 'Inteligência' },
+    { id: 'central', nome: 'Central', icone: 'central', grupo: 'Inteligência' },
+    { id: 'conteudo', nome: 'Análise de Conteúdo', icone: 'alcance', grupo: 'Inteligência' },
+    { id: 'plano', nome: 'Campanhas', icone: 'plano', grupo: 'Comercial' },
+    { id: 'passageiros', nome: 'Leads', icone: 'passageiros', grupo: 'Comercial' },
+    { id: 'pilotos', nome: 'Pessoas', icone: 'pilotos', grupo: 'Gestão' },
+    { id: 'controladores', nome: 'Admin', icone: 'controladores', grupo: 'Gestão' },
+    { id: 'comparar', nome: 'Comparar clientes', icone: 'tendencia', grupo: 'Gestão', so: 'admin' },
+    { id: 'dados', nome: 'Dados e integrações', icone: 'dados', grupo: 'Workspace' },
+  ];
 
-  function conteudoIntegridade() {
-    return [
-      T.h('h2', null, 'Integridade dos dados'),
-      T.h('p', null, `Retrato fixo de ${f.data(L.meta.medidoEm)}, ${L.meta.janela}. Não atualiza sozinho.`),
-      T.h('p', { class: 'integridade-demo' }, T.icone('etiqueta'), 'Demonstração com dados fictícios: o Clube Horizonte, as pessoas, as equipes e os números foram inventados.'),
-      T.comp.sensores(T.dados.sensores(), { compacto: true }),
-    ];
-  }
-  function abrirIntegridade(aberto) {
-    if (!painelIntegridade) return;
-    painelIntegridade.hidden = !aberto;
-    integridadeBtn.setAttribute('aria-expanded', String(aberto));
-  }
-  document.addEventListener('click', (e) => {
-    if (painelIntegridade && !painelIntegridade.hidden && !painelIntegridade.contains(e.target)) abrirIntegridade(false);
-  });
-
-  const ICONE_PAGINA = { painel: 'painel', dados: 'dados' };
-  /** Páginas visíveis para o cliente e o papel atuais. */
-  T.paginasVisiveis = () => T.paginas.filter((p) => (p.so === 'horizonte' ? O.ehProgramaHorizonte() : p.so === 'admin' ? O.ehAdmin() : true));
+  /** Páginas visíveis para o papel atual. */
+  T.paginasVisiveis = () => T.paginas.filter((p) => p.so !== 'admin' || O.ehAdmin());
 
   function logo() {
     const s = T.s;
@@ -56,23 +34,12 @@
   }
 
   function faixaNav(p, i) {
-    const leituras = leituraTrilho();
-    const leitura = leituras[p.id];
-    const regua = p.capitulo && O.ehProgramaHorizonte() ? T.dados.regua(p.capitulo) : null;
-    const estado = regua && regua.length ? { c: T.dados.contagemRegua(regua), pior: T.dados.piorEstado(regua) } : null;
-    const agir = p.id === 'decisao' && O.ehProgramaHorizonte() ? T.alertas.filter((a) => a.nivel === 'agir').length : null;
     return T.h(
       'a',
-      { class: 'faixa', href: `#/${p.id === 'painel' ? '' : p.id}`, 'data-rota': p.id, title: leitura ? `${p.nome} · ${leitura.join(' ')}${i < 10 ? ` (tecla ${i})` : ''}` : p.nome },
-      T.h('span', { class: 'faixa-icone' }, T.icone(ICONE_PAGINA[p.id] || p.icone)),
-      T.h('span', { class: 'faixa-nome' }, p.nome, p.parte ? T.h('small', { class: 'faixa-parte' }, ` ${p.parte}`) : null),
-      agir
-        ? T.h('span', { class: 'faixa-badge', 'data-s': 'vermelho' }, String(agir))
-        : estado && estado.c.vermelho
-          ? T.h('span', { class: 'faixa-badge', 'data-s': estado.pior, title: `Régua: ${estado.c.vermelho} agir hoje · ${estado.c.amarelo} atenção · ${estado.c.verde} firmes` }, String(estado.c[estado.pior] || 0))
-          : p.id === 'dados' && T.importacao && T.importacao.ativa()
-            ? T.h('span', { class: 'faixa-badge', 'data-s': 'verde' }, 'CSV')
-            : null
+      { class: 'faixa', href: `#/${p.id === 'painel' ? '' : p.id}`, 'data-rota': p.id, title: `${p.nome}${i < 10 ? ` (tecla ${i})` : ''}` },
+      T.h('span', { class: 'faixa-icone' }, T.icone(p.icone)),
+      T.h('span', { class: 'faixa-nome' }, p.nome),
+      p.id === 'dados' && O.importacao && O.importacao.ativa() ? T.h('span', { class: 'faixa-badge', 'data-s': 'verde' }, 'CSV') : null
     );
   }
 
@@ -148,37 +115,6 @@
 
   let migalha = null;
   function topo() {
-    const hoje = T.estado.hoje.iso;
-    const faltam = T.diasEntre(hoje, L.meta.diaD);
-    const paradas = T.dados.fontesParadas();
-    integridadeBtn = T.h(
-      'button',
-      { class: 'botao-icone', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'painel-integridade', title: paradas ? `Integridade: ${paradas} fonte parada` : 'Integridade: fontes ok', 'data-paradas': String(paradas) },
-      T.icone('sensor'),
-      paradas ? T.h('i', { class: 'ponto-alerta' }) : null
-    );
-    painelIntegridade = T.h('div', { class: 'painel-integridade', id: 'painel-integridade', hidden: true }, conteudoIntegridade());
-    integridadeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      abrirIntegridade(painelIntegridade.hidden);
-    });
-
-    const nomesBtn = T.h('button', {
-      class: 'botao-icone',
-      type: 'button',
-      'data-ocultavel': '',
-      'aria-pressed': String(T.estado.nomes === 'ocultos'),
-      'aria-label': 'Ocultar nomes da equipe (N)',
-      title: 'Ocultar nomes da equipe (N)',
-      onclick: () => T.definir('nomes', T.estado.nomes === 'ocultos' ? 'visiveis' : 'ocultos'),
-    });
-    const pintarNomes = () => {
-      T.limpar(nomesBtn).appendChild(T.icone(T.estado.nomes === 'ocultos' ? 'olho-fechado' : 'olho'));
-      nomesBtn.setAttribute('aria-pressed', String(T.estado.nomes === 'ocultos'));
-    };
-    pintarNomes();
-    T.on('nomes', pintarNomes);
-
     const modos = T.h('div', { class: 'modos', role: 'group', 'aria-label': 'Modo de uso' });
     [
       ['explorar', 'explorar', 'Explorar'],
@@ -189,8 +125,6 @@
     });
     T.on('modo', (v) => T.$$('button', modos).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modo === v))));
 
-    const horizonte = O.ehProgramaHorizonte();
-    const agir = horizonte ? T.alertas.filter((a) => a.nivel === 'agir').length : 0;
     migalha = T.h('span', { class: 'migalha-atual' }, 'Visão Executiva');
     const cli = O.clienteAtual();
 
@@ -202,39 +136,12 @@
       T.h(
         'div',
         { class: 'comandos' },
-        !horizonte ? null : T.h('span', { class: 'contagem-pilula', role: 'timer', title: `Faltam ${faltam} dias para o Dia D, ${f.data(L.meta.diaD)} · adesões fecham ${L.meta.encerramento}` }, T.h('b', null, `D-${Math.max(0, faltam)}`), T.h('span', null, `Dia D ${f.data(L.meta.diaD)}`)),
-        horizonte ? T.h('span', { class: 'integridade-ancora' }, integridadeBtn, painelIntegridade) : null,
-        nomesBtn,
-        horizonte
-          ? T.h('a', { class: 'botao-icone sino', href: '#/decisao', title: `${agir} decisões para agir hoje`, 'aria-label': `${agir} decisões para agir hoje` }, T.icone('sino'), agir ? T.h('i', { class: 'sino-badge' }, String(agir)) : null)
-          : T.h('a', { class: 'botao-icone sino', href: '#/central', title: 'Alertas e pendências na Central', 'aria-label': 'Alertas e pendências na Central' }, T.icone('sino')),
+        T.h('a', { class: 'botao-icone sino', href: '#/central', title: 'Alertas e pendências na Central', 'aria-label': 'Alertas e pendências na Central' }, T.icone('sino')),
         modos,
         T.h('a', { class: 'botao-secundario', href: '#/dados?alvo=importar' }, T.icone('upload'), T.h('span', { class: 'rotulo-opcional' }, 'Importar')),
         menuExportar()
       )
     );
-  }
-
-  function grupoFase() {
-    const fases = T.h('div', { class: 'segmentado', role: 'group', 'aria-label': 'Fase do programa' });
-    L.fases.forEach((fz) =>
-      fases.appendChild(
-        T.h(
-          'button',
-          { type: 'button', 'data-fase': fz.id, 'aria-pressed': String(fz.id === T.estado.fase), title: `${fz.nome} · ${f.data(fz.inicio)}${fz.inicio !== fz.fim ? `–${f.data(fz.fim)}` : ''}`, onclick: () => T.definir('fase', fz.id) },
-          fz.nome.replace(/^Fase\s+\w\s*·?\s*/i, ''),
-          fz.id === T.estado.faseDeHoje ? T.h('i', { class: 'fase-hoje', title: 'fase de hoje' }) : null
-        )
-      )
-    );
-    T.on('fase', (v) => T.$$('button', fases).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.fase === v))));
-    return T.h('label', { class: 'filtro-grupo' }, T.h('span', { class: 'filtro-rotulo' }, 'Fase do programa'), fases);
-  }
-  // a fase do livro só existe no relatório do programa Clube Horizonte
-  O.ui.extrasBarra = () => (O.ehProgramaHorizonte() ? grupoFase() : null);
-
-  function barraFiltros() {
-    return O.ui.barraFiltros();
   }
 
   // ---------- avisos (toasts) ----------
@@ -263,7 +170,7 @@
     let itens = [];
     let sel = 0;
     const acoes = () => [
-      ...T.paginasVisiveis().map((p) => ({ grupo: 'Páginas', icone: ICONE_PAGINA[p.id] || p.icone, texto: p.nome, fazer: () => T.irPara(p.id) })),
+      ...T.paginasVisiveis().map((p) => ({ grupo: 'Páginas', icone: p.icone, texto: p.nome, fazer: () => T.irPara(p.id) })),
       ...O.clientes().map((c) => ({ grupo: 'Clientes', icone: 'painel', texto: `Cliente: ${c.nome}`, fazer: () => O.definir({ cliente: c.id }) })),
       ...O.nucleo.PERIODOS.filter((p) => p.id !== 'personalizado').map((p) => ({ grupo: 'Filtros', icone: 'filtro', texto: `Período: ${p.rotulo}`, fazer: () => O.definir({ periodo: p.id }) })),
       ...O.nucleo.CANAIS.filter((c) => c.id !== 'outros').map((c) => ({ grupo: 'Filtros', icone: 'filtro', texto: `Plataforma: ${c.nome}`, fazer: () => O.definir({ plataforma: c.id }) })),
@@ -272,11 +179,9 @@
       O.ehDemo() ? { grupo: 'Ações', icone: 'cadeado', texto: 'Entrar para ver dados reais', fazer: () => O.ui.login() } : { grupo: 'Ações', icone: 'voltar', texto: 'Sair', fazer: () => O.sair() },
       { grupo: 'Ações', icone: 'upload', texto: 'Importar planilha CSV/Excel', fazer: () => T.irPara('dados', 'importar') },
       { grupo: 'Ações', icone: 'pdf', texto: 'Exportar relatório em PDF', fazer: () => T.exportarRelatorio() },
-      ...(O.ehProgramaHorizonte() ? [{ grupo: 'Ações', icone: 'planilha', texto: 'Exportar séries do programa em CSV', fazer: () => T.exportar.series() }, { grupo: 'Ações', icone: 'decisao', texto: 'Exportar decisões em CSV', fazer: () => T.exportar.decisoes() }] : []),
+      { grupo: 'Ações', icone: 'planilha', texto: 'Exportar leads do período em CSV', fazer: () => O.exportarLeads && O.exportarLeads() },
       { grupo: 'Ações', icone: 'apresentar', texto: 'Modo apresentação', fazer: () => T.modo('apresentar') },
       { grupo: 'Ações', icone: 'telao', texto: 'Modo telão', fazer: () => T.modo('telao') },
-      { grupo: 'Ações', icone: 'olho-fechado', texto: 'Ocultar ou mostrar nomes', fazer: () => T.definir('nomes', T.estado.nomes === 'ocultos' ? 'visiveis' : 'ocultos') },
-      ...(O.ehProgramaHorizonte() ? T.alertas.filter((a) => a.nivel === 'agir').map((a) => ({ grupo: 'Decisões', icone: 'agir', texto: a.titulo, fazer: () => T.irPara(a.rota, a.alvo) })) : []),
     ];
     const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
     function pintar() {
@@ -347,7 +252,6 @@
     const id = rota && T.modulos[rota] ? rota : 'painel';
     return { id, alvo: params.get('alvo'), params };
   }
-  T.lerHash = lerHash;
 
   function destacar(alvoId, rolar = true) {
     const el = alvoId ? document.getElementById(alvoId) : null;
@@ -363,28 +267,23 @@
   }
 
   function render() {
-    const { id, alvo, params } = lerHash();
+    const { id, alvo } = lerHash();
     if (id === rotaAtual) {
       destacar(alvo);
-      T.emit('rota-mesma', { id, alvo });
       return;
     }
-    T.sairDaPagina();
     T.graf.pararVida();
     T.dica.esconder();
     rotaAtual = id;
     T.estado.rota = id;
     const pagina = T.h('div', { class: 'pagina', 'data-pagina': id });
     T.limpar(palco).appendChild(pagina);
-    const meta = T.paginas.find((x) => x.id === id);
     try {
-      if (meta && meta.so === 'horizonte' && !O.ehProgramaHorizonte())
-        pagina.appendChild(O.ui.vazio('Relatório exclusivo do programa de demonstração', 'Esta página mostra os capítulos do livro do Clube Horizonte. Selecione o cliente "Clube Horizonte" no modo demonstração para vê-la.', T.h('button', { class: 'botao-secundario', type: 'button', onclick: () => O.definir({ modo: 'demonstracao', cliente: 'demo-horizonte' }) }, 'Abrir Clube Horizonte')));
-      else T.modulos[id].render(pagina);
+      T.modulos[id].render(pagina);
       T.numerosNaLeitura(pagina);
     } catch (e) {
-      console.error('[torre] falha ao montar a página', id, e);
-      pagina.appendChild(T.h('p', { class: 'erro-pagina' }, 'Esta página não conseguiu montar. Os dados continuam no livro; recarregue o OPS Intelligence.'));
+      console.error('[ops] falha ao montar a página', id, e);
+      pagina.appendChild(T.h('p', { class: 'erro-pagina' }, 'Esta página não conseguiu montar. Recarregue o OPS Intelligence.'));
     }
     T.$$('.faixa', document).forEach((a) => (a.dataset.rota === id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
     const p = T.paginas.find((x) => x.id === id);
@@ -395,9 +294,6 @@
     else window.scrollTo({ top: 0, behavior: 'auto' });
     const faixa = T.$(`.faixa[data-rota="${id}"]`);
     if (faixa && window.matchMedia('(max-width: 1100px)').matches) faixa.scrollIntoView({ inline: 'center', block: 'nearest' });
-    const explica = params.get('explica');
-    if (explica) setTimeout(() => T.explicar(explica), 450);
-    T.emit('rota', { id, alvo });
   }
   T.irPara = (rota, alvo) => {
     const alvoQs = alvo ? `?alvo=${alvo}` : '';
@@ -439,7 +335,6 @@
     { rota: 'plano', alvo: 'camp-inteligencia', legenda: 'A inteligência de campanhas: o histórico do cliente responde o que funcionou antes de planejar a próxima.' },
   ];
   const roteiro = () => ROTEIRO_OPS;
-  Object.defineProperty(T, 'roteiroAtual', { get: roteiro });
 
   function pintarLegenda() {
     const q = roteiro()[quadro];
@@ -553,8 +448,7 @@
     if (/^[0-9]$/.test(e.key)) {
       const p = T.paginasVisiveis()[Number(e.key)];
       if (p) T.irPara(p.id);
-    } else if (e.key === 'n' || e.key === 'N') T.definir('nomes', T.estado.nomes === 'ocultos' ? 'visiveis' : 'ocultos');
-    else if ((e.key === 'p' || e.key === 'P') && modo === 'explorar') T.modo('apresentar');
+    } else if ((e.key === 'p' || e.key === 'P') && modo === 'explorar') T.modo('apresentar');
     else if ((e.key === 't' || e.key === 'T') && modo === 'explorar') T.modo('telao');
   });
 
@@ -575,13 +469,12 @@
     T.limpar(raiz);
     let lateralEl = lateral();
     const topoEl = topo();
-    const filtrosEl = barraFiltros();
+    const filtrosEl = O.ui.barraFiltros();
     [topoEl, lateralEl].forEach((el) => T.numerosNaLeitura(el));
     raiz.append(T.h('a', { class: 'pular', href: '#conteudo' }, 'Pular para o conteúdo'), lateralEl, T.h('div', { class: 'principal' }, topoEl, filtrosEl, palco));
     document.body.append(holofote, legenda, avisos, T.paleta.el);
     window.addEventListener('hashchange', render);
     window.addEventListener('resize', () => T.estado.modo !== 'explorar' && posicionarHolofote());
-    T.on('filtro', remontar);
     let topoAtual = topoEl;
     const reconstruirMoldura = () => {
       const nova = lateral();
@@ -596,7 +489,7 @@
       const mudouContexto = !m || !m.antes || m.antes.cliente !== m.depois.cliente || m.antes.modo !== m.depois.modo;
       if (mudouContexto) reconstruirMoldura();
       const p = T.paginas.find((x) => x.id === T.estado.rota);
-      if (p && ((p.so === 'horizonte' && !O.ehProgramaHorizonte()) || (p.so === 'admin' && !O.ehAdmin()))) return T.irPara('painel');
+      if (p && p.so === 'admin' && !O.ehAdmin()) return T.irPara('painel');
       remontar();
     });
     T.on('ops:sessao', reconstruirMoldura);
@@ -609,8 +502,6 @@
     });
     render();
     document.documentElement.classList.add('pronto');
-    if (lerHash().params.get('integridade') === '1') abrirIntegridade(true);
-    T.emit('montado');
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);

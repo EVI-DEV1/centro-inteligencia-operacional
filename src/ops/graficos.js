@@ -7,7 +7,6 @@
   const T = window.T;
   const f = T.fmt;
   const O = (T.ops = T.ops || {});
-  const N = () => O.nucleo;
   const reduzido = () => (T.mov && T.mov.reduzido) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const s = T.s;
 
@@ -366,5 +365,4 @@
     );
   };
 
-  void N;
 })();

@@ -40,42 +40,6 @@
   color: inherit;
   min-width: 0;
 }
-.marca-selo {
-  width: 46px;
-  height: 46px;
-  flex: none;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--fio-medio);
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.selo-fundo {
-  fill: #14121f;
-  stroke: var(--eletrico);
-  stroke-width: 1.4;
-}
-.selo-sol {
-  stroke: var(--ciano);
-  stroke-width: 2;
-}
-.selo-raio {
-  stroke: var(--ciano);
-  stroke-width: 1.5;
-}
-.selo-horizonte {
-  stroke: var(--eletrico-claro);
-  stroke-width: 1.8;
-}
-.selo-estrada {
-  stroke: var(--eletrico);
-  stroke-width: 1.8;
-}
-.selo-faixa {
-  stroke: var(--tinta-1);
-  stroke-width: 1.4;
-  stroke-dasharray: 2.6 2.4;
-}
 .marca-texto {
   display: grid;
   line-height: 1.05;
@@ -98,46 +62,6 @@
   margin-top: 5px;
 }
 
-.telemetria {
-  display: flex;
-  align-items: center;
-  gap: var(--e-2);
-  min-width: 0;
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, #000 88%, transparent);
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 30px;
-  padding: 0 11px;
-  border: 1px solid var(--fio);
-  border-radius: 999px;
-  background: rgba(17, 17, 22, 0.7);
-  font-family: var(--f-leitura);
-  font-size: var(--t-11);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--tinta-2);
-  white-space: nowrap;
-  flex: none;
-}
-.chip b {
-  color: var(--tinta-1);
-  font-weight: 700;
-}
-.chip svg {
-  width: 13px;
-  height: 13px;
-  flex: none;
-}
-button.chip:hover {
-  border-color: var(--fio-forte);
-  color: var(--tinta-1);
-}
-
 .fases {
   display: inline-flex;
   align-items: center;
@@ -147,14 +71,6 @@ button.chip:hover {
   padding: 2px;
   background: rgba(17, 17, 22, 0.7);
   flex: none;
-}
-.fases-rotulo {
-  padding: 0 8px 0 10px;
-  font-family: var(--f-leitura);
-  font-size: var(--t-11);
-  letter-spacing: 0.08em;
-  color: var(--tinta-3);
-  text-transform: uppercase;
 }
 .fases button {
   height: 24px;
@@ -174,87 +90,11 @@ button.chip:hover {
   background: var(--eletrico);
   color: #fff;
 }
-.fases button[aria-pressed='true'] .fase-nome {
-  display: inline;
-}
-.fase-nome {
-  display: none;
-  font-weight: 400;
-  margin-left: 6px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.fase-hoje {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--ciano);
-  display: inline-block;
-  margin-left: 6px;
-  vertical-align: 1px;
-}
-
-.contagem {
-  display: grid;
-  grid-template-columns: auto auto;
-  align-items: center;
-  gap: 2px var(--e-3);
-  padding-left: var(--e-5);
-  border-left: 1px solid var(--fio);
-}
-.contagem-d {
-  grid-row: span 2;
-  font-weight: 800;
-  font-stretch: 118%;
-  font-size: var(--t-34);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  color: var(--tinta-1);
-  font-variant-numeric: lining-nums;
-}
-.contagem-d small {
-  font-size: 0.45em;
-  font-weight: 700;
-  color: var(--ciano);
-  letter-spacing: 0.04em;
-  margin-right: 2px;
-  vertical-align: 0.55em;
-}
-.contagem-alvo {
-  font-family: var(--f-leitura);
-  font-size: var(--t-11);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--tinta-2);
-  white-space: nowrap;
-}
-.contagem-marco {
-  font-size: var(--t-12);
-  color: var(--tinta-3);
-  white-space: nowrap;
-}
-.contagem-marco b {
-  color: var(--tinta-1);
-  font-weight: 600;
-}
 
 .comandos {
   display: flex;
   align-items: center;
   gap: var(--e-2);
-}
-
-.chip-demo {
-  border-color: rgba(34, 211, 238, 0.45);
-  background: rgba(34, 211, 238, 0.08);
-  color: var(--ciano);
-}
-.chip-demo b {
-  color: var(--ciano);
-  letter-spacing: 0.08em;
-}
-.chip-integridade[data-paradas='0'] b {
-  color: var(--firme);
 }
 
 .modos {
@@ -353,39 +193,6 @@ button.chip:hover {
   background: rgba(23, 23, 30, 0.9);
   box-shadow: inset 2px 0 0 var(--ciano);
 }
-.faixa-codigo {
-  display: grid;
-  place-items: center;
-  border-right: 1px dashed var(--fio-medio);
-  font-family: var(--f-leitura);
-  font-weight: 700;
-  font-size: var(--t-13);
-  color: var(--tinta-3);
-}
-.faixa-codigo svg {
-  width: 15px;
-  height: 15px;
-}
-.faixa-codigo {
-  align-content: center;
-  gap: 1px;
-}
-.faixa-parte {
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0;
-  color: var(--tinta-4);
-}
-.faixa[aria-current='page'] .faixa-codigo {
-  color: var(--ciano);
-}
-.faixa-corpo {
-  display: grid;
-  align-content: center;
-  gap: 3px;
-  padding: 7px 10px 7px 10px;
-  min-width: 0;
-}
 .faixa-nome {
   font-size: var(--t-13);
   font-weight: 650;
@@ -395,78 +202,6 @@ button.chip:hover {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.faixa-leitura {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--f-leitura);
-  font-size: var(--t-11);
-  color: var(--tinta-3);
-  white-space: nowrap;
-  overflow: hidden;
-}
-.faixa-leitura b {
-  font-family: var(--f-texto);
-  font-size: var(--t-12);
-  font-variant-numeric: tabular-nums;
-  color: var(--tinta-2);
-  font-weight: 700;
-}
-.faixa-leitura-texto {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.faixa-estado {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  flex: none;
-  margin-left: auto;
-  color: var(--tinta-3);
-}
-.faixa-estado svg {
-  width: 12px;
-  height: 12px;
-}
-.faixa-estado b {
-  font-size: var(--t-11);
-  color: inherit;
-}
-.faixa-estado[data-s='vermelho'] {
-  color: var(--agir);
-}
-.faixa-estado[data-s='amarelo'] {
-  color: var(--atencao);
-}
-.faixa-estado[data-s='verde'] {
-  color: var(--firme);
-}
-.contagem-regua {
-  display: inline-flex;
-  gap: 1.5px;
-  flex: none;
-}
-.contagem-regua i {
-  width: 4px;
-  height: 9px;
-  border-radius: 1px;
-  display: block;
-}
-.contagem-regua i[data-s='vermelho'] {
-  background: var(--agir);
-}
-.contagem-regua i[data-s='amarelo'] {
-  background: var(--atencao);
-}
-.contagem-regua i[data-s='verde'] {
-  background: var(--firme);
-}
-.contagem-regua i[data-s='nao-medido'] {
-  background: repeating-linear-gradient(135deg, var(--tinta-3) 0 1px, transparent 1px 3px);
-  outline: 1px solid rgba(132, 132, 143, 0.5);
-  outline-offset: -1px;
-}
 
 .trilho-separador {
   margin: var(--e-2) 4px 2px;
@@ -474,24 +209,6 @@ button.chip:hover {
   border-top: 1px solid var(--fio);
   font-size: var(--t-12);
   color: var(--tinta-3);
-}
-
-.trilho-rodape {
-  margin-top: auto;
-  padding: var(--e-3) 4px 0;
-  font-size: var(--t-11);
-  color: var(--tinta-3);
-  line-height: 1.45;
-  border-top: 1px solid var(--fio);
-}
-.trilho-rodape kbd {
-  font-family: var(--f-leitura);
-  font-size: 0.95em;
-  padding: 1px 5px;
-  border: 1px solid var(--fio-medio);
-  border-bottom-width: 2px;
-  border-radius: 4px;
-  color: var(--tinta-2);
 }
 
 .palco {
@@ -519,16 +236,8 @@ button.chip:hover {
 }
 
 @media (max-width: 2200px) {
-  .telemetria .chip[data-opcional],
-  .telemetria .chip-rotulo,
-  .fases-rotulo {
-    display: none;
-  }
   .fases button:first-of-type {
     margin-left: 0;
-  }
-  .chip-integridade b {
-    color: var(--atencao);
   }
 }
 @media (max-width: 1500px) {
@@ -551,15 +260,6 @@ button.chip:hover {
   .topo {
     grid-template-columns: auto minmax(0, 1fr) auto;
     gap: var(--e-3);
-  }
-  .telemetria {
-    display: none;
-  }
-  .contagem {
-    padding-left: var(--e-3);
-  }
-  .contagem-marco {
-    display: none;
   }
   .trilho {
     grid-column: 1;
@@ -585,9 +285,7 @@ button.chip:hover {
     min-height: 44px;
     grid-template-columns: 26px auto;
   }
-  .faixa-leitura,
-  .trilho-separador,
-  .trilho-rodape {
+  .trilho-separador {
     display: none;
   }
   .palco {
@@ -600,19 +298,6 @@ button.chip:hover {
   .marca-texto {
     display: none;
   }
-  .contagem {
-    grid-template-columns: auto;
-    border-left: 0;
-    padding-left: 0;
-  }
-  .contagem-d {
-    grid-row: auto;
-    font-size: 26px;
-    white-space: nowrap;
-  }
-  .contagem-alvo {
-    display: none;
-  }
   .modos button {
     padding: 0 9px;
   }
@@ -621,20 +306,5 @@ button.chip:hover {
   }
   .modos button[data-modo='apresentar'] {
     border-right: 0;
-  }
-  .marca-selo {
-    width: 38px;
-    height: 38px;
-  }
-  .chip-demo {
-    height: 28px;
-    padding: 0 8px;
-    gap: 5px;
-  }
-  .chip-demo b {
-    letter-spacing: 0.02em;
-  }
-  .botao-icone[data-ocultavel] {
-    display: none;
   }
 }

@@ -179,7 +179,6 @@
         grupo('Período', periodo, datas),
         grupo('Campanha', selCamp),
         grupo('Indicador', selInd),
-        U.extrasBarra ? U.extrasBarra() : null,
         T.h('label', { class: 'filtro-interruptor' }, comparar, T.h('span', { class: 'interruptor' }), 'Comparar com anterior'),
         T.h('span', { class: 'filtro-resumo' }, U.selo(), modoBotao())
       );

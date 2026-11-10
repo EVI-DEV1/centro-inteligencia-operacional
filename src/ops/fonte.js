@@ -50,22 +50,8 @@
     Object.assign(O.estado, mudancas);
     if ('cliente' in mudancas && mudancas.cliente !== antes.cliente) O.estado.campanha = 'todas';
     persistir();
-    sincronizarFiltroAntigo();
     T.emit('ops:filtro', { antes, depois: { ...O.estado } });
   };
-
-  /** Os gráficos antigos (relatório do programa) usam T.filtro: mantém os dois no mesmo período. */
-  function sincronizarFiltroAntigo() {
-    if (!T.filtro) return;
-    const mapa = { hoje: '7', 7: '7', 30: '30', 90: 'tudo', personalizado: 'tudo' };
-    const alvo = mapa[O.estado.periodo] || 'tudo';
-    if (T.filtro.periodo !== alvo) {
-      T.filtro.periodo = alvo;
-      document.documentElement.dataset.periodo = alvo;
-    }
-    T.filtro.comparar = O.estado.comparar;
-  }
-  sincronizarFiltroAntigo();
 
   // ---------- API e sessão (modo real) ----------
   const API = (window.OPS_API_BASE || '/api').replace(/\/$/, '');
@@ -146,8 +132,6 @@
   O.clientes = () => (O.estado.modo === 'real' ? (O.sessao && O.sessao.clientes) || [] : D.CLIENTES);
   O.clienteAtual = () => O.clientes().find((c) => c.id === O.estado.cliente) || O.clientes()[0] || null;
   O.ehDemo = () => O.estado.modo !== 'real';
-  /** O relatório do programa (capítulos do livro) só existe para o Clube Horizonte de demonstração. */
-  O.ehProgramaHorizonte = () => O.ehDemo() && O.estado.cliente === 'demo-horizonte';
   O.papel = () => (O.ehDemo() ? 'admin' : (O.sessao && O.sessao.perfil && O.sessao.perfil.papel) || 'cliente');
   O.ehAdmin = () => O.papel() === 'admin';
   O.podeEditar = () => ['admin', 'gestor', 'atendimento'].includes(O.papel());
@@ -177,6 +161,9 @@
     return cj;
   }
 
+  /** Planilha importada na página Dados e integrações (se houver) por cima das métricas das integrações. */
+  const comPlanilha = (cj) => (O.importacao ? O.importacao.aplicarEm(cj) : cj);
+
   O.carregar = async () => {
     const e = O.estado;
     const j = N.janela(e.periodo, O.hoje(), e.de, e.ate);
@@ -184,7 +171,7 @@
       const k = `demo:${e.cliente}:${O.hoje()}`;
       if (!cache.has(k)) {
         if (!D.CLIENTES.some((c) => c.id === e.cliente)) e.cliente = D.CLIENTES[0].id;
-        cache.set(k, aplicarEdicoesDemo(D.gerar(e.cliente, O.hoje())));
+        cache.set(k, comPlanilha(aplicarEdicoesDemo(D.gerar(e.cliente, O.hoje()))));
       }
       return cache.get(k);
     }
@@ -192,7 +179,7 @@
     const k = `real:${e.cliente}:${j.de}:${j.ate}`;
     const emCache = cache.get(k);
     if (emCache && Date.now() - emCache.em < 60000) return emCache.dado;
-    const dado = await chamar(`painel?cliente=${encodeURIComponent(e.cliente)}&de=${j.de}&ate=${j.ate}`);
+    const dado = comPlanilha(await chamar(`painel?cliente=${encodeURIComponent(e.cliente)}&de=${j.de}&ate=${j.ate}`));
     cache.set(k, { em: Date.now(), dado });
     return dado;
   };
@@ -281,10 +268,6 @@
       else await chamar(`pessoas?id=${pessoa.id}`, { metodo: 'PATCH', corpo: campos });
       Object.assign(pessoa, campos);
       O.invalidarSeReal();
-    },
-    descartarEdicoesDemo() {
-      gravar(`demo-edicoes:${O.estado.cliente}`, []);
-      cache.clear();
     },
   };
   O.invalidarSeReal = () => {
